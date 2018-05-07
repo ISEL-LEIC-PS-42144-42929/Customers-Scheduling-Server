@@ -1,20 +1,32 @@
 package com.customersscheduling.DTO;
 
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table( name = "Business")
 public class BusinessDto {
-    private String companyName;
+
+    @Column(name="name")
+    private String name;
+    @Id
+    @Column(name="NIF")
     private int NIF;
 
     public BusinessDto(String companyName, int nif) {
-        this.companyName = companyName;
+        this.name = companyName;
         NIF = nif;
     }
 
     public String getCompanyName() {
-        return companyName;
+        return name;
     }
 
     public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+        this.name = companyName;
     }
 
     public int getNIF() {
