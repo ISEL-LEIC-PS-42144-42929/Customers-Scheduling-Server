@@ -1,13 +1,46 @@
 package com.customersscheduling.DTO;
 
-public class PersonDto {
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
+@Table( name = "Person")
+@Inheritance(strategy=InheritanceType.JOINED)
+public class PersonDto implements Serializable{
+
+    @Id
+    @Column(name="email")
     private String email;
+
+    @Column(name="name")
     private String name;
+
+    @Column(name="contact")
+    private int contact;
+
+    @Column(name="gender")
+    private int gender;
+
+    public PersonDto(){
+        this.name="default_name";
+        this.email="defaul_email";
+        this.contact=999;
+        this.gender=0;
+    }
+
 
     public PersonDto(String email, String name) {
         this.email = email;
         this.name = name;
+        this.contact=999;
+        this.gender=0;
+    }
+
+    public PersonDto(String email, String name, int contact, int gender) {
+        this.email = email;
+        this.name = name;
+        this.contact=contact;
+        this.gender=gender;
     }
 
     public String getEmail() {
@@ -16,5 +49,21 @@ public class PersonDto {
 
     public String getName() {
         return name;
+    }
+
+    public int getContact() {
+        return contact;
+    }
+
+    public void setContact(int contact) {
+        this.contact = contact;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 }
