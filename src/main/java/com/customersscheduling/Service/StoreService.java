@@ -1,6 +1,6 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.DataAccess.IStoreDao;
+import com.customersscheduling.DAO.IStoreDao;
 import org.springframework.stereotype.Service;
 
 @Service

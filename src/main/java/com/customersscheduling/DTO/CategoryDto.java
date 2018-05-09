@@ -1,8 +1,19 @@
 package com.customersscheduling.DTO;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table( name = "Category")
 public class CategoryDto {
 
+    @Id
+    @Column(name="name")
     private String title;
+
+    @Column(name="description")
     private String description;
 
     public CategoryDto(String title, String description) {
