@@ -1,45 +1,30 @@
 package com.customersscheduling.DTO;
 
+import javax.persistence.*;
+
+@Entity
+@Table( name = "TimeTable")
 public class TimetableDto {
 
-    private double openHour;
-    private double closeHour;
-    private double breakInit;
-    private double breakFinish;
-    private boolean breakDay;
+    @Id
+    @Column(name="IdTimeTable")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
+    @Column(name="openHour")
+    private double openHour;
+    @Column(name="closeHour")
+    private double closeHour;
+    @Column(name="initBreak")
+    private double initBreak;
+    @Column(name="finishBreak")
+    private double finishBreak;
 
-    public TimetableDto(double openHour, double closeHour, double breakInit, double breakFinish, boolean breakDay, int id) {
+
+    public TimetableDto(double openHour, double closeHour, double initBreak, double finishBreak) {
         this.openHour = openHour;
         this.closeHour = closeHour;
-        this.breakInit = breakInit;
-        this.breakFinish = breakFinish;
-        this.breakDay = breakDay;
-        this.id = id;
-    }
-
-    public void setOpenHour(double openHour) {
-        this.openHour = openHour;
-    }
-
-    public void setCloseHour(double closeHour) {
-        this.closeHour = closeHour;
-    }
-
-    public void setBreakInit(double breakInit) {
-        this.breakInit = breakInit;
-    }
-
-    public void setBreakFinish(double breakFinish) {
-        this.breakFinish = breakFinish;
-    }
-
-    public boolean isBreakDay() {
-        return breakDay;
-    }
-
-    public void setBreakDay(boolean breakDay) {
-        this.breakDay = breakDay;
+        this.initBreak = initBreak;
+        this.finishBreak = finishBreak;
     }
 
     public int getId() {
@@ -50,22 +35,38 @@ public class TimetableDto {
         this.id = id;
     }
 
-
-
     public double getOpenHour() {
         return openHour;
+    }
+
+    public void setOpenHour(double openHour) {
+        this.openHour = openHour;
     }
 
     public double getCloseHour() {
         return closeHour;
     }
 
-    public double getBreakInit() {
-        return breakInit;
+    public void setCloseHour(double closeHour) {
+        this.closeHour = closeHour;
     }
 
-    public double getBreakFinish() {
-        return breakFinish;
+    public double getInitBreak() {
+        return initBreak;
     }
+
+    public void setInitBreak(double initBreak) {
+        this.initBreak = initBreak;
+    }
+
+    public double getFinishBreak() {
+        return finishBreak;
+    }
+
+    public void setFinishBreak(double finishBreak) {
+        this.finishBreak = finishBreak;
+    }
+
+
 
 }

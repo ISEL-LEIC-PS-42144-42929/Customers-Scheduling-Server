@@ -24,16 +24,12 @@ public class PersonDto implements Serializable{
     public PersonDto(){
         this.name="default_name";
         this.email="defaul_email";
-        this.contact=999;
-        this.gender=0;
     }
 
 
     public PersonDto(String email, String name) {
         this.email = email;
         this.name = name;
-        this.contact=999;
-        this.gender=0;
     }
 
     public PersonDto(String email, String name, int contact, int gender) {
