@@ -13,7 +13,7 @@ public class BusinessDto {
     @Column(name="name")
     private String name;
 
-    @Column(name="Category_name")
+    @Column(name="category_name")
     private String cat_name;
 
     @Id

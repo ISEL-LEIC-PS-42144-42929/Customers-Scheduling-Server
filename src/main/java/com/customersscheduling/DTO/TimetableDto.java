@@ -1,23 +1,29 @@
 package com.customersscheduling.DTO;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table( name = "TimeTable")
+@Table( name = "timetable")
 public class TimetableDto {
 
     @Id
-    @Column(name="IdTimeTable")
+    @Column(name="idtimetable")
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
-    @Column(name="openHour")
+    @Column(name="openhour")
     private double openHour;
-    @Column(name="closeHour")
+    @Column(name="closehour")
     private double closeHour;
-    @Column(name="initBreak")
+    @Column(name="initbreak")
     private double initBreak;
-    @Column(name="finishBreak")
+    @Column(name="finishbreak")
     private double finishBreak;
+
+    //Staff N-N
+    @ManyToMany(mappedBy = "timetable", cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    private Set<StaffDto> staff = new HashSet<>();
 
 
     public TimetableDto(double openHour, double closeHour, double initBreak, double finishBreak) {
@@ -68,5 +74,11 @@ public class TimetableDto {
     }
 
 
+    public Set<StaffDto> getStaff() {
+        return staff;
+    }
 
+    public void setStaff(Set<StaffDto> staff) {
+        this.staff = staff;
+    }
 }

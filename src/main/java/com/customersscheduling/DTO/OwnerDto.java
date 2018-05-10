@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table( name = "Owner")
-@PrimaryKeyJoinColumn(name="User_Person_email")
+@PrimaryKeyJoinColumn(name="user_person_email")
 public class OwnerDto extends UserDto {
 
     @Column(name="NIF")

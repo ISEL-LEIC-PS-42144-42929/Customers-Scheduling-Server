@@ -38,6 +38,10 @@ public class PersonController {
 
     @PostMapping(value = "/staff/timetable", produces = "application/json")
     public void insertStaffTimetable(HttpServletRequest request) {
-        personService.insertStaffTimetable(new TimetableDto(8.0, 16.0, 12.0, 15.0));
+        TimetableDto t=new TimetableDto(8.0, 16.0, 12.0, 15.0);
+        StaffDto staff = new StaffDto("bito_staff2@gmail.com","bito_staff2");
+        staff.getTimetable().add(t);
+        t.getStaff().add(staff);
+        personService.insertStaffTimetable(t);
     }
 }
