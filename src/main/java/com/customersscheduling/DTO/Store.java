@@ -12,11 +12,15 @@ public class Store {
     @Column(name="address")
     private String address;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE})
     @JoinColumn(name="owner_user_person_email",referencedColumnName="user_person_email",nullable=false)
     private Owner owner;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE})
     @JoinColumn(name="category_name",referencedColumnName="name",nullable=false)
     private Category category;
 

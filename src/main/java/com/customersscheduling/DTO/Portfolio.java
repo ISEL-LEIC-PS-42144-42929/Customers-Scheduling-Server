@@ -15,7 +15,9 @@ public class Portfolio {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE})
     @JoinColumns( {
             @JoinColumn(name="store_store_name",referencedColumnName="store_name",nullable=false),
             @JoinColumn(name="store_business_nif",referencedColumnName="business_nif",nullable=false),

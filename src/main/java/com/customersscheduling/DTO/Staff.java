@@ -22,7 +22,6 @@ public class Staff extends Person {
     private Set<Timetable> timetable = new HashSet<>();
 
     public Staff(){
-        super("defaultemail", "default_name");
     }
 
     public Staff(String email, String name) {

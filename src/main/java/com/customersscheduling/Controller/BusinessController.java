@@ -34,4 +34,20 @@ public class BusinessController {
                 new Category("tech", "tech"),
                 new StorePK(new Business("inout", 111),"Inout_Store2")));
     }
+
+    @PostMapping(value = "/store/service", produces = "application/son")
+    public void insertServiceForStore(HttpServletRequest request) {
+        Store store = new Store(
+                "Rua do Bito 2",
+                new Owner("bitoowner@gmail.com", "bitoowner", 999),
+                new Category("tech", "tech"),
+                new StorePK(new Business("inout", 111),"Inout_Store2"));
+        Service s = new Service("abc","dbc",7.5, 15);
+        StoreServices ss = new StoreServices(new StoreServicesPK(
+                store,
+                new Staff("bito_staff@gmail.com","bito_staff"),
+                s
+        ));
+        businessService.insertServiceForStore(ss);
+    }
 }

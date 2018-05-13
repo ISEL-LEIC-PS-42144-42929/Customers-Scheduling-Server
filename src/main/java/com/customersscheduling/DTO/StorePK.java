@@ -6,7 +6,9 @@ import java.io.Serializable;
 @Embeddable
 public class StorePK implements Serializable {
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE})
     @JoinColumn(name="business_nif", referencedColumnName = "nif", nullable=false)
     private Business business;
 
