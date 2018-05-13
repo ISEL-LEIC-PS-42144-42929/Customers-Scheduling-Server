@@ -29,9 +29,9 @@ public class BusinessController {
     @PostMapping(value = "/store", produces = "application/son")
     public BusinessHAL insertStore(HttpServletRequest request) {
         return businessService.insertStore(new Store(
-                "Rua do Bito",
+                "Rua do Bito 2",
                 new Owner("bitoowner@gmail.com", "bitoowner", 999),
                 new Category("tech", "tech"),
-                new StorePK(new Business("inout", 111),"Inout_Store")));
+                new StorePK(new Business("inout", 111),"Inout_Store2")));
     }
 }
