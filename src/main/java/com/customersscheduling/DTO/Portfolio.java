@@ -2,13 +2,13 @@ package com.customersscheduling.DTO;
 
 import java.sql.Blob;
 
-public class StorePortfolioDto {
+public class StorePortfolio {
 
     private Blob image;
     private String description;
     private int storeId;
 
-    public StorePortfolioDto(Blob image, String description, int storeId) {
+    public StorePortfolio(Blob image, String description, int storeId) {
         this.image = image;
         this.description = description;
         this.storeId = storeId;

@@ -20,17 +20,23 @@ public class TimetableDto {
     private double initBreak;
     @Column(name="finishbreak")
     private double finishBreak;
+    @Column(name="weekday")
+    private String weekDay;
 
     //Staff N-N
-    @ManyToMany(mappedBy = "timetable", cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "timetable", cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    } , fetch = FetchType.EAGER)
     private Set<StaffDto> staff = new HashSet<>();
 
 
-    public TimetableDto(double openHour, double closeHour, double initBreak, double finishBreak) {
+    public TimetableDto(double openHour, double closeHour, double initBreak, double finishBreak, String weekDay) {
         this.openHour = openHour;
         this.closeHour = closeHour;
         this.initBreak = initBreak;
         this.finishBreak = finishBreak;
+        this.weekDay = weekDay;
     }
 
     public int getId() {
@@ -80,5 +86,13 @@ public class TimetableDto {
 
     public void setStaff(Set<StaffDto> staff) {
         this.staff = staff;
+    }
+
+    public String getWeekDay() {
+        return weekDay;
+    }
+
+    public void setWeekDay(String weekDay) {
+        this.weekDay = weekDay;
     }
 }
