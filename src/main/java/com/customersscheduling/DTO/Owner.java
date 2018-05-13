@@ -8,17 +8,15 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "Owner")
 @PrimaryKeyJoinColumn(name="user_person_email")
-public class OwnerDto extends UserDto {
+public class Owner extends User {
 
     @Column(name="NIF")
     private int nif;
 
-    public OwnerDto() {
-        super("default_email_owner", "default_name_owner");
-        this.nif = -1;
+    public Owner() {
     }
 
-    public OwnerDto(String email, String name, int nif) {
+    public Owner(String email, String name, int nif) {
         super(email, name);
         this.nif = nif;
     }

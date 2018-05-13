@@ -4,8 +4,8 @@ import com.customersscheduling.DTO.*;
 
 public interface IPersonService {
 
-    void insertClient(ClientDto client);
-    void insertOwner(OwnerDto owner);
-    void insertStaff(StaffDto staff);
-    void insertStaffTimetable(TimetableDto timetable);
+    void insertClient(Client client);
+    void insertOwner(Owner owner);
+    void insertStaff(Staff staff);
+    void insertStaffTimetable(Staff staff);
 }

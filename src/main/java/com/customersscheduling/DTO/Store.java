@@ -1,77 +1,63 @@
 package com.customersscheduling.DTO;
 
-public class StoreDto {
-    private String storeName;
-    private String streetName;
-    private String postalCode;
-    private String lot;
-    private int id;
-    private String locality;
-    private String ownerId;
+import javax.persistence.*;
 
-    public StoreDto(String storeName, String streetName, String postalCode, String lot, int id, String locality, String ownerId) {
-        this.storeName = storeName;
-        this.streetName = streetName;
-        this.postalCode = postalCode;
-        this.lot = lot;
-        this.id = id;
-        this.locality = locality;
-        this.ownerId = ownerId;
+@Entity(name = "Store")
+@Table( name = "Store")
+public class Store {
+
+    @EmbeddedId
+    private StorePK pk;
+
+    @Column(name="address")
+    private String address;
+
+    @OneToOne
+    @JoinColumn(name="owner_user_person_email",referencedColumnName="user_person_email",nullable=false)
+    private Owner owner;
+
+    @OneToOne
+    @JoinColumn(name="category_name",referencedColumnName="name",nullable=false)
+    private Category category;
+
+    public Store(){}
+
+    public Store(String addr, Owner ownerId, Category category, StorePK pk) {
+        this.address = addr;
+        this.owner = ownerId;
+        this.category=category;
+        this.pk = pk;
     }
 
-    public String getStoreName() {
-        return storeName;
+    public String getAddress() {
+        return address;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getStreetName() {
-        return streetName;
+    public Owner getOwner() {
+        return owner;
     }
 
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public StorePK getPk() {
+        return pk;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setPk(StorePK pk) {
+        this.pk = pk;
     }
 
-    public String getLot() {
-        return lot;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setLot(String lot) {
-        this.lot = lot;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLocality() {
-        return locality;
-    }
-
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-
-    public String getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

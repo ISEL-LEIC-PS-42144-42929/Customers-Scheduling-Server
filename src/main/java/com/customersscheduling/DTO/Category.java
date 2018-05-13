@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table( name = "Category")
-public class CategoryDto {
+public class Category {
 
     @Id
     @Column(name="name")
@@ -16,7 +16,9 @@ public class CategoryDto {
     @Column(name="description")
     private String description;
 
-    public CategoryDto(String title, String description) {
+    public Category(){}
+
+    public Category(String title, String description) {
         this.title = title;
         this.description = description;
     }

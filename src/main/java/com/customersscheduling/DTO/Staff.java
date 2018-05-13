@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity
 @Table( name = "staff")
 @PrimaryKeyJoinColumn(name="person_email")
-public class StaffDto extends PersonDto {
+public class Staff extends Person {
 
     //Timetable N-N
     @ManyToMany(cascade = {
@@ -21,11 +21,11 @@ public class StaffDto extends PersonDto {
     )
     private Set<Timetable> timetable = new HashSet<>();
 
-    public StaffDto(){
+    public Staff(){
         super("defaultemail", "default_name");
     }
 
-    public StaffDto(String email, String name) {
+    public Staff(String email, String name) {
         super(email, name);
     }
 

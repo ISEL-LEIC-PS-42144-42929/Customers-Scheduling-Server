@@ -1,12 +1,10 @@
 package com.customersscheduling.Repository;
 
-import com.customersscheduling.DTO.BusinessDto;
-import com.customersscheduling.DTO.ClientDto;
-import com.customersscheduling.DTO.PersonDto;
+import com.customersscheduling.DTO.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PersonRepository extends JpaRepository<PersonDto, Integer> {
+public interface PersonRepository extends JpaRepository<Person, Integer> {
 
     @Override
-    PersonDto save(PersonDto entity);
+    Person save(Person entity);
 }

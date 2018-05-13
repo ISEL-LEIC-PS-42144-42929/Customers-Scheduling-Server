@@ -1,6 +1,6 @@
 package com.customersscheduling.DTO;
 
-public class BookingDto {
+public class Booking {
 
 
     private int id;
@@ -9,7 +9,7 @@ public class BookingDto {
     private int serviceId;
     private int storeId;
 
-    public BookingDto(int id, String clientId, String staffId, int serviceId, int storeId) {
+    public Booking(int id, String clientId, String staffId, int serviceId, int storeId) {
         this.id = id;
         this.clientId = clientId;
         this.staffId = staffId;

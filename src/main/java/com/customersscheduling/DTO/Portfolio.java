@@ -1,17 +1,33 @@
 package com.customersscheduling.DTO;
 
+import javax.persistence.*;
 import java.sql.Blob;
 
-public class StorePortfolio {
+@Entity
+@Table( name = "Portfolio")
+public class Portfolio {
 
+    @Column(name="image")
     private Blob image;
-    private String description;
-    private int storeId;
 
-    public StorePortfolio(Blob image, String description, int storeId) {
+    @Id
+    @Column(name="idportfolio")
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private int id;
+
+    @ManyToOne
+    @JoinColumns( {
+            @JoinColumn(name="store_store_name",referencedColumnName="store_name",nullable=false),
+            @JoinColumn(name="store_business_nif",referencedColumnName="business_nif",nullable=false),
+    })
+    private Store store;
+
+    public Portfolio(){}
+
+    public Portfolio(Blob image, String description, int storeId, Store store) {
         this.image = image;
-        this.description = description;
-        this.storeId = storeId;
+        this.id = storeId;
+        this.store = store;
     }
 
     public Blob getImage() {
@@ -22,19 +38,19 @@ public class StorePortfolio {
         this.image = image;
     }
 
-    public String getDescription() {
-        return description;
+    public int getId() {
+        return id;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getStoreId() {
-        return storeId;
+    public Store getStore() {
+        return store;
     }
 
-    public void setStoreId(int storeId) {
-        this.storeId = storeId;
+    public void setStore(Store store) {
+        this.store = store;
     }
 }

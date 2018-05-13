@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table( name = "Person")
 @Inheritance(strategy=InheritanceType.JOINED)
-public class PersonDto implements Serializable{
+public class Person implements Serializable{
 
     @Id
     @Column(name="email")
@@ -21,18 +21,18 @@ public class PersonDto implements Serializable{
     @Column(name="gender")
     private int gender;
 
-    public PersonDto(){
+    public Person(){
         this.name="default_name";
         this.email="defaul_email";
     }
 
 
-    public PersonDto(String email, String name) {
+    public Person(String email, String name) {
         this.email = email;
         this.name = name;
     }
 
-    public PersonDto(String email, String name, int contact, int gender) {
+    public Person(String email, String name, int contact, int gender) {
         this.email = email;
         this.name = name;
         this.contact=contact;

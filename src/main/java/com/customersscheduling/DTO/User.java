@@ -6,15 +6,15 @@ import javax.persistence.*;
 @Table( name = "User")
 @Inheritance(strategy=InheritanceType.JOINED)
 @PrimaryKeyJoinColumn(name="person_email")
-public class UserDto extends PersonDto {
+public class User extends Person {
 
 
-    public UserDto(){
+    public User(){
         super("defaultemail", "default_name");
     }
 
 
-    public UserDto(String email, String name) {
+    public User(String email, String name) {
         super(email, name);
     }
 

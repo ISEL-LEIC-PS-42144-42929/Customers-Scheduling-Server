@@ -1,35 +1,25 @@
 package com.customersscheduling.DTO;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table( name = "Business")
-public class BusinessDto {
+public class Business {
 
     @Column(name="name")
     private String name;
-
-    @Column(name="category_name")
-    private String cat_name;
 
     @Id
     @Column(name="NIF")
     private int NIF;
 
-    public BusinessDto(){
-        name="default";
-        NIF=-1;
-        cat_name="default_cat_name";
-    }
+    public Business(){ }
 
-    public BusinessDto(String companyName, int nif, String cat_name) {
+    public Business(String companyName, int nif) {
         this.name = companyName;
         NIF = nif;
-        this.cat_name=cat_name;
     }
 
     public String getCompanyName() {
@@ -46,13 +36,5 @@ public class BusinessDto {
 
     public void setNIF(int NIF) {
         this.NIF = NIF;
-    }
-
-    public String getCat_name() {
-        return cat_name;
-    }
-
-    public void setCat_name(String cat_name) {
-        this.cat_name = cat_name;
     }
 }

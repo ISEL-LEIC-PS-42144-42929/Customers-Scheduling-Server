@@ -1,11 +1,11 @@
 package com.customersscheduling.DTO;
 
-public class ServiceDto {
+public class Service {
     private String description;
     private int price;
     private double duration;
 
-    public ServiceDto(String description, int price, double duration) {
+    public Service(String description, int price, double duration) {
         this.description = description;
         this.price = price;
         this.duration = duration;

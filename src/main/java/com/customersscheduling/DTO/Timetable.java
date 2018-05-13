@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table( name = "timetable")
-public class TimetableDto {
+public class Timetable {
 
     @Id
     @Column(name="idtimetable")
@@ -28,10 +28,12 @@ public class TimetableDto {
             CascadeType.PERSIST,
             CascadeType.MERGE
     } , fetch = FetchType.EAGER)
-    private Set<StaffDto> staff = new HashSet<>();
+    private Set<Staff> staff = new HashSet<>();
 
+    public Timetable() {
+    }
 
-    public TimetableDto(double openHour, double closeHour, double initBreak, double finishBreak, String weekDay) {
+    public Timetable(double openHour, double closeHour, double initBreak, double finishBreak, String weekDay) {
         this.openHour = openHour;
         this.closeHour = closeHour;
         this.initBreak = initBreak;
@@ -80,11 +82,11 @@ public class TimetableDto {
     }
 
 
-    public Set<StaffDto> getStaff() {
+    public Set<Staff> getStaff() {
         return staff;
     }
 
-    public void setStaff(Set<StaffDto> staff) {
+    public void setStaff(Set<Staff> staff) {
         this.staff = staff;
     }
 

@@ -5,13 +5,13 @@ import javax.persistence.*;
 @Entity
 @Table( name = "Client")
 @PrimaryKeyJoinColumn(name="user_person_email")
-public class ClientDto extends UserDto {
+public class Client extends User {
 
-    public ClientDto(){
+    public Client(){
         super("defaultemail", "default_name");
     }
 
-    public ClientDto(String email, String name) {
+    public Client(String email, String name) {
         super(email, name);
     }
 
