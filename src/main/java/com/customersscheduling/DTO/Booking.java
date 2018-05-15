@@ -1,21 +1,57 @@
 package com.customersscheduling.DTO;
 
+import javax.persistence.*;
+
+@Entity
+@Table( name = "booking")
 public class Booking {
 
-
+    @Id
+    @Column(name="idbooking")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
-    private String clientId;
-    private String staffId;
-    private int serviceId;
-    private int storeId;
 
-    public Booking(int id, String clientId, String staffId, int serviceId, int storeId) {
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinColumns( {
+            @JoinColumn(name="store_store_name",referencedColumnName="store_name",nullable=false),
+            @JoinColumn(name="store_business_nif",referencedColumnName="business_nif",nullable=false),
+    })
+    private Store store;
+
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false)
+    private Staff staff;
+
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinColumn(name="client_user_person_email",referencedColumnName="user_person_email",nullable=false)
+    private Client client;
+
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinColumn(name="services_idservices",referencedColumnName="idservices",nullable=false)
+    private Service service;
+
+    public Booking(){}
+
+    public Booking(int id, Store store, Staff staff, Client client, Service service) {
         this.id = id;
-        this.clientId = clientId;
-        this.staffId = staffId;
-        this.serviceId = serviceId;
-        this.storeId = storeId;
+        this.store = store;
+        this.staff = staff;
+        this.client = client;
+        this.service = service;
     }
+
 
     public int getId() {
         return id;
@@ -25,36 +61,35 @@ public class Booking {
         this.id = id;
     }
 
-    public String getClientId() {
-        return clientId;
+    public Store getStore() {
+        return store;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public void setStore(Store store) {
+        this.store = store;
     }
 
-    public String getStaffId() {
-        return staffId;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
-    public int getServiceId() {
-        return serviceId;
+    public Client getClient() {
+        return client;
     }
 
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-    public int getStoreId() {
-        return storeId;
+    public Service getService() {
+        return service;
     }
 
-    public void setStoreId(int storeId) {
-        this.storeId = storeId;
+    public void setService(Service service) {
+        this.service = service;
     }
-
 }

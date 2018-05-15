@@ -16,4 +16,12 @@ public class StoreServices {
     public StoreServices(StoreServicesPK pk){
         this.pk=pk;
     }
+
+    public StoreServicesPK getPk() {
+        return pk;
+    }
+
+    public void setPk(StoreServicesPK pk) {
+        this.pk = pk;
+    }
 }

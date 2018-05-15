@@ -7,24 +7,18 @@ import java.io.Serializable;
 @Embeddable
 public class StoreServicesPK implements Serializable {
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns( {
             @JoinColumn(name="store_store_name",referencedColumnName="store_name",nullable=false),
             @JoinColumn(name="store_business_nif",referencedColumnName="business_nif",nullable=false),
     })
     private Store store;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false)
     private Staff staff;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="services_idservices",referencedColumnName="idservices",nullable=false)
     private Service service;
 

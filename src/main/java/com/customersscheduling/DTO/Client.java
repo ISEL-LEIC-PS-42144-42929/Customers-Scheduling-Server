@@ -8,7 +8,6 @@ import javax.persistence.*;
 public class Client extends User {
 
     public Client(){
-        super("defaultemail", "default_name");
     }
 
     public Client(String email, String name) {
