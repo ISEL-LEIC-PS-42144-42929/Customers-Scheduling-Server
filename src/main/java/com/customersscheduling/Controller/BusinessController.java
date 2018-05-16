@@ -2,13 +2,12 @@ package com.customersscheduling.Controller;
 
 import com.customersscheduling.DTO.*;
 import com.customersscheduling.HALObjects.BusinessHAL;
+import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Service.IBusinessService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.Resources;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
 
 
 @RestController
@@ -20,10 +19,10 @@ public class BusinessController {
     public BusinessController(IBusinessService businessService) {
         this.businessService = businessService;
     }
-
+/*
     @PostMapping(value = "", produces = "application/son")
     public BusinessHAL insertBusiness(HttpServletRequest request) {
-        return businessService.insertBusiness(new Business("inout", 111));
+        return businessService.insertBusiness(new Business("inout", 111, owner));
     }
 
     @PostMapping(value = "/store", produces = "application/son")
@@ -32,7 +31,7 @@ public class BusinessController {
                 "Rua do Bito 2",
                 new Owner("bitoowner@gmail.com", "bitoowner", 999),
                 new Category("tech", "tech"),
-                new StorePK(new Business("inout", 111),"Inout_Store2")));
+                new StorePK(new Business("inout", 111, owner),"Inout_Store2")));
     }
 
     @PostMapping(value = "/store/service", produces = "application/son")
@@ -41,7 +40,7 @@ public class BusinessController {
                 "Rua do Bito 2",
                 new Owner("bitoowner@gmail.com", "bitoowner", 999),
                 new Category("tech", "tech"),
-                new StorePK(new Business("inout", 111),"Inout_Store2"));
+                new StorePK(new Business("inout", 111, owner),"Inout_Store2"));
         Service s = new Service("abc","dbc",7.5, 15);
 
         StoreServices ss = new StoreServices(new StoreServicesPK(
@@ -58,7 +57,7 @@ public class BusinessController {
                 "Rua do Bito 2",
                 new Owner("bitoowner@gmail.com", "bitoowner", 999),
                 new Category("tech", "tech"),
-                new StorePK(new Business("inout", 111),"Inout_Store2"));
+                new StorePK(new Business("inout", 111, owner),"Inout_Store2"));
         Service s = new Service("abc","dbc",7.5, 15);
         s.setId(7);
         Staff staff = new Staff("bito_staff@gmail.com","bito_staff");
@@ -73,4 +72,9 @@ public class BusinessController {
         book.setClient(c);
         businessService.insertBook(book);
     }
+
+    @GetMapping(value = "/{nif}/store/{name}")
+    public Resources<StoreResource> getStore(@PathVariable String name, @PathVariable int nif) {
+        return null;
+    }*/
 }

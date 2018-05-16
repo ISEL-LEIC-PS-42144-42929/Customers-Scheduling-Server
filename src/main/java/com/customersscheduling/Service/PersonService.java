@@ -1,16 +1,15 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.DTO.Client;
-import com.customersscheduling.DTO.Owner;
-import com.customersscheduling.DTO.Staff;
-import com.customersscheduling.DTO.Timetable;
+import com.customersscheduling.DTO.*;
 import com.customersscheduling.Repository.PersonRepository;
+import com.customersscheduling.Repository.StoreRepository;
 import com.customersscheduling.Repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -46,5 +45,10 @@ public class PersonService implements IPersonService {
             }
         });
         personRepo.save(staff);
+    }
+
+    @Override
+    public List<Store> getStoresByEmail(String email) {
+        return null;
     }
 }

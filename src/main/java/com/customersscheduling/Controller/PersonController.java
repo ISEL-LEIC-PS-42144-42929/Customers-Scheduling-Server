@@ -1,16 +1,18 @@
 package com.customersscheduling.Controller;
 
-import com.customersscheduling.DTO.Client;
-import com.customersscheduling.DTO.Owner;
-import com.customersscheduling.DTO.Staff;
-import com.customersscheduling.DTO.Timetable;
+import com.customersscheduling.DTO.*;
+import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Service.IPersonService;
+import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping(value="/person", produces = "application/hal+json")
 public class PersonController {
 
     private final IPersonService personService;
@@ -43,10 +45,15 @@ public class PersonController {
         staff.getTimetable().add(t2);
         personService.insertStaffTimetable(staff);
     }
-
-    @GetMapping(value = "/{email}/stores", produces = "application/hal+json")
-    public void getUserStores(HttpServletRequest request, @PathVariable String email) {
-
-        return;
-    }
+/*
+    @GetMapping(value = "/{email}/stores")
+    public ResponseEntity<Resources<StoreResource>> getUserStores(HttpServletRequest request, @PathVariable String email) {
+        final List<Store> stores = personService.getStoresByEmail(email);
+        final List<StoreResource> mappedStores = new ArrayList<>();
+        stores.iterator().forEachRemaining( st ->
+            mappedStores.add(new StoreResource(st))
+        );
+        final Resources<StoreResource> resources = new Resources<StoreResource>(mappedStores);
+        return ResponseEntity.ok(resources);
+    }*/
 }

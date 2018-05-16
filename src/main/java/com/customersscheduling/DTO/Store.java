@@ -9,14 +9,11 @@ public class Store {
     @EmbeddedId
     private StorePK pk;
 
-    @Column(name="address")
-    private String address;
-
     @OneToOne(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE})
-    @JoinColumn(name="owner_user_person_email",referencedColumnName="user_person_email",nullable=false)
-    private Owner owner;
+    @JoinColumn(name="address_id",referencedColumnName="id",nullable=false)
+    private Address address;
 
     @OneToOne(cascade = {
             CascadeType.PERSIST,
@@ -26,27 +23,18 @@ public class Store {
 
     public Store(){}
 
-    public Store(String addr, Owner ownerId, Category category, StorePK pk) {
+    public Store(Address addr, Owner ownerId, Category category, StorePK pk) {
         this.address = addr;
-        this.owner = ownerId;
         this.category=category;
         this.pk = pk;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
     }
 
     public StorePK getPk() {
