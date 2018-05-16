@@ -46,8 +46,8 @@
     ```
     
     
-    ### Business
-    - #### **get business by NIF**
+### Business
+- #### **get business by NIF**
      #### HTTP Request
     
     `GET /business/{nif}/stores`
@@ -90,7 +90,7 @@
     }
     ```
     
-    - #### **get store by name and business NIF**
+- #### **get store by name and business NIF**
      #### HTTP Request
     
     `GET /business/{nif}/store/{name}`
@@ -122,23 +122,112 @@
         "contact": "+351969478302",
         "_embedded": [
             {
+                "id": "1",
                 "title": "Hard drive exchange",
                 "price": "30",
                 "employees": [
                     {
                         "name": "Josué Maria"
                     },
-                    ...
+                    ... rest of the employees
                 ],
                 "_links": {
+                    "book": {
+                         "href": "/business/123456789/store/XXX/services/1/book"
+                    },
+                    "day_markings": {
+                         "href": "/business/123456789/store/XXX/services/1/markings"
+                    }
                 }
-            }
+            },
+            ... rest of the services
         ]
         "_links": {
             "self": {
                 "href": "/business/123456789/store/XXX"
+            },
+            "delete": {
+                "href": "/business/123456789/store/XXX/delete"
             }
         }
     }
     ```
+- #### **get free hours for one service in a day**
+     #### HTTP Request
     
+    `POST /business/{nif}/store/{name}/services/{id}/markings
+    {
+          "date": "01/12/2018"
+    }`
+// TODO
+
+- #### **registry a booking**
+     #### HTTP Request
+    
+    `POST /business/{nif}/store/{name}/services/{id}/book
+    {
+          "employee": "---",
+          "date": "---",
+          "client_email": "---"
+    }`
+// TODO
+
+- #### **get all stores of a business**
+     #### HTTP Request
+    
+    `GET /business/all/store
+    {
+          "location": "----",
+          "category": "----"
+    }`
+// TODO
+
+- #### **create a business**
+     #### HTTP Request
+    
+    `POST /business
+    {
+          "name": "----",
+          "nif": "----"
+    }`
+// TODO
+
+
+- #### **add store to a business**
+     #### HTTP Request
+    
+    `POST /business/{nif}/store
+    {
+          "name": "----",
+          "country": "----",
+          "city": "----",
+          "street": "----",
+          "zip_code": "----",
+          "lot": "----",
+          "zip_code": "----",
+          "category": "----",
+          "contact": "----",
+          "owner": {
+          },
+          "portfolio": [
+          ]
+    }`
+// TODO
+
+- #### **add staff to a store**
+     #### HTTP Request
+    
+    `POST /business/{nif}/store/{name}/staff
+    {
+          "name": "----",
+          "email": "----",
+          "contact": "----",
+          "gender": "----"
+    }`
+// TODO
+
+- #### **get businesses of user**
+     #### HTTP Request
+    
+    `GET /business/{email}`
+// TODO
