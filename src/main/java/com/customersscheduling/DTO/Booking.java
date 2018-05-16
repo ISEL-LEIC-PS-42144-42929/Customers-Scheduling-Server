@@ -11,34 +11,22 @@ public class Booking {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumns( {
             @JoinColumn(name="store_store_name",referencedColumnName="store_name",nullable=false),
             @JoinColumn(name="store_business_nif",referencedColumnName="business_nif",nullable=false),
     })
     private Store store;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false)
     private Staff staff;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name="client_user_person_email",referencedColumnName="user_person_email",nullable=false)
     private Client client;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name="services_idservices",referencedColumnName="idservices",nullable=false)
     private Service service;
 

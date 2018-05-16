@@ -5,9 +5,7 @@ import com.customersscheduling.DTO.Owner;
 import com.customersscheduling.DTO.Staff;
 import com.customersscheduling.DTO.Timetable;
 import com.customersscheduling.Service.IPersonService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,5 +42,11 @@ public class PersonController {
         staff.getTimetable().add(t1);
         staff.getTimetable().add(t2);
         personService.insertStaffTimetable(staff);
+    }
+
+    @GetMapping(value = "/{email}/stores", produces = "application/hal+json")
+    public void getUserStores(HttpServletRequest request, @PathVariable String email) {
+
+        return;
     }
 }

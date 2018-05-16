@@ -43,12 +43,17 @@ public class BusinessService implements IBusinessService {
     public void insertServiceForStore(StoreServices s) {
         com.customersscheduling.DTO.Service serv = s.getPk().getService();
         com.customersscheduling.DTO.Service s1 = servicesRepo.findServiceByParams(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
-        s.getPk().getService().setId(s1.getId());
+        if(s1!=null) s.getPk().getService().setId(s1.getId());
         storeServicesRepo.save(s);
     }
 
     @Override
     public void insertBook(Booking booking) {
         bookingRepo.save(booking);
+    }
+
+    @Override
+    public Booking getBookingById(int id) {
+        return bookingRepo.getOne(id);
     }
 }

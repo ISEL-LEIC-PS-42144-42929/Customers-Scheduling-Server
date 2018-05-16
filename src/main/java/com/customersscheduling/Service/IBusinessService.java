@@ -8,4 +8,5 @@ public interface IBusinessService {
     BusinessHAL insertStore(Store store);
     void insertServiceForStore(StoreServices s);
     void insertBook(Booking booking);
+    Booking getBookingById(int i);
 }
