@@ -1,7 +1,10 @@
 package com.customersscheduling.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table( name = "Business")
@@ -19,6 +22,12 @@ public class Business {
             CascadeType.MERGE})
     @JoinColumn(name="owner_user_person_email",referencedColumnName="user_person_email",nullable=false)
     private Owner owner;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pk.business", cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE})
+    private Set<Store> stores;
 
     public Business(){ }
 
@@ -50,5 +59,13 @@ public class Business {
 
     public void setOwner(Owner owner) {
         this.owner = owner;
+    }
+
+    public Set<Store> getStores() {
+        return stores;
+    }
+
+    public void setStores(Set<Store> stores) {
+        this.stores = stores;
     }
 }

@@ -8,7 +8,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 public class StoreResource extends ResourceSupport {
- /*   private final Store store;
+    private Store store;
 
     public StoreResource(Store store) {
         this.store = store;
@@ -18,5 +18,13 @@ public class StoreResource extends ResourceSupport {
         //add link to Business
         //add link to Services
         //add link to Portfolio
-    }*/
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
 }

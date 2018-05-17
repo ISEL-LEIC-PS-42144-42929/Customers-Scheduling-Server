@@ -4,10 +4,11 @@ import com.customersscheduling.DTO.Booking;
 import com.customersscheduling.DTO.Business;
 import com.customersscheduling.DTO.Store;
 import com.customersscheduling.DTO.StoreServices;
-import com.customersscheduling.HALObjects.BusinessHAL;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BusinessService implements IBusinessService {
@@ -28,15 +29,13 @@ public class BusinessService implements IBusinessService {
     BookingRepository bookingRepo;
 
     @Override
-    public BusinessHAL insertBusiness(Business business) {
+    public void insertBusiness(Business business) {
         repo.save(business);
-        return null;
     }
 
     @Override
-    public BusinessHAL insertStore(Store store) {
+    public void insertStore(Store store) {
         storeRepo.save(store);
-        return null;
     }
 
     @Override
@@ -55,5 +54,10 @@ public class BusinessService implements IBusinessService {
     @Override
     public Booking getBookingById(int id) {
         return bookingRepo.getOne(id);
+    }
+
+    @Override
+    public List<Store> getStoresByNif(int nif) {
+        return storeRepo.findByNif(nif);
     }
 }

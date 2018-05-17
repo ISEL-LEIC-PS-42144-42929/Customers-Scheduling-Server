@@ -21,12 +21,18 @@ public class Store {
     @JoinColumn(name="category_name",referencedColumnName="name",nullable=false)
     private Category category;
 
+    @Column(name="contact")
+    private String contact;
+
+
+
     public Store(){}
 
-    public Store(Address addr, Owner ownerId, Category category, StorePK pk) {
+    public Store(Address addr, Category category, StorePK pk, String contact) {
         this.address = addr;
         this.category=category;
         this.pk = pk;
+        this.contact = contact;
     }
 
     public Address getAddress() {
@@ -51,5 +57,13 @@ public class Store {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 }

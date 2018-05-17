@@ -45,15 +45,5 @@ public class PersonController {
         staff.getTimetable().add(t2);
         personService.insertStaffTimetable(staff);
     }
-/*
-    @GetMapping(value = "/{email}/stores")
-    public ResponseEntity<Resources<StoreResource>> getUserStores(HttpServletRequest request, @PathVariable String email) {
-        final List<Store> stores = personService.getStoresByEmail(email);
-        final List<StoreResource> mappedStores = new ArrayList<>();
-        stores.iterator().forEachRemaining( st ->
-            mappedStores.add(new StoreResource(st))
-        );
-        final Resources<StoreResource> resources = new Resources<StoreResource>(mappedStores);
-        return ResponseEntity.ok(resources);
-    }*/
+
 }

@@ -11,24 +11,24 @@ public class Category {
 
     @Id
     @Column(name="name")
-    private String title;
+    private String name;
 
     @Column(name="description")
     private String description;
 
     public Category(){}
 
-    public Category(String title, String description) {
-        this.title = title;
+    public Category(String name, String description) {
+        this.name = name;
         this.description = description;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

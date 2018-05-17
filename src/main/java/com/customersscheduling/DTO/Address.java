@@ -3,7 +3,7 @@ package com.customersscheduling.DTO;
 import javax.persistence.*;
 
 @Entity
-@Table( name = "Business")
+@Table( name = "Address")
 public class Address {
 
     @Id
