@@ -15,6 +15,7 @@ public class StoreResource extends ResourceSupport {
         final int business_nif = store.getPk().getBusiness().getNIF();
         final String name = store.getPk().getStoreName();
         add(linkTo(methodOn(BusinessController.class).getStore(name, business_nif)).withSelfRel());
+        add(linkTo(methodOn(BusinessController.class).getStore(name, business_nif)).withSelfRel());
         //add link to Business
         //add link to Services
         //add link to Portfolio

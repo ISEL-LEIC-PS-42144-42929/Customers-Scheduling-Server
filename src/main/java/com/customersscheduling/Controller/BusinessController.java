@@ -1,8 +1,11 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.DTO.*;
+import com.customersscheduling.HALObjects.ClientResource;
+import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Service.IBusinessService;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
 @RestController
@@ -83,15 +89,32 @@ public class BusinessController {
         return null;
     }
 
+    @GetMapping(value = "/{nif}/store/{name}/services")
+    public ResponseEntity<Resources<ServiceResource>> getStoreServices(@PathVariable String name, @PathVariable int nif) {
+        return null;
+    }
+
 
     @GetMapping(value = "/{nif}/stores")
-    public ResponseEntity<Resources<StoreResource>> getBusinessStores(HttpServletRequest request, @PathVariable int nif) {
+    public ResponseEntity<Resources<StoreResource>> getBusinessStores(@PathVariable int nif) {
         final List<Store> stores = businessService.getStoresByNif(nif);
         final List<StoreResource> mappedStores = new ArrayList<>();
         stores.iterator().forEachRemaining( st ->
                 mappedStores.add(new StoreResource(st))
         );
-        final Resources<StoreResource> resources = new Resources<StoreResource>(mappedStores);
+        Link link = linkTo(methodOn(BusinessController.class)
+                .getBusinessStores(nif)).withSelfRel();
+        final Resources<StoreResource> resources = new Resources<StoreResource>(mappedStores, link);
         return ResponseEntity.ok(resources);
+    }
+
+    @GetMapping(value = "/{email}")
+    public ResponseEntity<Resources<StoreResource>> getBusinessOfUser(@PathVariable String email) {
+        return null;
+    }
+
+    @GetMapping(value = "/{nif}/store/{name}/pendentrequests")
+    public ResponseEntity<Resources<ClientResource>> getPendentRequestsOfStore(@PathVariable int nif, @PathVariable String name) {
+        return null;
     }
 }

@@ -1,6 +1,8 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.DTO.*;
+import com.customersscheduling.HALObjects.BookingResource;
+import com.customersscheduling.HALObjects.OwnerResource;
 import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Service.IPersonService;
 import org.springframework.hateoas.Resources;
@@ -46,4 +48,18 @@ public class PersonController {
         personService.insertStaffTimetable(staff);
     }
 
+    @GetMapping(value = "/{email}")
+    public Resources<OwnerResource> getOwner(@PathVariable String email) {
+        return null;
+    }
+
+    @GetMapping(value = "/{email}/pendentrequests")
+    public ResponseEntity<Resources<StoreResource>> getPendentRequestOfClient(@PathVariable String email) {
+        return null;
+    }
+
+    @GetMapping(value = "/{email}/books")
+    public ResponseEntity<Resources<BookingResource>> getBooksOfClient(@PathVariable String email) {
+        return null;
+    }
 }
