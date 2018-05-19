@@ -13,4 +13,8 @@ public interface IStoreService {
     Store getStoreByNif(String nif);
 
     List<Store> getStoresOfUser(String email);
+
+    List<Client> getPendentRequests(String nif);
+
+    List<Booking> getServiceDisp(String nif, int id);
 }

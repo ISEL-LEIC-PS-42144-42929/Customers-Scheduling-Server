@@ -1,10 +1,7 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.DTO.*;
-import com.customersscheduling.HALObjects.ClientResource;
-import com.customersscheduling.HALObjects.PortfolioResource;
-import com.customersscheduling.HALObjects.ServiceResource;
-import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IStoreService;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
@@ -106,9 +103,16 @@ public class StoreController {
         return null;
     }
 
-    @GetMapping(value = "/{nif}/services/disp")
-    public ResponseEntity<Resources<ServiceResource>> getDispOfService(@PathVariable String nif) {
-        return null;
+    @GetMapping(value = "/{nif}/services/{id}/disp")
+    public ResponseEntity<Resources<BookingResource>> getDispOfService(@PathVariable String nif, @PathVariable int id) {
+        final List<Booking> books = storeService.getServiceDisp(nif, id);
+        final List<BookingResource> mappedBooking = new ArrayList<>();
+        books.iterator().forEachRemaining( st ->
+                mappedBooking.add(new BookingResource(st))
+        );
+        Link link = linkTo(methodOn(StoreController.class).getDispOfService(nif, id)).withSelfRel();
+        final Resources<BookingResource> resources = new Resources<BookingResource>(mappedBooking, link);
+        return ResponseEntity.ok(resources);
     }
 
     @GetMapping(value = "/{email}")
@@ -125,7 +129,15 @@ public class StoreController {
     }
 
     @GetMapping(value = "/{nif}/pendentrequests")
-    public ResponseEntity<Resources<ClientResource>> getPendentRequestsOfStore(@PathVariable String nif, @PathVariable String name) {
-        return null;
+    public ResponseEntity<Resources<ClientResource>> getPendentRequestsOfStore(@PathVariable String nif) {
+        final List<Client> clients = storeService.getPendentRequests(nif);
+        final List<ClientResource> mappedClients = new ArrayList<>();
+        clients.iterator().forEachRemaining( client ->
+                mappedClients.add(new ClientResource(client))
+        );
+        Link link = linkTo(methodOn(StoreController.class)
+                .getPendentRequestsOfStore(nif)).withSelfRel();
+        final Resources<ClientResource> resources = new Resources<ClientResource>(mappedClients, link);
+        return ResponseEntity.ok(resources);
     }
 }

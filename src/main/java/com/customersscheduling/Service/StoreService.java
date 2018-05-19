@@ -1,12 +1,11 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.DTO.Booking;
-import com.customersscheduling.DTO.Store;
-import com.customersscheduling.DTO.StoreServices;
+import com.customersscheduling.DTO.*;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +22,12 @@ public class StoreService implements IStoreService {
 
     @Autowired
     BookingRepository bookingRepo;
+
+    @Autowired
+    ClientStoresRepository clientStoresRepo;
+
+    @Autowired
+    PersonRepository personRepo;
 
 
     @Override
@@ -56,5 +61,20 @@ public class StoreService implements IStoreService {
     @Override
     public List<Store> getStoresOfUser(String email) {
         return storeRepo.findByOwner(email);
+    }
+
+    @Override
+    public List<Client> getPendentRequests(String nif) {
+        List<String> emails =  clientStoresRepo.findPendentRequestsOfStore(nif);
+        List<Client> clients = new ArrayList<>();
+        emails.iterator().forEachRemaining( email -> {
+            clients.add(personRepo.findOne(email));
+        });
+        return clients;
+    }
+
+    @Override
+    public List<Booking> getServiceDisp(String nif, int id) {
+        return bookingRepo.findByStoreAndService(nif, id);
     }
 }
