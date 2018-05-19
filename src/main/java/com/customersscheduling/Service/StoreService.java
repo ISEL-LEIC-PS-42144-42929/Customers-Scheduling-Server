@@ -1,7 +1,6 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.DTO.Booking;
-import com.customersscheduling.DTO.Business;
 import com.customersscheduling.DTO.Store;
 import com.customersscheduling.DTO.StoreServices;
 import com.customersscheduling.Repository.*;
@@ -11,10 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BusinessService implements IBusinessService {
-
-    @Autowired
-    BusinessRepository repo;
+public class StoreService implements IStoreService {
 
     @Autowired
     StoreRepository storeRepo;
@@ -28,10 +24,6 @@ public class BusinessService implements IBusinessService {
     @Autowired
     BookingRepository bookingRepo;
 
-    @Override
-    public void insertBusiness(Business business) {
-        repo.save(business);
-    }
 
     @Override
     public void insertStore(Store store) {
@@ -57,7 +49,12 @@ public class BusinessService implements IBusinessService {
     }
 
     @Override
-    public List<Store> getStoresByNif(int nif) {
+    public Store getStoreByNif(String nif) {
         return storeRepo.findByNif(nif);
+    }
+
+    @Override
+    public List<Store> getStoresOfUser(String email) {
+        return storeRepo.findByOwner(email);
     }
 }

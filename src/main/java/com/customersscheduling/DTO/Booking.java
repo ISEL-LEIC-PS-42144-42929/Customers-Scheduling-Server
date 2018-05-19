@@ -12,10 +12,7 @@ public class Booking {
     private int id;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumns( {
-            @JoinColumn(name="store_store_name",referencedColumnName="store_name",nullable=false),
-            @JoinColumn(name="store_business_nif",referencedColumnName="business_nif",nullable=false),
-    })
+    @JoinColumn(name="store_nif",referencedColumnName="nif",nullable=false)
     private Store store;
 
     @ManyToOne(cascade = CascadeType.REFRESH)

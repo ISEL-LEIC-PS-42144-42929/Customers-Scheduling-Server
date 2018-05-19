@@ -4,12 +4,13 @@ import com.customersscheduling.DTO.*;
 
 import java.util.List;
 
-public interface IBusinessService {
-    void insertBusiness(Business business);
+public interface IStoreService {
     void insertStore(Store store);
     void insertServiceForStore(StoreServices s);
     void insertBook(Booking booking);
     Booking getBookingById(int i);
 
-    List<Store> getStoresByNif(int nif);
+    Store getStoreByNif(String nif);
+
+    List<Store> getStoresOfUser(String email);
 }

@@ -1,10 +1,11 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.DTO.Service;
+import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.Service.IUtilService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,5 +23,10 @@ public class UtilController {
     public void insertService(HttpServletRequest request) {
         Service s = new Service("abc","dbc",7.5, 15);
         utilService.insertService(s);
+    }
+
+    @GetMapping(value = "/service/{id}")
+    public ResponseEntity<Resources<ServiceResource>> getService(@PathVariable int id) {
+        return null;
     }
 }

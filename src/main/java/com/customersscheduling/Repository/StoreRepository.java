@@ -12,7 +12,9 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
     @Override
     Store save(Store entity);
 
-    @Query("select s from Store s where s.id.business.NIF=:nif")
-    List<Store> findByNif(@Param("nif") int nif);
+    @Query("select s from Store s where s.nif=:nif")
+    Store findByNif(@Param("nif") String nif);
 
+    @Query("select s from Store s where s.owner.nif=:nif")
+    List<Store> findByOwner(String email);
 }

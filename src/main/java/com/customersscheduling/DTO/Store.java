@@ -6,9 +6,6 @@ import javax.persistence.*;
 @Table( name = "Store")
 public class Store {
 
-    @EmbeddedId
-    private StorePK pk;
-
     @OneToOne(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE})
@@ -24,15 +21,28 @@ public class Store {
     @Column(name="contact")
     private String contact;
 
+    @Column(name="store_name")
+    private String storeName;
 
+    @Id
+    @Column(name="NIF")
+    private String nif;
+
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE})
+    @JoinColumn(name="owner_user_person_email",referencedColumnName="user_person_email",nullable=false)
+    private Owner owner;
 
     public Store(){}
 
-    public Store(Address addr, Category category, StorePK pk, String contact) {
+    public Store(Address addr, Category category, String name, String contact, String nif, Owner owner) {
         this.address = addr;
         this.category=category;
-        this.pk = pk;
+        this.storeName = name;
         this.contact = contact;
+        this.nif = nif;
+        this.owner = owner;
     }
 
     public Address getAddress() {
@@ -41,14 +51,6 @@ public class Store {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public StorePK getPk() {
-        return pk;
-    }
-
-    public void setPk(StorePK pk) {
-        this.pk = pk;
     }
 
     public Category getCategory() {
@@ -65,5 +67,21 @@ public class Store {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public String getNif() {
+        return nif;
+    }
+
+    public void setNif(String nif) {
+        this.nif = nif;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 }

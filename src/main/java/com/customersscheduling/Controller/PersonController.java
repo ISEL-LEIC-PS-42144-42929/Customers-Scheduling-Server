@@ -1,9 +1,7 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.DTO.*;
-import com.customersscheduling.HALObjects.BookingResource;
-import com.customersscheduling.HALObjects.OwnerResource;
-import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IPersonService;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +46,18 @@ public class PersonController {
         personService.insertStaffTimetable(staff);
     }
 
-    @GetMapping(value = "/{email}")
+    @GetMapping(value = "/{email}/owner")
     public Resources<OwnerResource> getOwner(@PathVariable String email) {
+        return null;
+    }
+
+    @GetMapping(value = "/{email}/client")
+    public Resources<ClientResource> getClient(@PathVariable String email) {
+        return null;
+    }
+
+    @GetMapping(value = "/{email}/staff")
+    public Resources<StaffResource> getStaff(@PathVariable String email) {
         return null;
     }
 
