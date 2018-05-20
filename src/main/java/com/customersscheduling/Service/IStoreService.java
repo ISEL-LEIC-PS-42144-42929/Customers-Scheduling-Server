@@ -1,13 +1,16 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.DTO.*;
+import com.customersscheduling.HALObjects.BookingResource;
+import com.customersscheduling.HALObjects.ServiceResource;
+import com.customersscheduling.HALObjects.StoreResource;
 
 import java.util.List;
 
 public interface IStoreService {
-    void insertStore(Store store);
-    void insertServiceForStore(StoreServices s);
-    void insertBook(Booking booking);
+    StoreResource insertStore(Store store);
+    ServiceResource insertServiceForStore(StoreServices s);
+    BookingResource insertBook(Booking booking);
     Booking getBookingById(int i);
 
     Store getStoreByNif(String nif);

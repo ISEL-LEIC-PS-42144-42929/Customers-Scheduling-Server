@@ -1,5 +1,9 @@
 package com.customersscheduling.Controller;
 
+import com.customersscheduling.Controller.InputModels.BookInputModel;
+import com.customersscheduling.Controller.InputModels.PersonInputModel;
+import com.customersscheduling.Controller.InputModels.ServiceInputModel;
+import com.customersscheduling.Controller.InputModels.StoreInputModel;
 import com.customersscheduling.DTO.*;
 import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IStoreService;
@@ -26,61 +30,42 @@ public class StoreController {
         this.storeService = businessService;
     }
 
-    @PostMapping(value = "", produces = "application/son")
-    public void insertStore(HttpServletRequest request) {
-        for (int i = 0; i < 10; i++) {
-            Owner o = new Owner("bitoowner@gmail.com", "bitoowner", 999);
-            Store s =new Store(
-                    new Address("2690-321", "Rua do Bito", "221", "Lisbon", "Portugal"),
-                    new Category("tech", "tech"),
-                    "Bito_Store",
-                    "969413432",
-                    "123456789", o);
-            storeService.insertStore(s);
-        }
+    @PostMapping(value = "/{email}", produces = "application/son")
+    public StoreResource insertStore(@PathVariable String email, @RequestBody StoreInputModel store) {
+        Owner o = new Owner();
+        o.setEmail(email);
+        return storeService.insertStore(store.toDto(o));
     }
 
     @PostMapping(value = "/{nif}/service", produces = "application/son")
-    public void insertServiceForStore(HttpServletRequest request, @PathVariable String nif) {
-        Owner o = new Owner("bitoowner@gmail.com", "bitoowner", 999);
-        Store store = new Store(
-                new Address("2690-321", "Rua do Bito", "221", "Lisbon", "Portugal"),
-                new Category("tech", "tech"),
-                "Bito_Store",
-                "969413432",
-                nif, o);
-        Service s = new Service("abc","dbc",7.5, 15);
-
-        StoreServices ss = new StoreServices(new StoreServicesPK(
-                store,
-                new Staff("bito_staff@gmail.com","bito_staff"),
-                s
-        ));
-        storeService.insertServiceForStore(ss);
+    public ServiceResource insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif) {
+        Store store = new Store(); store.setNif(nif);
+        StoreServices ss = new StoreServices(store, null, service.toDto());
+        return storeService.insertServiceForStore(ss);
     }
 
-    @PostMapping(value = "/book", produces = "application/son")
-    public void insertBook(HttpServletRequest request) {
-        Owner o = new Owner("bitoowner@gmail.com", "bitoowner", 999);
-        Store store = new Store(
-                new Address("2690-321", "Rua do Bito", "221", "Lisbon", "Portugal"),
-                new Category("tech", "tech"),
-                "Bito_Store",
-                "969413432",
-                "123456789", o);
-        Service s = new Service("abc","dbc",7.5, 15);
-        s.setId(7);
-        Staff staff = new Staff("bito_staff@gmail.com","bito_staff");
-        Client c = new Client("bito_user@gmail.com","bito_user");
-        storeService.insertBook(new Booking(0 ,store,staff, null, s));
+    @PostMapping(value = "/{nif}/service/{id}/staff", produces = "application/son")
+    public ServiceResource insertStaffForService(@RequestBody PersonInputModel person, @PathVariable String nif, @PathVariable int id) {
+        Store store = new Store(); store.setNif(nif);
+        Staff staff = person.toStaffDto();
+        Service service = new Service(); service.setId(id);
+        StoreServices ss = new StoreServices(store, staff, service);
+        return storeService.insertServiceForStore(ss);
+    }
+
+    @PostMapping(value = "/{nif}/service/{id}/staff/{email}/book", produces = "application/son")
+    public BookingResource insertBook(@RequestBody BookInputModel book, @PathVariable String nif, @PathVariable int id, @PathVariable String email) {
+        Store store = new Store(); store.setNif(nif);
+        Staff staff = new Staff(); staff.setEmail(email);
+        Service service = new Service(); service.setId(id);
+        Client client = new Client(); client.setEmail(book.client_email);
+        Booking booking = new Booking(store, staff, client, service);
+        return storeService.insertBook(booking);
     }
 
     @PostMapping(value = "/store/book/client", produces = "application/son")
     public void setClientOnBook(HttpServletRequest request) {
-        Client c = new Client("bito_user@gmail.com","bito_user");
-        Booking book = storeService.getBookingById(9);
-        book.setClient(c);
-        storeService.insertBook(book);
+
     }
 
     @GetMapping(value = "/{nif}")

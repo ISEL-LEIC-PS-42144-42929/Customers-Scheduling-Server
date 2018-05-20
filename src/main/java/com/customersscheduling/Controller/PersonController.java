@@ -30,7 +30,7 @@ public class PersonController {
         return personService.insertOwner(owner.toOwnerDto());
     }
 
-    @PostMapping(value = "/staff", produces = "application/json")
+    @PostMapping(value = "/staff")
     public StaffResource insertStaff(@RequestBody PersonInputModel person) {
         return personService.insertStaff(person.toStaffDto());
     }

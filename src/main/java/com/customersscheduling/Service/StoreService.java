@@ -1,6 +1,9 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.DTO.*;
+import com.customersscheduling.HALObjects.BookingResource;
+import com.customersscheduling.HALObjects.ServiceResource;
+import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,21 +34,21 @@ public class StoreService implements IStoreService {
 
 
     @Override
-    public void insertStore(Store store) {
-        storeRepo.save(store);
+    public StoreResource insertStore(Store store) {
+        return storeRepo.save(store).toResource();
     }
 
     @Override
-    public void insertServiceForStore(StoreServices s) {
-        com.customersscheduling.DTO.Service serv = s.getPk().getService();
-        com.customersscheduling.DTO.Service s1 = servicesRepo.findServiceByParams(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
-        if(s1!=null) s.getPk().getService().setId(s1.getId());
-        storeServicesRepo.save(s);
+    public ServiceResource insertServiceForStore(StoreServices s) {
+        com.customersscheduling.DTO.Service serv = s.getService();
+        com.customersscheduling.DTO.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
+        if(s1!=null) s.getService().setId(s1.getId());
+        return s.getService().toResource();
     }
 
     @Override
-    public void insertBook(Booking booking) {
-        bookingRepo.save(booking);
+    public BookingResource insertBook(Booking booking) {
+        return bookingRepo.save(booking).toResource();
     }
 
     @Override
@@ -68,7 +71,9 @@ public class StoreService implements IStoreService {
         List<String> emails =  clientStoresRepo.findPendentRequestsOfStore(nif);
         List<Client> clients = new ArrayList<>();
         emails.iterator().forEachRemaining( email -> {
-            clients.add(personRepo.findOne(email));
+            Person p = personRepo.findOne(email);
+            if( p instanceof  Client)
+                clients.add((Client) p);
         });
         return clients;
     }

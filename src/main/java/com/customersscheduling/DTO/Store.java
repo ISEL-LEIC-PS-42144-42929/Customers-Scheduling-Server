@@ -1,5 +1,7 @@
 package com.customersscheduling.DTO;
 
+import com.customersscheduling.HALObjects.StoreResource;
+
 import javax.persistence.*;
 
 @Entity(name = "Store")
@@ -83,5 +85,9 @@ public class Store {
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
+    }
+
+    public StoreResource toResource() {
+        return new StoreResource(this);
     }
 }

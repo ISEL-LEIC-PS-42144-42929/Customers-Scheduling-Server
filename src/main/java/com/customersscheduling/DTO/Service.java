@@ -1,6 +1,8 @@
 package com.customersscheduling.DTO;
 
 
+import com.customersscheduling.HALObjects.ServiceResource;
+
 import javax.persistence.*;
 
 @Entity
@@ -71,5 +73,9 @@ public class Service {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public ServiceResource toResource() {
+        return new ServiceResource(this);
     }
 }

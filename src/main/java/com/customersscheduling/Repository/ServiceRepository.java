@@ -16,9 +16,9 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
             "s.price = :price and " +
             "s.title = :title and " +
             "s.duration = :duration")
-    Service findServiceByParams(@Param("description") String descr,
-                                 @Param("price") double price,
-                                 @Param("title") String title,
-                                 @Param("duration") int duration);
+    Service findService(@Param("description") String descr,
+                        @Param("price") double price,
+                        @Param("title") String title,
+                        @Param("duration") int duration);
 
 }

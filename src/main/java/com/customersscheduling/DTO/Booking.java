@@ -1,5 +1,7 @@
 package com.customersscheduling.DTO;
 
+import com.customersscheduling.HALObjects.BookingResource;
+
 import javax.persistence.*;
 
 @Entity
@@ -29,8 +31,7 @@ public class Booking {
 
     public Booking(){}
 
-    public Booking(int id, Store store, Staff staff, Client client, Service service) {
-        this.id = id;
+    public Booking(Store store, Staff staff, Client client, Service service) {
         this.store = store;
         this.staff = staff;
         this.client = client;
@@ -76,5 +77,9 @@ public class Booking {
 
     public void setService(Service service) {
         this.service = service;
+    }
+
+    public BookingResource toResource() {
+        return new BookingResource(this);
     }
 }
