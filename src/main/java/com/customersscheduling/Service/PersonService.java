@@ -1,16 +1,16 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.DTO.*;
+import com.customersscheduling.HALObjects.ClientResource;
+import com.customersscheduling.HALObjects.OwnerResource;
+import com.customersscheduling.HALObjects.StaffResource;
 import com.customersscheduling.Repository.PersonRepository;
-import com.customersscheduling.Repository.StoreRepository;
+import com.customersscheduling.Repository.StaffTimetableRepository;
 import com.customersscheduling.Repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class PersonService implements IPersonService {
@@ -21,30 +21,40 @@ public class PersonService implements IPersonService {
     @Autowired
     TimetableRepository timetableRepo;
 
+    @Autowired
+    StaffTimetableRepository staffTimetableRepo;
+
     @Override
-    public void insertClient(Client client) {
+    public ClientResource insertClient(Client client) {
         personRepo.save(client);
+        Client c = (Client)(personRepo.findOne(client.getEmail()));
+        return c.toResource();
     }
 
     @Override
-    public void insertOwner(Owner owner) {
+    public OwnerResource insertOwner(Owner owner) {
         personRepo.save(owner);
+        Owner o = (Owner)(personRepo.findOne(owner.getEmail()));
+        return o.toResource();
     }
 
     @Override
-    public void insertStaff(Staff staff) {
+    public StaffResource insertStaff(Staff staff) {
         personRepo.save(staff);
+        Staff s = (Staff)(personRepo.findOne(staff.getEmail()));
+        return s.toResource();
     }
 
     @Override
-    public void insertStaffTimetable(Staff staff) {
-        staff.getTimetable().iterator().forEachRemaining(i->{
-            Timetable t;
-            if((t=timetableRepo.findByTimetableDay(i.getOpenHour(), i.getCloseHour(), i.getInitBreak(), i.getFinishBreak(), i.getWeekDay()))!=null){
-                i.setId(t.getId());
-            }
-        });
-        personRepo.save(staff);
+    public StaffResource insertStaffTimetable(StaffTimetable staffTimeTable) {
+        Timetable tt = staffTimeTable.getPk().getTimetable();
+        Timetable onDb = null;
+        if((onDb=timetableRepo.findByTimetableDay(tt.getOpenHour(), tt.getCloseHour(), tt.getInitBreak(), tt.getFinishBreak(), tt.getWeekDay()))!=null){
+            tt.setId(onDb.getId());
+        }
+        staffTimetableRepo.save(staffTimeTable);
+        Staff staff = (Staff)(personRepo.findOne(staffTimeTable.getPk().getStaff().getEmail()));
+        return staff.toResource();
     }
 
     @Override

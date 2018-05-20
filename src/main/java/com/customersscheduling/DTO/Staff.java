@@ -1,5 +1,7 @@
 package com.customersscheduling.DTO;
 
+import com.customersscheduling.HALObjects.StaffResource;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,17 +11,6 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name="person_email")
 public class Staff extends Person {
 
-    //Timetable N-N
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "timetable_has_staff",
-            joinColumns = { @JoinColumn(name = "staff_person_email", referencedColumnName = "person_email") },
-            inverseJoinColumns = { @JoinColumn(name = "timetable_idtimetable", referencedColumnName = "idtimetable") }
-    )
-    private Set<Timetable> timetable = new HashSet<>();
 
     public Staff(){
     }
@@ -28,11 +19,7 @@ public class Staff extends Person {
         super(email, name);
     }
 
-    public Set<Timetable> getTimetable() {
-        return timetable;
-    }
-
-    public void setTimetable(Set<Timetable> timetable) {
-        this.timetable = timetable;
+    public StaffResource toResource() {
+        return new StaffResource(this);
     }
 }

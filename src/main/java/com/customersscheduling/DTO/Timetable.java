@@ -23,13 +23,6 @@ public class Timetable {
     @Column(name="weekday")
     private String weekDay;
 
-    //Staff N-N
-    @ManyToMany(mappedBy = "timetable", cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    } , fetch = FetchType.EAGER)
-    private Set<Staff> staff = new HashSet<>();
-
     public Timetable() {
     }
 
@@ -79,15 +72,6 @@ public class Timetable {
 
     public void setFinishBreak(double finishBreak) {
         this.finishBreak = finishBreak;
-    }
-
-
-    public Set<Staff> getStaff() {
-        return staff;
-    }
-
-    public void setStaff(Set<Staff> staff) {
-        this.staff = staff;
     }
 
     public String getWeekDay() {

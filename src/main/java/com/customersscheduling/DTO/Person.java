@@ -16,7 +16,7 @@ public class Person implements Serializable{
     private String name;
 
     @Column(name="contact")
-    private int contact;
+    private String contact;
 
     @Column(name="gender")
     private int gender;
@@ -32,7 +32,7 @@ public class Person implements Serializable{
         this.name = name;
     }
 
-    public Person(String email, String name, int contact, int gender) {
+    public Person(String email, String name, String contact, int gender) {
         this.email = email;
         this.name = name;
         this.contact=contact;
@@ -43,15 +43,19 @@ public class Person implements Serializable{
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email= email;
+    }
+
     public String getName() {
         return name;
     }
 
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(int contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 

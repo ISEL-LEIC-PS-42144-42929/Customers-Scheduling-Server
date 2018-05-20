@@ -1,5 +1,7 @@
 package com.customersscheduling.DTO;
 
+import com.customersscheduling.HALObjects.OwnerResource;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -11,21 +13,25 @@ import javax.persistence.Table;
 public class Owner extends User {
 
     @Column(name="NIF")
-    private int nif;
+    private String nif;
 
     public Owner() {
     }
 
-    public Owner(String email, String name, int nif) {
+    public Owner(String email, String name, String nif) {
         super(email, name);
         this.nif = nif;
     }
 
-    public int getNif() {
+    public String getNif() {
         return nif;
     }
 
-    public void setNif(int nif) {
+    public void setNif(String nif) {
         this.nif = nif;
+    }
+
+    public OwnerResource toResource() {
+        return new OwnerResource(this);
     }
 }

@@ -1,5 +1,7 @@
 package com.customersscheduling.DTO;
 
+import com.customersscheduling.HALObjects.ClientResource;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,4 +16,7 @@ public class Client extends User {
         super(email, name);
     }
 
+    public ClientResource toResource() {
+        return new ClientResource(this);
+    }
 }

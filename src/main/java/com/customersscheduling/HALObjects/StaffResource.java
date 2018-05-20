@@ -1,12 +1,13 @@
 package com.customersscheduling.HALObjects;
 
 import com.customersscheduling.DTO.Client;
+import com.customersscheduling.DTO.Staff;
 import org.springframework.hateoas.ResourceSupport;
 
 public class StaffResource extends ResourceSupport {
-    private final Client person;
+    private final Staff person;
 
-    public StaffResource(Client person) {
+    public StaffResource(Staff person) {
         this.person = person;
     }
 }

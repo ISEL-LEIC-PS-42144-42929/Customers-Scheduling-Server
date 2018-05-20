@@ -16,5 +16,5 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     Person save(Person entity);
 
     @Query("select s from Person s where s.email = :email")
-    Client findOne(@Param("email") String email);
+    Person findOne(@Param("email") String email);
 }
