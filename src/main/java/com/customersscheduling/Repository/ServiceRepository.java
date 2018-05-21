@@ -21,4 +21,6 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
                         @Param("title") String title,
                         @Param("duration") int duration);
 
+    Service findById(int id);
+
 }

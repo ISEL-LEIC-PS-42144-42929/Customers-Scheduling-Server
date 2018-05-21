@@ -12,19 +12,14 @@ public class StoreServicesPK implements Serializable {
     private Store store;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false)
-    private Staff staff;
-
-    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="services_idservices",referencedColumnName="idservices",nullable=false)
     private Service service;
 
     public StoreServicesPK() {
     }
 
-    public StoreServicesPK(Store store, Staff staff, Service service) {
+    public StoreServicesPK(Store store, Service service) {
         this.store = store;
-        this.staff = staff;
         this.service = service;
     }
 
@@ -34,14 +29,6 @@ public class StoreServicesPK implements Serializable {
 
     public void setStore(Store store) {
         this.store = store;
-    }
-
-    public Staff getStaff() {
-        return staff;
-    }
-
-    public void setStaff(Staff staff) {
-        this.staff = staff;
     }
 
     public Service getService() {

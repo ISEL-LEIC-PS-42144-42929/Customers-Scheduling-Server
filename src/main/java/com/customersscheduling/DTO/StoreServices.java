@@ -3,62 +3,24 @@ package com.customersscheduling.DTO;
 import javax.persistence.*;
 
 @Entity
-@Table( name = "services_has_staff")
+@Table( name = "storeservices")
 public class StoreServices {
 
-    @Id
-    @Column(name="idstoreservices")
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private int id;
+    @EmbeddedId
+    private StoreServicesPK pk;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="store_nif",referencedColumnName="nif",nullable=false)
-    private Store store;
+    public StoreServices(){}
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false)
-    private Staff staff;
+    public StoreServices(StoreServicesPK pk){
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="services_idservices",referencedColumnName="idservices",nullable=false)
-    private Service service;
-
-    public StoreServices(Store store, Staff staff, Service service){
-        this.store = store;
-        this.staff = staff;
-        this.service = service;
+        this.pk = pk;
     }
 
-
-    public int getId() {
-        return id;
+    public StoreServicesPK getPk() {
+        return pk;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Store getStore() {
-        return store;
-    }
-
-    public void setStore(Store store) {
-        this.store = store;
-    }
-
-    public Staff getStaff() {
-        return staff;
-    }
-
-    public void setStaff(Staff staff) {
-        this.staff = staff;
-    }
-
-    public Service getService() {
-        return service;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
+    public void setPk(StoreServicesPK pk) {
+        this.pk = pk;
     }
 }

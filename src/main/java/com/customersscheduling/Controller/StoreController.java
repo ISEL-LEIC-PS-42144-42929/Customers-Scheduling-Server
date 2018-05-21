@@ -21,7 +21,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping("/store")
+@RequestMapping(value="/store", produces = "application/hal+json")
 public class StoreController {
 
     private final IStoreService storeService;
@@ -30,30 +30,30 @@ public class StoreController {
         this.storeService = businessService;
     }
 
-    @PostMapping(value = "/{email}", produces = "application/son")
+    @PostMapping(value = "/{email}")
     public StoreResource insertStore(@PathVariable String email, @RequestBody StoreInputModel store) {
         Owner o = new Owner();
         o.setEmail(email);
         return storeService.insertStore(store.toDto(o));
     }
 
-    @PostMapping(value = "/{nif}/service", produces = "application/son")
+    @PostMapping(value = "/{nif}/service")
     public ServiceResource insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif) {
         Store store = new Store(); store.setNif(nif);
-        StoreServices ss = new StoreServices(store, null, service.toDto());
+        StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
         return storeService.insertServiceForStore(ss);
     }
 
-    @PostMapping(value = "/{nif}/service/{id}/staff", produces = "application/son")
+    @PostMapping(value = "/{nif}/service/{id}/staff")
     public ServiceResource insertStaffForService(@RequestBody PersonInputModel person, @PathVariable String nif, @PathVariable int id) {
         Store store = new Store(); store.setNif(nif);
         Staff staff = person.toStaffDto();
         Service service = new Service(); service.setId(id);
-        StoreServices ss = new StoreServices(store, staff, service);
-        return storeService.insertServiceForStore(ss);
+        StaffServices ss = new StaffServices(new StaffServicesPK(staff, new StoreServices(new StoreServicesPK(store, service))));
+        return storeService.insertStafForService(ss);
     }
 
-    @PostMapping(value = "/{nif}/service/{id}/staff/{email}/book", produces = "application/son")
+    @PostMapping(value = "/{nif}/service/{id}/staff/{email}/book")
     public BookingResource insertBook(@RequestBody BookInputModel book, @PathVariable String nif, @PathVariable int id, @PathVariable String email) {
         Store store = new Store(); store.setNif(nif);
         Staff staff = new Staff(); staff.setEmail(email);
@@ -63,9 +63,12 @@ public class StoreController {
         return storeService.insertBook(booking);
     }
 
-    @PostMapping(value = "/store/book/client", produces = "application/son")
-    public void setClientOnBook(HttpServletRequest request) {
-
+    @PostMapping(value = "/{nif}/client/{email}")
+    public StoreResource setClientForStore(@PathVariable String nif, @PathVariable String email) {
+        Client c = new Client();
+        Store s = new Store();
+        ClientStores cs = new ClientStores(new ClientStoresPK(s,c),false, 0);
+        return storeService.insertClientForStore(cs);
     }
 
     @GetMapping(value = "/{nif}")
@@ -90,7 +93,7 @@ public class StoreController {
 
     @GetMapping(value = "/{nif}/services/{id}/disp")
     public ResponseEntity<Resources<BookingResource>> getDispOfService(@PathVariable String nif, @PathVariable int id) {
-        final List<Booking> books = storeService.getServiceDisp(nif, id);
+        final List<Booking> books = storeService.getServiceDisp(id);
         final List<BookingResource> mappedBooking = new ArrayList<>();
         books.iterator().forEachRemaining( st ->
                 mappedBooking.add(new BookingResource(st))

@@ -6,10 +6,15 @@ import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.HALObjects.StoreResource;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IStoreService {
+
     StoreResource insertStore(Store store);
+    ServiceResource insertStafForService(StaffServices s);
+
     ServiceResource insertServiceForStore(StoreServices s);
+
     BookingResource insertBook(Booking booking);
     Booking getBookingById(int i);
 
@@ -19,5 +24,7 @@ public interface IStoreService {
 
     List<Client> getPendentRequests(String nif);
 
-    List<Booking> getServiceDisp(String nif, int id);
+    List<Booking> getServiceDisp(int id);
+
+    StoreResource insertClientForStore(ClientStores cs);
 }

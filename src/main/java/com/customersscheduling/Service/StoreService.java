@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StoreService implements IStoreService {
@@ -22,6 +23,9 @@ public class StoreService implements IStoreService {
 
     @Autowired
     ServiceRepository servicesRepo;
+
+    @Autowired
+    StaffServicesRepository staffServicesRepo;
 
     @Autowired
     BookingRepository bookingRepo;
@@ -39,11 +43,18 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    public ServiceResource insertStafForService(StaffServices s) {
+        staffServicesRepo.save(s);
+        return servicesRepo.findById(s.getPk().getStoresServices().getPk().getService().getId()).toResource();
+    }
+
+    @Override
     public ServiceResource insertServiceForStore(StoreServices s) {
-        com.customersscheduling.DTO.Service serv = s.getService();
+        com.customersscheduling.DTO.Service serv = s.getPk().getService();
         com.customersscheduling.DTO.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
-        if(s1!=null) s.getService().setId(s1.getId());
-        return s.getService().toResource();
+        if(s1!=null) s.getPk().getService().setId(s1.getId());
+        storeServicesRepo.save(s);
+        return s.getPk().getService().toResource();
     }
 
     @Override
@@ -63,7 +74,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public List<Store> getStoresOfUser(String email) {
-        return storeRepo.findByOwner(email);
+        return storeRepo.findByOwnerEmail(email);
     }
 
     @Override
@@ -79,7 +90,13 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public List<Booking> getServiceDisp(String nif, int id) {
-        return bookingRepo.findByStoreAndService(nif, id);
+    public List<Booking> getServiceDisp(int id) {
+        return bookingRepo.findById(id);
+    }
+
+    @Override
+    public StoreResource insertClientForStore(ClientStores cs) {
+        clientStoresRepo.save(cs);
+        return storeRepo.findByNif(cs.getPk().getStore().getNif()).toResource();
     }
 }
