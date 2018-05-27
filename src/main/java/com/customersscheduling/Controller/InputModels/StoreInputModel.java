@@ -20,6 +20,6 @@ public class StoreInputModel {
         Address address= new Address(zip_code, street, lot, city, country);
         Category cat = new Category();
         cat.setName(category);
-        return new Store(address, cat,name, contact, nif, o);
+        return new Store(address, cat, name, contact, nif, o);
     }
 }

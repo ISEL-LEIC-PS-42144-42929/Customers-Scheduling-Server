@@ -103,7 +103,7 @@ public class StoreController {
         return ResponseEntity.ok(resources);
     }
 
-    @GetMapping(value = "/{email}")
+    @GetMapping(value = "/owner/{email}")
     public ResponseEntity<Resources<StoreResource>> getStoresOfUser(@PathVariable String email) {
         final List<Store> stores = storeService.getStoresOfUser(email);
         final List<StoreResource> mappedStores = new ArrayList<>();

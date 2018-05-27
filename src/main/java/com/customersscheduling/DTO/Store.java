@@ -27,12 +27,10 @@ public class Store {
     private String storeName;
 
     @Id
-    @Column(name="NIF")
+    @Column(name="nif", length=9)
     private String nif;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="owner_user_person_email",referencedColumnName="user_person_email",nullable=false)
     private Owner owner;
 
