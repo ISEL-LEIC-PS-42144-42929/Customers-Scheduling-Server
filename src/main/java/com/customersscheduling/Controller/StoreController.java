@@ -4,7 +4,7 @@ import com.customersscheduling.Controller.InputModels.BookInputModel;
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Controller.InputModels.ServiceInputModel;
 import com.customersscheduling.Controller.InputModels.StoreInputModel;
-import com.customersscheduling.DTO.*;
+import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IStoreService;
 import org.springframework.hateoas.Link;
@@ -12,7 +12,6 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 

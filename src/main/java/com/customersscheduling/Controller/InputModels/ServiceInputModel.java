@@ -1,6 +1,6 @@
 package com.customersscheduling.Controller.InputModels;
 
-import com.customersscheduling.DTO.Service;
+import com.customersscheduling.Domain.Service;
 
 public class ServiceInputModel {
     public String description;

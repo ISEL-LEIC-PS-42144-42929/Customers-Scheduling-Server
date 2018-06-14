@@ -1,7 +1,7 @@
 package com.customersscheduling.Controller.InputModels;
 
-import com.customersscheduling.DTO.Client;
-import com.customersscheduling.DTO.Staff;
+import com.customersscheduling.Domain.Client;
+import com.customersscheduling.Domain.Staff;
 
 public class PersonInputModel {
     public String email;

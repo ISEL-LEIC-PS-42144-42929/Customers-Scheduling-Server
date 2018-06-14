@@ -1,6 +1,6 @@
 package com.customersscheduling.Controller.InputModels;
 
-import com.customersscheduling.DTO.Owner;
+import com.customersscheduling.Domain.Owner;
 
 public class OwnerInputModel extends PersonInputModel{
     public String nif;

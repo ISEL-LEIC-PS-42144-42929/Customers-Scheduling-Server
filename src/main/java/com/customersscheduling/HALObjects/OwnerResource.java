@@ -1,7 +1,6 @@
 package com.customersscheduling.HALObjects;
 
-import com.customersscheduling.DTO.Client;
-import com.customersscheduling.DTO.Owner;
+import com.customersscheduling.Domain.Owner;
 import org.springframework.hateoas.ResourceSupport;
 
 public class OwnerResource extends ResourceSupport {

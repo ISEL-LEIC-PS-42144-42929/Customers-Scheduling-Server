@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
-
+/*
 public class OpenIdConnectFilter extends AbstractAuthenticationProcessingFilter {
 
     public OpenIdConnectFilter(String defaultFilterProcessesUrl) {
@@ -44,3 +44,4 @@ public class OpenIdConnectFilter extends AbstractAuthenticationProcessingFilter 
         }
     }
 }
+*/

@@ -1,6 +1,6 @@
 package com.customersscheduling.Controller;
 
-import com.customersscheduling.DTO.Service;
+import com.customersscheduling.Domain.Service;
 import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.Service.IUtilService;
 import org.springframework.hateoas.Resources;

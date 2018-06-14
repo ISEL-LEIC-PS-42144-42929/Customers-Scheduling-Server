@@ -1,6 +1,6 @@
 package com.customersscheduling.Controller.InputModels;
 
-import com.customersscheduling.DTO.Timetable;
+import com.customersscheduling.Domain.Timetable;
 
 public class TimetableInputModel {
     public double open_hour;

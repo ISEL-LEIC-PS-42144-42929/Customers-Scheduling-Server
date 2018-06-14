@@ -1,9 +1,9 @@
 package com.customersscheduling.Controller.InputModels;
 
-import com.customersscheduling.DTO.Address;
-import com.customersscheduling.DTO.Category;
-import com.customersscheduling.DTO.Owner;
-import com.customersscheduling.DTO.Store;
+import com.customersscheduling.Domain.Address;
+import com.customersscheduling.Domain.Category;
+import com.customersscheduling.Domain.Owner;
+import com.customersscheduling.Domain.Store;
 
 public class StoreInputModel {
     public String name;

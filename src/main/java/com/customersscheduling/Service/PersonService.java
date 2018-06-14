@@ -1,6 +1,6 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.DTO.*;
+import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.ClientResource;
 import com.customersscheduling.HALObjects.OwnerResource;
 import com.customersscheduling.HALObjects.StaffResource;

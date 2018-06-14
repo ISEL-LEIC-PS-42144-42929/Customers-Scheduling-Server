@@ -1,7 +1,7 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.DTO.Category;
-import com.customersscheduling.DTO.Service;
+import com.customersscheduling.Domain.Category;
+import com.customersscheduling.Domain.Service;
 
 public interface IUtilService {
 

@@ -3,7 +3,7 @@ package com.customersscheduling.Controller;
 import com.customersscheduling.Controller.InputModels.OwnerInputModel;
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Controller.InputModels.TimetableInputModel;
-import com.customersscheduling.DTO.*;
+import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IPersonService;
 import org.springframework.hateoas.Resources;

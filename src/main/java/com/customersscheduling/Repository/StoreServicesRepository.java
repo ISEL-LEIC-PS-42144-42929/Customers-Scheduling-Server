@@ -1,7 +1,6 @@
 package com.customersscheduling.Repository;
 
-import com.customersscheduling.DTO.Store;
-import com.customersscheduling.DTO.StoreServices;
+import com.customersscheduling.Domain.StoreServices;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StoreServicesRepository  extends JpaRepository<StoreServices, Integer> {

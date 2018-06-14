@@ -1,6 +1,6 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.DTO.*;
+import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.HALObjects.StoreResource;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StoreService implements IStoreService {
@@ -50,8 +49,8 @@ public class StoreService implements IStoreService {
 
     @Override
     public ServiceResource insertServiceForStore(StoreServices s) {
-        com.customersscheduling.DTO.Service serv = s.getPk().getService();
-        com.customersscheduling.DTO.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
+        com.customersscheduling.Domain.Service serv = s.getPk().getService();
+        com.customersscheduling.Domain.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
         if(s1!=null) s.getPk().getService().setId(s1.getId());
         storeServicesRepo.save(s);
         return s.getPk().getService().toResource();

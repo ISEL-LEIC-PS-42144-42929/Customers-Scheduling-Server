@@ -1,6 +1,6 @@
 package com.customersscheduling.HALObjects;
 
-import com.customersscheduling.DTO.Portfolio;
+import com.customersscheduling.Domain.Portfolio;
 import org.springframework.hateoas.ResourceSupport;
 
 public class PortfolioResource extends ResourceSupport {

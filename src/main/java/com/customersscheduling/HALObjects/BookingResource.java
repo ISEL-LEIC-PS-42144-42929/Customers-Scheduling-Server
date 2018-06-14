@@ -3,8 +3,7 @@ package com.customersscheduling.HALObjects;
 import com.customersscheduling.Controller.PersonController;
 import com.customersscheduling.Controller.StoreController;
 import com.customersscheduling.Controller.UtilController;
-import com.customersscheduling.DTO.Booking;
-import com.customersscheduling.DTO.Client;
+import com.customersscheduling.Domain.Booking;
 import org.springframework.hateoas.ResourceSupport;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;

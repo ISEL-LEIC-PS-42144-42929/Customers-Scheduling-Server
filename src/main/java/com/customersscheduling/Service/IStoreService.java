@@ -1,12 +1,11 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.DTO.*;
+import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.HALObjects.StoreResource;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IStoreService {
 

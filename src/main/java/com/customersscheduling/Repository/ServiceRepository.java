@@ -1,8 +1,6 @@
 package com.customersscheduling.Repository;
 
-import com.customersscheduling.DTO.Service;
-import com.customersscheduling.DTO.Store;
-import com.customersscheduling.DTO.Timetable;
+import com.customersscheduling.Domain.Service;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -10,10 +10,11 @@ import org.springframework.security.oauth2.client.test.OAuth2ContextConfiguratio
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 
 import java.util.Arrays;
-
+/*
 @Configuration
-@OAuth2ContextConfiguration
+@OAuth2ContextConfiguration*/
 public class GoogleOpenIdConnectConfig {
+    /*
     @Value("${google.clientId}")
     private String clientId;
 
@@ -45,5 +46,5 @@ public class GoogleOpenIdConnectConfig {
     @Bean
     public OAuth2RestTemplate googleOpenIdTemplate(OAuth2ClientContext clientContext) {
         return new OAuth2RestTemplate(googleOpenId(), clientContext);
-    }
+    }*/
 }

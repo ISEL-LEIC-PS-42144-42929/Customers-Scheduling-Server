@@ -1,6 +1,6 @@
 package com.customersscheduling.HALObjects;
 
-import com.customersscheduling.DTO.Service;
+import com.customersscheduling.Domain.Service;
 import org.springframework.hateoas.ResourceSupport;
 
 public class ServiceResource extends ResourceSupport {

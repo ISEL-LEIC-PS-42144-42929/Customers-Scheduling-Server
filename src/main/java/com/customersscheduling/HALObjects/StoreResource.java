@@ -1,7 +1,7 @@
 package com.customersscheduling.HALObjects;
 
 import com.customersscheduling.Controller.StoreController;
-import com.customersscheduling.DTO.Store;
+import com.customersscheduling.Domain.Store;
 import org.springframework.hateoas.ResourceSupport;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
