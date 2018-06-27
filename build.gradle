@@ -35,6 +35,8 @@ dependencies {
 	compile('org.springframework.plugin:spring-plugin-core')
 	compile 'org.springframework.security:spring-security-web:5.0.5.RELEASE'
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '1.0.0.RELEASE'
+	compile 'com.auth0:jwks-rsa:0.5.0'
+	compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.7.RELEASE'
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.4'
 	runtime('mysql:mysql-connector-java')

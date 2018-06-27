@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
 import java.util.Collection;
 import java.util.Map;
-/*
+
 public class OpenIdConnectUserDetails implements UserDetails {
 
     private String userId;
@@ -54,4 +54,3 @@ public class OpenIdConnectUserDetails implements UserDetails {
         return false;
     }
 }
-        */
