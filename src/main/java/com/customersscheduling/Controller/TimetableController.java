@@ -57,7 +57,9 @@ public class TimetableController {
 
 
     @GetMapping(value = "/store/{nif}")
-    public Resource<TimetableResource> getStoreTimetable(@PathVariable String nif) {
-        return null;
+    public Resource<StoreTimetableResource> getStoreTimetable(@PathVariable String nif) {
+        StoreTimetableResource stResource = storeService.getStoreTimetable(nif);
+        Resource<StoreTimetableResource> storeRe = new Resource<>(stResource);
+        return storeRe;
     }
 }

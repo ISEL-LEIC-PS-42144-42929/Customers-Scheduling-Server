@@ -1,12 +1,17 @@
 package com.customersscheduling.Repository;
 
 import com.customersscheduling.Domain.StaffTimetable;
+import com.customersscheduling.Domain.Store;
 import com.customersscheduling.Domain.StoreTimetable;
 import com.customersscheduling.Domain.StoreTimetablePK;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 public interface StoreTimetableRepository extends JpaRepository<StoreTimetable, StoreTimetablePK> {
 
     @Override
     StoreTimetable save(StoreTimetable entity);
+
+    List<StoreTimetable> findByPk_Store(Store store);
 }

@@ -1,9 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.BookingResource;
-import com.customersscheduling.HALObjects.ServiceResource;
-import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -116,5 +114,14 @@ public class StoreService implements IStoreService {
         storeTimetableRepo.save(storeTimetable);
         Store store = storeRepo.findByNif(storeTimetable.getPk().getStore().getNif());
         return store.toResource();
+    }
+
+    @Override
+    public StoreTimetableResource getStoreTimetable(String nif) {
+        Store store = storeRepo.findByNif(nif);
+        List<StoreTimetable> stafftts = storeTimetableRepo.findByPk_Store(store);
+        List<Timetable> tts = new ArrayList<>();
+        stafftts.forEach( i -> tts.add(timetableRepo.findById(i.getPk().getTimetable().getId())));
+        return new StoreTimetableResource(tts, store.toResource());
     }
 }

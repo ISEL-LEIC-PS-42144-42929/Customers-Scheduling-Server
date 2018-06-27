@@ -4,6 +4,7 @@ import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.HALObjects.StoreTimetableResource;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface IStoreService {
     StoreResource insertClientForStore(ClientStores cs);
 
     StoreResource insertStoreTimetable(StoreTimetable storeTimetable);
+
+    StoreTimetableResource getStoreTimetable(String nif);
 }
