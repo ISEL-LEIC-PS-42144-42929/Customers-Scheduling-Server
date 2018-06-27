@@ -1,15 +1,14 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.ClientResource;
-import com.customersscheduling.HALObjects.OwnerResource;
-import com.customersscheduling.HALObjects.StaffResource;
+import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Repository.PersonRepository;
 import com.customersscheduling.Repository.StaffTimetableRepository;
 import com.customersscheduling.Repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,21 +26,21 @@ public class PersonService implements IPersonService {
     @Override
     public ClientResource insertClient(Client client) {
         personRepo.save(client);
-        Client c = (Client)(personRepo.findOne(client.getEmail()));
+        Client c = (Client) personRepo.findByEmail(client.getEmail());
         return c.toResource();
     }
 
     @Override
     public OwnerResource insertOwner(Owner owner) {
         personRepo.save(owner);
-        Owner o = (Owner)(personRepo.findOne(owner.getEmail()));
+        Owner o = (Owner)personRepo.findByEmail(owner.getEmail());
         return o.toResource();
     }
 
     @Override
     public StaffResource insertStaff(Staff staff) {
         personRepo.save(staff);
-        Staff s = (Staff)(personRepo.findOne(staff.getEmail()));
+        Staff s = (Staff) personRepo.findByEmail(staff.getEmail());
         return s.toResource();
     }
 
@@ -54,12 +53,21 @@ public class PersonService implements IPersonService {
         }
         timetableRepo.save(staffTimeTable.getPk().getTimetable());
         staffTimetableRepo.save(staffTimeTable);
-        Staff staff = (Staff)(personRepo.findOne(staffTimeTable.getPk().getStaff().getEmail()));
+        Staff staff = (Staff) personRepo.findByEmail(staffTimeTable.getPk().getStaff().getEmail());
         return staff.toResource();
     }
 
     @Override
     public List<Store> getStoresByEmail(String email) {
         return null;
+    }
+
+    @Override
+    public StaffTimetableResource getStaffTimetable(String email) {
+        Staff staff = (Staff) personRepo.findByEmail(email);
+        List<StaffTimetable> stafftts = staffTimetableRepo.findByPk_Staff(staff);
+        List<Timetable> tts = new ArrayList<>();
+        stafftts.forEach( i -> tts.add(timetableRepo.findById(i.getPk().getTimetable().getId())));
+        return new StaffTimetableResource(tts, staff.toResource());
     }
 }

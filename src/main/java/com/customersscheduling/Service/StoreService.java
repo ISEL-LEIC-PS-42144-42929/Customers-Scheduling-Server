@@ -35,6 +35,12 @@ public class StoreService implements IStoreService {
     @Autowired
     PersonRepository personRepo;
 
+    @Autowired
+    TimetableRepository timetableRepo;
+
+    @Autowired
+    StoreTimetableRepository storeTimetableRepo;
+
 
     @Override
     public StoreResource insertStore(Store store) {
@@ -97,5 +103,18 @@ public class StoreService implements IStoreService {
     public StoreResource insertClientForStore(ClientStores cs) {
         clientStoresRepo.save(cs);
         return storeRepo.findByNif(cs.getPk().getStore().getNif()).toResource();
+    }
+
+    @Override
+    public StoreResource insertStoreTimetable(StoreTimetable storeTimetable) {
+        Timetable tt = storeTimetable.getPk().getTimetable();
+        Timetable onDb = null;
+        if((onDb=timetableRepo.findByTimetableDay(tt.getOpenHour(), tt.getCloseHour(), tt.getInitBreak(), tt.getFinishBreak(), tt.getWeekDay()))!=null){
+            tt.setId(onDb.getId());
+        }
+        timetableRepo.save(storeTimetable.getPk().getTimetable());
+        storeTimetableRepo.save(storeTimetable);
+        Store store = storeRepo.findByNif(storeTimetable.getPk().getStore().getNif());
+        return store.toResource();
     }
 }

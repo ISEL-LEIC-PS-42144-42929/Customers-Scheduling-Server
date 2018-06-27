@@ -12,4 +12,7 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
 
     @Query("select s from Person s where s.email = :email")
     Person findOne(@Param("email") String email);
+
+
+    Person findByEmail(String email);
 }

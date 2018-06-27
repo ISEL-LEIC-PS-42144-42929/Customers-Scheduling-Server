@@ -10,6 +10,8 @@ public interface TimetableRepository extends JpaRepository<Timetable, Integer> {
     @Override
     Timetable save(Timetable entity);
 
+    Timetable findById(int id);
+
     @Query("select t from Timetable t where t.openHour = :openhour and " +
                                             "t.closeHour = :closehour and " +
                                             "t.initBreak = :initbreak and " +

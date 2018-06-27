@@ -26,4 +26,6 @@ public interface IStoreService {
     List<Booking> getServiceDisp(int id);
 
     StoreResource insertClientForStore(ClientStores cs);
+
+    StoreResource insertStoreTimetable(StoreTimetable storeTimetable);
 }

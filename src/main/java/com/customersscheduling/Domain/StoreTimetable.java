@@ -9,4 +9,19 @@ import javax.persistence.Table;
 public class StoreTimetable {
     @EmbeddedId
     private StoreTimetablePK pk;
+
+    public StoreTimetable(){
+    }
+
+    public StoreTimetable(StoreTimetablePK pk){
+        this.pk = pk;
+    }
+
+    public StoreTimetablePK getPk() {
+        return pk;
+    }
+
+    public void setPk(StoreTimetablePK pk) {
+        this.pk = pk;
+    }
 }

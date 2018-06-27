@@ -1,6 +1,7 @@
 package com.customersscheduling.Domain;
 
 import com.customersscheduling.HALObjects.OwnerResource;
+import com.customersscheduling.HALObjects.PersonResource;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

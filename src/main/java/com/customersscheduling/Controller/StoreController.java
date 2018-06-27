@@ -102,19 +102,6 @@ public class StoreController {
         return ResponseEntity.ok(resources);
     }
 
-    @GetMapping(value = "/owner/{email}")
-    public ResponseEntity<Resources<StoreResource>> getStoresOfUser(@PathVariable("email") String email) {
-        final List<Store> stores = storeService.getStoresOfUser(email);
-        final List<StoreResource> mappedStores = new ArrayList<>();
-        stores.iterator().forEachRemaining( st ->
-                mappedStores.add(new StoreResource(st))
-        );
-        Link link = linkTo(methodOn(StoreController.class)
-                .getStoresOfUser(email)).withSelfRel();
-        final Resources<StoreResource> resources = new Resources<StoreResource>(mappedStores, link);
-        return ResponseEntity.ok(resources);
-    }
-
     @GetMapping(value = "/{nif}/pendentrequests")
     public ResponseEntity<Resources<ClientResource>> getPendentRequestsOfStore(@PathVariable String nif) {
         final List<Client> clients = storeService.getPendentRequests(nif);

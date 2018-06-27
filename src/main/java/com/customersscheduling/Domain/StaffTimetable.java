@@ -7,6 +7,7 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "timetable_has_staff")
 public class StaffTimetable {
+
     @EmbeddedId
     private StaffTimetablePK pk;
 

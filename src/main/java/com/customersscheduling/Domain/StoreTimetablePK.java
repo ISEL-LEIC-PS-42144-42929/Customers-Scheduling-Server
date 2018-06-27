@@ -9,13 +9,16 @@ import java.io.Serializable;
 @Embeddable
 public class StoreTimetablePK implements Serializable {
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="timetable_idtimetable",referencedColumnName="idtimetable",nullable=false)
+    @ManyToOne
+    @JoinColumn(name="timetable_idtimetable",referencedColumnName="idtimetable",nullable=false, insertable = false, updatable = false)
     private Timetable timetable;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="store_nif",referencedColumnName="nif",nullable=false)
+    @ManyToOne
+    @JoinColumn(name="store_nif",referencedColumnName="nif",nullable=false, insertable = false, updatable = false)
     private Store store;
+
+    public StoreTimetablePK() {
+    }
 
     public StoreTimetablePK(Timetable timetable, Store store) {
         this.timetable = timetable;

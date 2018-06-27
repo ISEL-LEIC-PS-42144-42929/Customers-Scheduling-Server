@@ -1,5 +1,8 @@
 package com.customersscheduling.Domain;
 
+import com.customersscheduling.HALObjects.OwnerResource;
+import com.customersscheduling.HALObjects.PersonResource;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -66,4 +69,5 @@ public class Person implements Serializable{
     public void setGender(int gender) {
         this.gender = gender;
     }
+
 }

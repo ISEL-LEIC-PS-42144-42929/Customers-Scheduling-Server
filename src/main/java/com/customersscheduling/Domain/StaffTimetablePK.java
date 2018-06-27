@@ -10,11 +10,11 @@ import java.io.Serializable;
 public class StaffTimetablePK implements Serializable {
 
     @ManyToOne
-    @JoinColumn(name="timetable_idtimetable",referencedColumnName="idtimetable",nullable=false, insertable = false)
+    @JoinColumn(name="timetable_idtimetable",referencedColumnName="idtimetable",nullable=false, insertable = false, updatable = false)
     private Timetable timetable;
 
     @ManyToOne
-    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false, insertable = false)
+    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false, insertable = false, updatable = false)
     private Staff staff;
 
     public StaffTimetablePK(){

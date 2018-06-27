@@ -1,5 +1,6 @@
 package com.customersscheduling.Domain;
 
+import com.customersscheduling.HALObjects.PersonResource;
 import com.customersscheduling.HALObjects.StaffResource;
 
 import javax.persistence.*;
