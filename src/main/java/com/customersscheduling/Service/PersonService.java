@@ -52,6 +52,7 @@ public class PersonService implements IPersonService {
         if((onDb=timetableRepo.findByTimetableDay(tt.getOpenHour(), tt.getCloseHour(), tt.getInitBreak(), tt.getFinishBreak(), tt.getWeekDay()))!=null){
             tt.setId(onDb.getId());
         }
+        timetableRepo.save(staffTimeTable.getPk().getTimetable());
         staffTimetableRepo.save(staffTimeTable);
         Staff staff = (Staff)(personRepo.findOne(staffTimeTable.getPk().getStaff().getEmail()));
         return staff.toResource();

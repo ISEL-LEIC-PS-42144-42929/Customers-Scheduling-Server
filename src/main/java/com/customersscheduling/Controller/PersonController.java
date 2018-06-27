@@ -35,12 +35,6 @@ public class PersonController {
         return personService.insertStaff(person.toStaffDto());
     }
 
-    @PostMapping(value = "/{email}/timetable")
-    public StaffResource insertStaffTimetable(@PathVariable String email, @RequestBody TimetableInputModel timetable) {
-        Staff staff = new Staff(); staff.setEmail(email);
-        Timetable tt = timetable.toDto();
-        return personService.insertStaffTimetable(new StaffTimetable(new StaffTimetablePK(tt, staff)));
-    }
 
     @GetMapping(value = "/{email}/owner")
     public Resources<OwnerResource> getOwner(@PathVariable String email) {

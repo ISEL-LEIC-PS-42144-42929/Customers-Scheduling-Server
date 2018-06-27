@@ -11,7 +11,7 @@ public class StoreServicesPK implements Serializable {
     @JoinColumn(name="store_nif",referencedColumnName="nif",nullable=false)
     private Store store;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="services_idservices",referencedColumnName="idservices",nullable=false)
     private Service service;
 

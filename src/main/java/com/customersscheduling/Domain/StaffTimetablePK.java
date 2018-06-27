@@ -9,12 +9,12 @@ import java.io.Serializable;
 @Embeddable
 public class StaffTimetablePK implements Serializable {
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="timetable_idtimetable",referencedColumnName="idtimetable",nullable=false)
+    @ManyToOne
+    @JoinColumn(name="timetable_idtimetable",referencedColumnName="idtimetable",nullable=false, insertable = false)
     private Timetable timetable;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false)
+    @ManyToOne
+    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false, insertable = false)
     private Staff staff;
 
     public StaffTimetablePK(){

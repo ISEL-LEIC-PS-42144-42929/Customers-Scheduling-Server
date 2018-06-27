@@ -103,7 +103,7 @@ public class StoreController {
     }
 
     @GetMapping(value = "/owner/{email}")
-    public ResponseEntity<Resources<StoreResource>> getStoresOfUser(@PathVariable String email) {
+    public ResponseEntity<Resources<StoreResource>> getStoresOfUser(@PathVariable("email") String email) {
         final List<Store> stores = storeService.getStoresOfUser(email);
         final List<StoreResource> mappedStores = new ArrayList<>();
         stores.iterator().forEachRemaining( st ->

@@ -50,8 +50,8 @@ public class StoreService implements IStoreService {
     @Override
     public ServiceResource insertServiceForStore(StoreServices s) {
         com.customersscheduling.Domain.Service serv = s.getPk().getService();
-        com.customersscheduling.Domain.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
-        if(s1!=null) s.getPk().getService().setId(s1.getId());
+        //com.customersscheduling.Domain.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
+        //if(s1!=null) s.getPk().getService().setId(s1.getId());
         storeServicesRepo.save(s);
         return s.getPk().getService().toResource();
     }
