@@ -17,7 +17,7 @@ public class StaffTimetableResource extends TimetableResource {
     public StaffTimetableResource(List<Timetable> t, StaffResource s) {
         super(t);
         this.staff = s;
-        add(linkTo(methodOn(TimetableController.class).getStaffTimetable(s.getPerson().getEmail())).withSelfRel());
+        add(linkTo(methodOn(TimetableController.class).getStaffTimetable(s.getPerson().getEmail())).withRel("get"));
         add(linkTo(methodOn(TimetableController.class).insertStaffTimetable(s.getPerson().getEmail(), null)).withRel("insert"));
     }
 

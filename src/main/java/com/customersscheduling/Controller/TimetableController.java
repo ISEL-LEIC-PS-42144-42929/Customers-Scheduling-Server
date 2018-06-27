@@ -33,14 +33,16 @@ public class TimetableController {
         Staff staff = new Staff(); staff.setEmail(email);
         Timetable tt = timetable.toDto();
         StaffResource staffResource = personService.insertStaffTimetable(new StaffTimetable(new StaffTimetablePK(tt, staff)));
-        Resource<StaffResource> staffRe = new Resource<>(staffResource);
+        Link link = linkTo(methodOn(TimetableController.class).insertStaffTimetable(email, timetable)).withSelfRel();
+        Resource<StaffResource> staffRe = new Resource<>(staffResource, link);
         return staffRe;
     }
 
     @GetMapping(value = "/staff/{email}")
     public Resource<StaffTimetableResource> getStaffTimetable(@PathVariable String email) {
         StaffTimetableResource ttResource = personService.getStaffTimetable(email);
-        Resource<StaffTimetableResource> staffRe = new Resource<>(ttResource);
+        Link link = linkTo(methodOn(TimetableController.class).getStaffTimetable(email)).withSelfRel();
+        Resource<StaffTimetableResource> staffRe = new Resource<>(ttResource, link);
         return staffRe;
     }
 
@@ -51,7 +53,8 @@ public class TimetableController {
         s.setNif(nif);
         Timetable tt = timetable.toDto();
         StoreResource storeResource = storeService.insertStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s)));
-        Resource<StoreResource> resource = new Resource<StoreResource>(storeResource);
+        Link link = linkTo(methodOn(TimetableController.class).insertStoreTimetable(nif,timetable)).withSelfRel();
+        Resource<StoreResource> resource = new Resource<StoreResource>(storeResource, link);
         return resource;
     }
 
@@ -59,7 +62,8 @@ public class TimetableController {
     @GetMapping(value = "/store/{nif}")
     public Resource<StoreTimetableResource> getStoreTimetable(@PathVariable String nif) {
         StoreTimetableResource stResource = storeService.getStoreTimetable(nif);
-        Resource<StoreTimetableResource> storeRe = new Resource<>(stResource);
+        Link link = linkTo(methodOn(TimetableController.class).getStoreTimetable(nif)).withSelfRel();
+        Resource<StoreTimetableResource> storeRe = new Resource<>(stResource, link);
         return storeRe;
     }
 }

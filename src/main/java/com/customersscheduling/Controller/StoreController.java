@@ -8,6 +8,7 @@ import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IStoreService;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,12 +37,6 @@ public class StoreController {
         return storeService.insertStore(store.toDto(o));
     }
 
-    @PostMapping(value = "/{nif}/service")
-    public ServiceResource insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif) {
-        Store store = new Store(); store.setNif(nif);
-        StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
-        return storeService.insertServiceForStore(ss);
-    }
 
     @PostMapping(value = "/{nif}/service/{id}/staff")
     public ServiceResource insertStaffForService(@RequestBody PersonInputModel person, @PathVariable String nif, @PathVariable int id) {
@@ -76,8 +71,22 @@ public class StoreController {
     }
 
     @GetMapping(value = "/{nif}/services")
-    public ResponseEntity<Resources<ServiceResource>> getServicesOfStore(@PathVariable String nif) {
-        return null;
+    public Resources<ServiceResource> getServicesOfStore(@PathVariable String nif) {
+        List<ServiceResource> sr = storeService.getServicesOfStore(nif);
+        Link link = linkTo(methodOn(StoreController.class).getServicesOfStore(nif)).withSelfRel();
+        Resources<ServiceResource> resr = new Resources<>(sr, link);
+        return resr;
+    }
+
+
+    @PostMapping(value = "/{nif}/service")
+    public Resource<ServiceResource> insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif) {
+        Store store = new Store(); store.setNif(nif);
+        StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
+        ServiceResource serviceResource = storeService.insertServiceForStore(ss);
+        Link link = linkTo(methodOn(StoreController.class).insertServiceForStore(service, nif)).withSelfRel();
+        Resource<ServiceResource> re = new Resource<>(serviceResource, link);
+        return re;
     }
 
     @GetMapping(value = "/{nif}/portfolio")

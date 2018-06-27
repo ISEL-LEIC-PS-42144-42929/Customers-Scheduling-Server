@@ -2,6 +2,7 @@ package com.customersscheduling.Domain;
 
 
 import com.customersscheduling.HALObjects.ServiceResource;
+import com.customersscheduling.HALObjects.StoreResource;
 
 import javax.persistence.*;
 
@@ -75,7 +76,7 @@ public class Service {
         this.duration = duration;
     }
 
-    public ServiceResource toResource() {
-        return new ServiceResource(this);
+    public ServiceResource toResource(StoreResource s) {
+        return new ServiceResource(this, s);
     }
 }

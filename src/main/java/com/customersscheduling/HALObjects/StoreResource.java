@@ -15,7 +15,7 @@ public class StoreResource extends ResourceSupport {
         this.store = store;
         final String nif = store.getNif();
         final String name = store.getStoreName();
-        add(linkTo(methodOn(StoreController.class).getStore(nif)).withSelfRel());
+        add(linkTo(methodOn(StoreController.class).getStore(nif)).withRel("get"));
         add(linkTo(methodOn(StoreController.class).getServicesOfStore(nif)).withRel("services"));
         add(linkTo(methodOn(StoreController.class).getPortfolioOfStore(nif)).withRel("portfolio"));
 

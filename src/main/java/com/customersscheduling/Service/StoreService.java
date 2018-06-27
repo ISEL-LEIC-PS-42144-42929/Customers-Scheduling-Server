@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StoreService implements IStoreService {
@@ -48,16 +49,17 @@ public class StoreService implements IStoreService {
     @Override
     public ServiceResource insertStafForService(StaffServices s) {
         staffServicesRepo.save(s);
-        return servicesRepo.findById(s.getPk().getStoresServices().getPk().getService().getId()).toResource();
+        return servicesRepo.findById(s.getPk().getStoresServices().getPk().getService().getId()).toResource(null);
     }
 
     @Override
     public ServiceResource insertServiceForStore(StoreServices s) {
         com.customersscheduling.Domain.Service serv = s.getPk().getService();
-        //com.customersscheduling.Domain.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
-        //if(s1!=null) s.getPk().getService().setId(s1.getId());
+        com.customersscheduling.Domain.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
+        if(s1!=null) s.getPk().getService().setId(s1.getId());
+        servicesRepo.save(s.getPk().getService());
         storeServicesRepo.save(s);
-        return s.getPk().getService().toResource();
+        return new ServiceResource(s.getPk().getService(), getStoreByNif(s.getPk().getStore().getNif()));
     }
 
     @Override
@@ -71,8 +73,8 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public Store getStoreByNif(String nif) {
-        return storeRepo.findByNif(nif);
+    public StoreResource getStoreByNif(String nif) {
+        return storeRepo.findByNif(nif).toResource();
     }
 
     @Override
@@ -121,7 +123,16 @@ public class StoreService implements IStoreService {
         Store store = storeRepo.findByNif(nif);
         List<StoreTimetable> stafftts = storeTimetableRepo.findByPk_Store(store);
         List<Timetable> tts = new ArrayList<>();
-        stafftts.forEach( i -> tts.add(timetableRepo.findById(i.getPk().getTimetable().getId())));
+        stafftts.forEach( i -> tts.add(i.getPk().getTimetable()));
         return new StoreTimetableResource(tts, store.toResource());
+    }
+
+    @Override
+    public List<ServiceResource> getServicesOfStore(String  nif) {
+        Store store = storeRepo.findByNif(nif);
+        List<StoreServices> ss = storeServicesRepo.findByPk_Store(store);
+        List<ServiceResource> services = new ArrayList<>();
+        ss.forEach(i -> services.add(i.getPk().getService().toResource(store.toResource())));
+        return services;
     }
 }

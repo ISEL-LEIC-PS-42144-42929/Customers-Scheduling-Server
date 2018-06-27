@@ -16,9 +16,9 @@ public class StaffResource extends ResourceSupport {
 
     public StaffResource(Staff person) {
         this.person = person;
-        add(linkTo(methodOn(PersonController.class).getStaff(person.getEmail())).withSelfRel());
+        add(linkTo(methodOn(PersonController.class).getStaff(person.getEmail())).withRel("get"));
         add(linkTo(methodOn(PersonController.class).insertStaff(null)).withRel("insert"));
-        add(linkTo(methodOn(TimetableController.class).insertStaffTimetable(person.getEmail(), null)).withRel("insert timetable"));
+        add(linkTo(methodOn(TimetableController.class).insertStaffTimetable(person.getEmail(), null)).withRel("insert_timetable"));
     }
 
     public Staff getPerson() {

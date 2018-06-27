@@ -18,7 +18,7 @@ public interface IStoreService {
     BookingResource insertBook(Booking booking);
     Booking getBookingById(int i);
 
-    Store getStoreByNif(String nif);
+    StoreResource getStoreByNif(String nif);
 
     List<Store> getStoresOfUser(String email);
 
@@ -31,4 +31,6 @@ public interface IStoreService {
     StoreResource insertStoreTimetable(StoreTimetable storeTimetable);
 
     StoreTimetableResource getStoreTimetable(String nif);
+
+    List<ServiceResource> getServicesOfStore(String nif);
 }
