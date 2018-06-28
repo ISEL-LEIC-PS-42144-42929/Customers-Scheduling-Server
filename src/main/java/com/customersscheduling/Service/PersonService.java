@@ -1,7 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.*;
+import com.customersscheduling.ExceptionHandling.Exceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.ClientStoresRepository;
 import com.customersscheduling.Repository.PersonRepository;
 import com.customersscheduling.Repository.StaffTimetableRepository;
@@ -9,7 +9,6 @@ import com.customersscheduling.Repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,7 +68,10 @@ public class PersonService implements IPersonService {
     @Override
     public List<StaffTimetable> getStaffTimetable(String email) {
         Staff staff = (Staff) personRepo.findByEmail(email);
-        return staffTimetableRepo.findByPk_Staff(staff);
+        if(staff == null) throw new ResourceNotFoundException("Could not find person with the email '"+email+"'.");
+        List<StaffTimetable> lstaff = staffTimetableRepo.findByPk_Staff(staff);
+        if(lstaff==null || lstaff.size()==0) throw new ResourceNotFoundException("Could not find any timetable for the user with the email '"+email+"'.");
+        return lstaff;
     }
 
     @Override
