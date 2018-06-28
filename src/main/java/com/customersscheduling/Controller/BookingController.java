@@ -16,7 +16,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RequestMapping(value="/store", produces = "application/hal+json")
 public class BookingController {
 
-
     private final IStoreService storeService;
 
     public BookingController(IStoreService businessService) {

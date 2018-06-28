@@ -91,8 +91,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public List<Booking> getServiceDisp(int id) {
-        //return bookingRepo.findById(id);
-        return null;
+        return bookingRepo.findByService_Id(id);
     }
 
     @Override

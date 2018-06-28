@@ -63,14 +63,12 @@ public class StoreServicesController {
     }
 
     @GetMapping(value = "/{nif}/services/{id}/disp")
-    public ResponseEntity<Resources<BookingResource>> getDispOfService(@PathVariable String nif, @PathVariable int id) {
-        final List<Booking> books = storeService.getServiceDisp(id);
-        final List<BookingResource> mappedBooking = new ArrayList<>();
-        books.iterator().forEachRemaining( st ->
-                mappedBooking.add(new BookingResource(st))
-        );
+    public Resources<BookingResource> getDispOfService(@PathVariable String nif, @PathVariable int id) {
+        final List<BookingResource> books = storeService.getServiceDisp(id)
+                                                        .stream()
+                                                        .map( i -> i.toResource())
+                                                        .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreServicesController.class).getDispOfService(nif, id)).withSelfRel();
-        final Resources<BookingResource> resources = new Resources<BookingResource>(mappedBooking, link);
-        return ResponseEntity.ok(resources);
+        return new Resources<>(books, link);
     }
 }
