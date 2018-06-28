@@ -79,4 +79,9 @@ public class PersonService implements IPersonService {
                                 .map(cs -> cs.getPk().getStore())
                                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Client getClient(String email) {
+        return (Client)personRepo.findByEmail(email);
+    }
 }

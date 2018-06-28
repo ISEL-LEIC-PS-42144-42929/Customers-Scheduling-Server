@@ -1,6 +1,10 @@
 package com.customersscheduling.Controller;
 
+import com.customersscheduling.Controller.InputModels.ClientStoreInputModel;
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
+import com.customersscheduling.Domain.Client;
+import com.customersscheduling.Domain.ClientStores;
+import com.customersscheduling.Domain.ClientStoresPK;
 import com.customersscheduling.Domain.Store;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ClientResource;
@@ -36,8 +40,10 @@ public class ClientController {
     }
 
     @GetMapping(value = "/{email}/client")
-    public Resources<ClientResource> getClient(@PathVariable String email) {
-        return null;
+    public Resource<ClientResource> getClient(@PathVariable String email) {
+        ClientResource c = personService.getClient(email).toResource();
+        Link link = linkTo(methodOn(ClientController.class).getClient(email)).withSelfRel();
+        return new Resource<>(c, c.getLinks(link));
     }
 
 
@@ -66,5 +72,4 @@ public class ClientController {
         Link link = linkTo(methodOn(ClientController.class).getStoresOfClient(email)).withSelfRel();
         return new Resources<>(stores, link);
     }
-
 }

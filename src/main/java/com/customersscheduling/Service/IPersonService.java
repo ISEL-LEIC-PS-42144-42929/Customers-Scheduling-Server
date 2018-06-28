@@ -14,4 +14,6 @@ public interface IPersonService {
     List<Store> getStoresByEmail(String email);
     List<StaffTimetable> getStaffTimetable(String email);
     List<Store> getPendentRequests(String email);
+
+    Client getClient(String email);
 }

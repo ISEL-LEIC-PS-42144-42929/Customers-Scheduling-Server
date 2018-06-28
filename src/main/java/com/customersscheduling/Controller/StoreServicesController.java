@@ -1,12 +1,10 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.ServiceInputModel;
-import com.customersscheduling.Domain.Booking;
-import com.customersscheduling.Domain.Store;
-import com.customersscheduling.Domain.StoreServices;
-import com.customersscheduling.Domain.StoreServicesPK;
+import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ServiceResource;
+import com.customersscheduling.HALObjects.StaffResource;
 import com.customersscheduling.Service.IStoreService;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -54,9 +52,14 @@ public class StoreServicesController {
     }
 
 
-    @GetMapping(value = "/{nif}/services/staff")
-    public ResponseEntity<Resources<ServiceResource>> getStaffOfService(@PathVariable String name, @PathVariable String nif) {
-        return null;
+    @GetMapping(value = "/{nif}/services/{id}/staff")
+    public Resources<StaffResource> getStaffOfService(@PathVariable int id, @PathVariable String nif) {
+        List<StaffResource> staffs = storeService.getStaffOfService(id, nif)
+                                                    .stream()
+                                                    .map( i -> i.toResource())
+                                                    .collect(Collectors.toList());
+        Link link = linkTo(methodOn(StoreServicesController.class).getStaffOfService(id, nif)).withSelfRel();
+        return new Resources<>(staffs, link);
     }
 
     @GetMapping(value = "/{nif}/services/{id}/disp")

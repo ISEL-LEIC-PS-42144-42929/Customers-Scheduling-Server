@@ -79,4 +79,5 @@ public class StoreController {
                 .getPendentRequestsOfStore(nif)).withSelfRel();
         return new Resources<>(clients, link);
     }
+
 }

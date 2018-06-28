@@ -60,7 +60,9 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public Booking insertBook(Booking booking) {
+    public Booking insertBook(int id, String email) {
+        Booking booking = bookingRepo.findById(id);
+        booking.setClient((Client)personRepo.findByEmail(email));
         return bookingRepo.save(booking);
     }
 
@@ -89,7 +91,8 @@ public class StoreService implements IStoreService {
 
     @Override
     public List<Booking> getServiceDisp(int id) {
-        return bookingRepo.findById(id);
+        //return bookingRepo.findById(id);
+        return null;
     }
 
     @Override
@@ -118,5 +121,13 @@ public class StoreService implements IStoreService {
     @Override
     public List<StoreServices> getServicesOfStore(String  nif) {
         return storeServicesRepo.findByPk_Store_Nif(nif);
+    }
+
+    @Override
+    public List<Staff> getStaffOfService(int id, String nif) {
+        List<StaffServices> ss = staffServicesRepo.getByPk_StoresServices_Pk_Service_IdAndPk_StoresServices_Pk_Store_Nif(id, nif);
+        return ss.stream()
+                .map( i -> i.getPk().getStaff())
+                .collect(Collectors.toList());
     }
 }

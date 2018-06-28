@@ -13,5 +13,5 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Override
     Booking getOne(Integer integer);
 
-    List<Booking> findById(int id);
+    Booking findById(int id);
 }
