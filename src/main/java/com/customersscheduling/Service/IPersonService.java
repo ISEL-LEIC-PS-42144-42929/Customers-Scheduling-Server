@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface IPersonService {
 
-    ClientResource insertClient(Client client);
-    OwnerResource insertOwner(Owner owner);
-    StaffResource insertStaff(Staff staff);
-    StaffResource insertStaffTimetable(StaffTimetable staff);
+    Client insertClient(Client client);
+    Owner insertOwner(Owner owner);
+    Staff insertStaff(Staff staff);
+    Staff insertStaffTimetable(StaffTimetable staff);
     List<Store> getStoresByEmail(String email);
-
-    StaffTimetableResource getStaffTimetable(String email);
+    List<StaffTimetable> getStaffTimetable(String email);
+    List<Store> getPendentRequests(String email);
 }

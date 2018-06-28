@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -30,27 +31,26 @@ public class StoreController {
 
     @GetMapping(value = "/{nif}")
     public Resource<StoreResource> getStore(@PathVariable String nif) {
-        StoreResource res = storeService.getStoreByNif(nif);
+        StoreResource res = storeService.getStoreByNif(nif).toResource();
         Link link = linkTo(methodOn(StoreController.class).getStore(nif)).withSelfRel();
-        List<Link> links = res.getLinks();
-        links.add(link);
-        return new Resource<>(res, links);
+        return new Resource<>(res, res.getLinks(link));
     }
 
     @PostMapping(value = "/{email}")
     public Resource<StoreResource> insertStore(@PathVariable String email, @RequestBody StoreInputModel store) {
         Owner o = new Owner();
         o.setEmail(email);
-        StoreResource storeResource = storeService.insertStore(store.toDto(o));
+        StoreResource storeResource = storeService.insertStore(store.toDto(o)).toResource();
         Link link = linkTo(methodOn(StoreController.class).insertStore(email, store)).withSelfRel();
-        List<Link> links = storeResource.getLinks();
-        links.add(link);
-        return new Resource<>(storeResource, links);
+        return new Resource<>(storeResource, storeResource.getLinks(link));
     }
 
     @GetMapping(value = "/owner/{email}")
     public Resources<StoreResource> getStoreOfOwner(@PathVariable String email) {
-        List<StoreResource> storesOfUser = storeService.getStoresOfUser(email);
+        List<StoreResource> storesOfUser = storeService.getStoresOfUser(email)
+                                                        .stream()
+                                                        .map( i -> i.toResource())
+                                                        .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreController.class).getStoreOfOwner(email)).withSelfRel();
         Resources<StoreResource> storeRe = new Resources<>(storesOfUser, link);
         return storeRe;
@@ -63,7 +63,7 @@ public class StoreController {
         Store s = new Store();
         s.setNif(nif);
         ClientStores cs = new ClientStores(new ClientStoresPK(s,c),csim.accepted, csim.score);
-        StoreResource storeResource = storeService.insertClientForStore(cs);
+        StoreResource storeResource = storeService.insertClientForStore(cs).toResource();
         Link self = linkTo(methodOn(StoreController.class).setClientForStore(nif, email, csim)).withSelfRel();
         return new Resource<>(storeResource, storeResource.getLinks(self));
     }
@@ -71,10 +71,12 @@ public class StoreController {
 
     @GetMapping(value = "/{nif}/pendentrequests")
     public Resources<ClientResource> getPendentRequestsOfStore(@PathVariable String nif) {
-        List<ClientResource> clients = storeService.getPendentRequests(nif);
+        List<ClientResource> clients = storeService.getPendentRequests(nif)
+                                                    .stream()
+                                                    .map( i -> i.toResource())
+                                                    .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreController.class)
                 .getPendentRequestsOfStore(nif)).withSelfRel();
-        final Resources<ClientResource> resources = new Resources<>(clients, link);
-        return resources;
+        return new Resources<>(clients, link);
     }
 }

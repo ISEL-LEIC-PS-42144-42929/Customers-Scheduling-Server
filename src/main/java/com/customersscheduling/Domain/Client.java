@@ -19,4 +19,5 @@ public class Client extends User {
     public ClientResource toResource() {
         return new ClientResource(this);
     }
+
 }

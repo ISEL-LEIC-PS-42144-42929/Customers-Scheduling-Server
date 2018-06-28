@@ -16,6 +16,10 @@ public class StaffServices {
         this.pk = pk;
     }
 
+    public StaffServices() {
+
+    }
+
     public StaffServicesPK getPk() {
         return pk;
     }

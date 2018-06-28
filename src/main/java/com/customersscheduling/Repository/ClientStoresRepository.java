@@ -17,4 +17,6 @@ public interface ClientStoresRepository extends JpaRepository<ClientStores, Inte
     List<String> findPendentRequestsOfStore(@Param("nif") String nif);
 
     List<ClientStores> findByPk_Store_NifAndAccepted(String nif, boolean a);
+
+    List<ClientStores> findByPk_Client_EmailAndAccepted(String email, boolean a);
 }

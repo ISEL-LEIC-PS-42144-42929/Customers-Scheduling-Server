@@ -1,12 +1,10 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,29 +40,28 @@ public class StoreService implements IStoreService {
 
 
     @Override
-    public StoreResource insertStore(Store store) {
-        return storeRepo.save(store).toResource();
+    public Store insertStore(Store store) {
+        return storeRepo.save(store);
     }
 
     @Override
-    public ServiceResource insertStafForService(StaffServices s) {
-        staffServicesRepo.save(s);
-        return servicesRepo.findById(s.getPk().getStoresServices().getPk().getService().getId()).toResource(null);
+    public StaffServices insertStafForService(StaffServices s) {
+        personRepo.save(s.getPk().getStaff());
+        return staffServicesRepo.save(s);
     }
 
     @Override
-    public ServiceResource insertServiceForStore(StoreServices s) {
+    public StoreServices insertServiceForStore(StoreServices s) {
         com.customersscheduling.Domain.Service serv = s.getPk().getService();
         com.customersscheduling.Domain.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
         if(s1!=null) s.getPk().getService().setId(s1.getId());
         servicesRepo.save(s.getPk().getService());
-        storeServicesRepo.save(s);
-        return new ServiceResource(s.getPk().getService(), getStoreByNif(s.getPk().getStore().getNif()));
+        return storeServicesRepo.save(s);
     }
 
     @Override
-    public BookingResource insertBook(Booking booking) {
-        return bookingRepo.save(booking).toResource();
+    public Booking insertBook(Booking booking) {
+        return bookingRepo.save(booking);
     }
 
     @Override
@@ -73,24 +70,21 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public StoreResource getStoreByNif(String nif) {
-        return storeRepo.findByNif(nif).toResource();
+    public Store getStoreByNif(String nif) {
+        return storeRepo.findByNif(nif);
     }
 
     @Override
-    public List<StoreResource> getStoresOfUser(String email) {
-        return storeRepo.findByOwnerEmail(email)
-                        .stream()
-                        .map( i -> i.toResource())
-                        .collect(Collectors.toList());
+    public List<Store> getStoresOfUser(String email) {
+        return storeRepo.findByOwnerEmail(email);
     }
 
     @Override
-    public List<ClientResource> getPendentRequests(String nif) {
-        List<ClientStores> emails =  clientStoresRepo.findByPk_Store_NifAndAccepted(nif, false);
-        return emails.stream()
-                .map( cs -> cs.getPk().getClient().toResource())
-                .collect(Collectors.toList());
+    public List<Client> getPendentRequests(String nif) {
+        return  clientStoresRepo.findByPk_Store_NifAndAccepted(nif, false)
+                                .stream()
+                                .map( cs -> cs.getPk().getClient())
+                                .collect(Collectors.toList());
     }
 
     @Override
@@ -99,13 +93,13 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public StoreResource insertClientForStore(ClientStores cs) {
+    public Store insertClientForStore(ClientStores cs) {
         clientStoresRepo.save(cs);
-        return storeRepo.findByNif(cs.getPk().getStore().getNif()).toResource();
+        return storeRepo.findByNif(cs.getPk().getStore().getNif());
     }
 
     @Override
-    public StoreResource insertStoreTimetable(StoreTimetable storeTimetable) {
+    public Store insertStoreTimetable(StoreTimetable storeTimetable) {
         Timetable tt = storeTimetable.getPk().getTimetable();
         Timetable onDb = null;
         if((onDb=timetableRepo.findByTimetableDay(tt.getOpenHour(), tt.getCloseHour(), tt.getInitBreak(), tt.getFinishBreak(), tt.getWeekDay()))!=null){
@@ -113,25 +107,16 @@ public class StoreService implements IStoreService {
         }
         timetableRepo.save(storeTimetable.getPk().getTimetable());
         storeTimetableRepo.save(storeTimetable);
-        Store store = storeRepo.findByNif(storeTimetable.getPk().getStore().getNif());
-        return store.toResource();
+        return storeRepo.findByNif(storeTimetable.getPk().getStore().getNif());
     }
 
     @Override
-    public StoreTimetableResource getStoreTimetable(String nif) {
-        Store store = storeRepo.findByNif(nif);
-        List<StoreTimetable> stafftts = storeTimetableRepo.findByPk_Store(store);
-        List<Timetable> tts = new ArrayList<>();
-        stafftts.forEach( i -> tts.add(i.getPk().getTimetable()));
-        return new StoreTimetableResource(tts, store.toResource());
+    public List<StoreTimetable> getStoreTimetable(String nif) {
+        return storeTimetableRepo.findByPk_Store_Nif(nif);
     }
 
     @Override
-    public List<ServiceResource> getServicesOfStore(String  nif) {
-        Store store = storeRepo.findByNif(nif);
-        List<StoreServices> ss = storeServicesRepo.findByPk_Store(store);
-        List<ServiceResource> services = new ArrayList<>();
-        ss.forEach(i -> services.add(i.getPk().getService().toResource(store.toResource())));
-        return services;
+    public List<StoreServices> getServicesOfStore(String  nif) {
+        return storeServicesRepo.findByPk_Store_Nif(nif);
     }
 }

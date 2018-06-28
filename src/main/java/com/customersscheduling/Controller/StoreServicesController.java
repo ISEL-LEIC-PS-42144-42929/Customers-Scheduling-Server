@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -34,16 +35,19 @@ public class StoreServicesController {
     public Resource<ServiceResource> insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif) {
         Store store = new Store(); store.setNif(nif);
         StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
-        ServiceResource serviceResource = storeService.insertServiceForStore(ss);
+        StoreServices storeServices = storeService.insertServiceForStore(ss);
+        ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource());
         Link link = linkTo(methodOn(StoreServicesController.class).insertServiceForStore(service, nif)).withSelfRel();
-        Resource<ServiceResource> re = new Resource<>(serviceResource, link);
-        return re;
+        return new Resource<>(serviceResource, link);
     }
 
 
     @GetMapping(value = "/{nif}/services")
     public Resources<ServiceResource> getServicesOfStore(@PathVariable String nif) {
-        List<ServiceResource> sr = storeService.getServicesOfStore(nif);
+        List<ServiceResource> sr = storeService.getServicesOfStore(nif)
+                                                .stream()
+                                                .map( i -> new ServiceResource(i.getPk().getService(), i.getPk().getStore().toResource()))
+                                                .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withSelfRel();
         Resources<ServiceResource> resr = new Resources<>(sr, link);
         return resr;

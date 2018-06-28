@@ -14,4 +14,6 @@ public interface StoreTimetableRepository extends JpaRepository<StoreTimetable, 
     StoreTimetable save(StoreTimetable entity);
 
     List<StoreTimetable> findByPk_Store(Store store);
+
+    List<StoreTimetable> findByPk_Store_Nif(String nif);
 }

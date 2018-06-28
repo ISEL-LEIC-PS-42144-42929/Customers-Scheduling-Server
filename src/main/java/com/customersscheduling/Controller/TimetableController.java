@@ -11,6 +11,11 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -32,18 +37,26 @@ public class TimetableController {
     public Resource<StaffResource> insertStaffTimetable(@PathVariable String email, @RequestBody TimetableInputModel timetable) {
         Staff staff = new Staff(); staff.setEmail(email);
         Timetable tt = timetable.toDto();
-        StaffResource staffResource = personService.insertStaffTimetable(new StaffTimetable(new StaffTimetablePK(tt, staff)));
+        StaffResource staffResource = personService.insertStaffTimetable(new StaffTimetable(new StaffTimetablePK(tt, staff))).toResource();
         Link link = linkTo(methodOn(TimetableController.class).insertStaffTimetable(email, timetable)).withSelfRel();
-        Resource<StaffResource> staffRe = new Resource<>(staffResource, link);
+        Resource<StaffResource> staffRe = new Resource<>(staffResource, staffResource.getLinks(link));
         return staffRe;
     }
 
     @GetMapping(value = "/staff/{email}")
     public Resource<StaffTimetableResource> getStaffTimetable(@PathVariable String email) {
-        StaffTimetableResource ttResource = personService.getStaffTimetable(email);
+        List<StaffTimetable> tt = personService.getStaffTimetable(email);
+        Iterator<StaffTimetable> iterator = tt.iterator();
+        Staff s = null;
+        if(iterator.hasNext())
+            s = iterator.next().getPk().getStaff();
+        List<Timetable> listtt = tt.stream()
+                                    .map( stt -> stt.getPk().getTimetable())
+                                    .collect(Collectors.toList());
+
+        StaffTimetableResource ttResource = new StaffTimetableResource(listtt, s.toResource());
         Link link = linkTo(methodOn(TimetableController.class).getStaffTimetable(email)).withSelfRel();
-        Resource<StaffTimetableResource> staffRe = new Resource<>(ttResource, link);
-        return staffRe;
+        return new Resource<>(ttResource, link);
     }
 
 
@@ -52,18 +65,25 @@ public class TimetableController {
         Store s = new Store();
         s.setNif(nif);
         Timetable tt = timetable.toDto();
-        StoreResource storeResource = storeService.insertStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s)));
+        StoreResource storeResource = storeService.insertStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s))).toResource();
         Link link = linkTo(methodOn(TimetableController.class).insertStoreTimetable(nif,timetable)).withSelfRel();
-        Resource<StoreResource> resource = new Resource<StoreResource>(storeResource, link);
-        return resource;
+        return new Resource<StoreResource>(storeResource, storeResource.getLinks(link));
     }
 
 
     @GetMapping(value = "/store/{nif}")
     public Resource<StoreTimetableResource> getStoreTimetable(@PathVariable String nif) {
-        StoreTimetableResource stResource = storeService.getStoreTimetable(nif);
+        List<StoreTimetable> st = storeService.getStoreTimetable(nif);
+        Iterator<StoreTimetable> iterator = st.iterator();
+        Store s = null;
+        if(iterator.hasNext())
+            s = iterator.next().getPk().getStore();
+        List<Timetable> listtt = st.stream()
+                                     .map( stt -> stt.getPk().getTimetable())
+                                    .collect(Collectors.toList());
+
+        StoreTimetableResource stResource = new StoreTimetableResource(listtt, s.toResource());
         Link link = linkTo(methodOn(TimetableController.class).getStoreTimetable(nif)).withSelfRel();
-        Resource<StoreTimetableResource> storeRe = new Resource<>(stResource, link);
-        return storeRe;
+        return new Resource<StoreTimetableResource>(stResource, stResource.getLinks(link));
     }
 }

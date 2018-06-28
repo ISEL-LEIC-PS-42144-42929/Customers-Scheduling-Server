@@ -6,14 +6,14 @@ import java.io.Serializable;
 @Embeddable
 public class StaffServicesPK implements Serializable {
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name="staff_person_email",referencedColumnName="person_email",nullable=false, insertable = false, updatable = false)
     private Staff staff;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumns( {
-            @JoinColumn(name = "storeservices_services_idservices", referencedColumnName = "services_idservices"),
-            @JoinColumn(name = "storeservices_store_nif", referencedColumnName = "store_nif")
+            @JoinColumn(name = "storeservices_services_idservices", referencedColumnName = "services_idservices", insertable = false, updatable = false),
+            @JoinColumn(name = "storeservices_store_nif", referencedColumnName = "store_nif", insertable = false, updatable = false)
     })
     private StoreServices storesServices;
 

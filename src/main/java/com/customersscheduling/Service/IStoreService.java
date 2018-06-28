@@ -1,33 +1,22 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.*;
 
 import java.util.List;
 
 public interface IStoreService {
 
-    StoreResource insertStore(Store store);
-    ServiceResource insertStafForService(StaffServices s);
-
-    ServiceResource insertServiceForStore(StoreServices s);
-
-    BookingResource insertBook(Booking booking);
+    Store insertStore(Store store);
+    StaffServices insertStafForService(StaffServices s);
+    StoreServices insertServiceForStore(StoreServices s);
+    Booking insertBook(Booking booking);
     Booking getBookingById(int i);
-
-    StoreResource getStoreByNif(String nif);
-
-    List<StoreResource> getStoresOfUser(String email);
-
-    List<ClientResource> getPendentRequests(String nif);
-
+    Store getStoreByNif(String nif);
+    List<Store> getStoresOfUser(String email);
+    List<Client> getPendentRequests(String nif);
     List<Booking> getServiceDisp(int id);
-
-    StoreResource insertClientForStore(ClientStores cs);
-
-    StoreResource insertStoreTimetable(StoreTimetable storeTimetable);
-
-    StoreTimetableResource getStoreTimetable(String nif);
-
-    List<ServiceResource> getServicesOfStore(String nif);
+    Store insertClientForStore(ClientStores cs);
+    Store insertStoreTimetable(StoreTimetable storeTimetable);
+    List<StoreTimetable> getStoreTimetable(String nif);
+    List<StoreServices> getServicesOfStore(String nif);
 }

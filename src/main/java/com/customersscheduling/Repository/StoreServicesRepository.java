@@ -13,4 +13,6 @@ public interface StoreServicesRepository  extends JpaRepository<StoreServices, I
     StoreServices save(StoreServices entity);
 
     List<StoreServices> findByPk_Store(Store store);
+
+    List<StoreServices> findByPk_Store_Nif(String nif);
 }

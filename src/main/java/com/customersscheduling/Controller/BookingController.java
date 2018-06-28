@@ -25,6 +25,7 @@ public class BookingController {
         Service service = new Service(); service.setId(id);
         Client client = new Client(); client.setEmail(book.client_email);
         Booking booking = new Booking(store, staff, client, service);
-        return storeService.insertBook(booking);
+        storeService.insertBook(booking);
+        return null;
     }
 }
