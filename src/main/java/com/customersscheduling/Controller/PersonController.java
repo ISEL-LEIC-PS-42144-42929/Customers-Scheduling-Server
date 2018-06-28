@@ -85,14 +85,4 @@ public class PersonController {
         return null;
     }
 
-    @GetMapping(value = "/owner/{email}")
-    public ResponseEntity<Resources<StoreResource>> getStoresOfOwner(@PathVariable("email") String email) {
-        final List<Store> stores = storeService.getStoresOfUser(email);
-        final List<StoreResource> mappedStores = new ArrayList<>();
-        stores.iterator().forEachRemaining( st ->
-                mappedStores.add(new StoreResource(st))
-        );
-        final Resources<StoreResource> resources = new Resources<StoreResource>(mappedStores);
-        return ResponseEntity.ok(resources);
-    }
 }

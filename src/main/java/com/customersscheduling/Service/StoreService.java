@@ -78,20 +78,19 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public List<Store> getStoresOfUser(String email) {
-        return storeRepo.findByOwnerEmail(email);
+    public List<StoreResource> getStoresOfUser(String email) {
+        return storeRepo.findByOwnerEmail(email)
+                        .stream()
+                        .map( i -> i.toResource())
+                        .collect(Collectors.toList());
     }
 
     @Override
-    public List<Client> getPendentRequests(String nif) {
-        List<String> emails =  clientStoresRepo.findPendentRequestsOfStore(nif);
-        List<Client> clients = new ArrayList<>();
-        emails.iterator().forEachRemaining( email -> {
-            Person p = personRepo.findOne(email);
-            if( p instanceof  Client)
-                clients.add((Client) p);
-        });
-        return clients;
+    public List<ClientResource> getPendentRequests(String nif) {
+        List<ClientStores> emails =  clientStoresRepo.findByPk_Store_NifAndAccepted(nif, false);
+        return emails.stream()
+                .map( cs -> cs.getPk().getClient().toResource())
+                .collect(Collectors.toList());
     }
 
     @Override

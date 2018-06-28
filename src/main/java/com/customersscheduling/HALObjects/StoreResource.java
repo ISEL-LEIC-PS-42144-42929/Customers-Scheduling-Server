@@ -1,8 +1,13 @@
 package com.customersscheduling.HALObjects;
 
 import com.customersscheduling.Controller.StoreController;
+import com.customersscheduling.Controller.StorePortfolioController;
+import com.customersscheduling.Controller.StoreServicesController;
 import com.customersscheduling.Domain.Store;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
+
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -13,12 +18,17 @@ public class StoreResource extends ResourceSupport {
 
     public StoreResource(Store store) {
         this.store = store;
-        final String nif = store.getNif();
-        final String name = store.getStoreName();
+        String nif = store.getNif();
         add(linkTo(methodOn(StoreController.class).getStore(nif)).withRel("get"));
-        add(linkTo(methodOn(StoreController.class).getServicesOfStore(nif)).withRel("services"));
-        add(linkTo(methodOn(StoreController.class).getPortfolioOfStore(nif)).withRel("portfolio"));
+        add(linkTo(methodOn(StoreController.class).insertStore(null,null)).withRel("insert"));
+        add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withRel("services"));
+        add(linkTo(methodOn(StorePortfolioController.class).getPortfolioOfStore(nif)).withRel("portfolio"));
 
+    }
+
+    public List<Link> getLinks(Link l) {
+        add(l);
+        return super.getLinks();
     }
 
     public Store getStore() {

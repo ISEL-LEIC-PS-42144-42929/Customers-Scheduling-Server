@@ -1,6 +1,7 @@
 package com.customersscheduling.HALObjects;
 
 import com.customersscheduling.Controller.PersonController;
+import com.customersscheduling.Controller.StoreController;
 import com.customersscheduling.Domain.Owner;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -15,7 +16,7 @@ public class OwnerResource extends ResourceSupport {
 
         add(linkTo(methodOn(PersonController.class).getOwner(person.getEmail())).withRel("get"));
         add(linkTo(methodOn(PersonController.class).insertOwner(null)).withRel("insert"));
-        add(linkTo(methodOn(PersonController.class).getStoresOfOwner(person.getEmail())).withRel("stores"));
+        add(linkTo(methodOn(StoreController.class).getStoreOfOwner(person.getEmail())).withRel("stores"));
     }
 
     public Owner getPerson() {

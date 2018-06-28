@@ -1,6 +1,7 @@
 package com.customersscheduling.Repository;
 
 import com.customersscheduling.Domain.ClientStores;
+import com.customersscheduling.Domain.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +15,6 @@ public interface ClientStoresRepository extends JpaRepository<ClientStores, Inte
 
     @Query("select s.pk.client.email from ClientStores s where s.pk.store.nif = :nif and s.accepted = 0")
     List<String> findPendentRequestsOfStore(@Param("nif") String nif);
+
+    List<ClientStores> findByPk_Store_NifAndAccepted(String nif, boolean a);
 }

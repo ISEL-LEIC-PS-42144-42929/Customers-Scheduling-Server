@@ -1,10 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.BookingResource;
-import com.customersscheduling.HALObjects.ServiceResource;
-import com.customersscheduling.HALObjects.StoreResource;
-import com.customersscheduling.HALObjects.StoreTimetableResource;
+import com.customersscheduling.HALObjects.*;
 
 import java.util.List;
 
@@ -20,9 +17,9 @@ public interface IStoreService {
 
     StoreResource getStoreByNif(String nif);
 
-    List<Store> getStoresOfUser(String email);
+    List<StoreResource> getStoresOfUser(String email);
 
-    List<Client> getPendentRequests(String nif);
+    List<ClientResource> getPendentRequests(String nif);
 
     List<Booking> getServiceDisp(int id);
 

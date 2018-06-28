@@ -1,6 +1,7 @@
 package com.customersscheduling.HALObjects;
 
 import com.customersscheduling.Controller.StoreController;
+import com.customersscheduling.Controller.StoreServicesController;
 import com.customersscheduling.Domain.Service;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -16,8 +17,8 @@ public class ServiceResource extends ResourceSupport {
         this.service = service;
         this.store = store;
 
-        add(linkTo(methodOn(StoreController.class).getServicesOfStore(store.getStore().getNif())).withRel("get_store_services"));
-        add(linkTo(methodOn(StoreController.class).insertServiceForStore(null, store.getStore().getNif())).withRel("insert_store_service"));
+        add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(store.getStore().getNif())).withRel("get_store_services"));
+        add(linkTo(methodOn(StoreServicesController.class).insertServiceForStore(null, store.getStore().getNif())).withRel("insert_store_service"));
     }
 
     public Service getService() {
