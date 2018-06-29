@@ -2,6 +2,7 @@ package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 public interface IStoreService {
@@ -21,4 +22,6 @@ public interface IStoreService {
     List<StoreServices> getServicesOfStore(String nif);
 
     List<Staff> getStaffOfService(int id, String nif);
+
+    Service getService(int id);
 }

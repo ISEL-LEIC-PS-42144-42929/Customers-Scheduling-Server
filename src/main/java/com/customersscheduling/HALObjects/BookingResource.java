@@ -18,7 +18,7 @@ public class BookingResource extends ResourceSupport {
         add(linkTo(methodOn(StoreServicesController.class).getDispOfService(book.getStore().getNif(), book.getService().getId())).withRel("disponibility"));
         add(linkTo(methodOn(ClientController.class).getClient(book.getClient().getEmail())).withRel("client"));
         add(linkTo(methodOn(StaffController.class).getStaff(book.getClient().getEmail())).withRel("staff"));
-        add(linkTo(methodOn(UtilController.class).getService(book.getService().getId())).withRel("service"));
+        add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(book.getStore().getNif())).withRel("store_services"));
         add(linkTo(methodOn(StoreController.class).getStore(book.getStore().getNif())).withRel("store"));
     }
 

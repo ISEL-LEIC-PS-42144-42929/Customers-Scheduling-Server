@@ -47,8 +47,14 @@ public class StoreServicesController {
                                                 .map( i -> new ServiceResource(i.getPk().getService(), i.getPk().getStore().toResource()))
                                                 .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withSelfRel();
-        Resources<ServiceResource> resr = new Resources<>(sr, link);
-        return resr;
+        return new Resources<>(sr, link);
+    }
+
+    @GetMapping(value = "/{nif}/services/{id}")
+    public Resource<ServiceResource> getService(@PathVariable int id) {
+        ServiceResource sr = storeService.getService(id).toResource(null);
+        Link link = linkTo(methodOn(StoreServicesController.class).getService(id)).withSelfRel();
+        return new Resource<>(sr, sr.getLinks(link));
     }
 
 

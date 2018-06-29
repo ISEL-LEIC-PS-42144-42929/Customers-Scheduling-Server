@@ -1,6 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,18 +63,25 @@ public class StoreService implements IStoreService {
     @Override
     public Booking insertBook(int id, String email) {
         Booking booking = bookingRepo.findById(id);
-        booking.setClient((Client)personRepo.findByEmail(email));
+        if(booking == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
+        Client c = (Client)personRepo.findByEmail(email);
+        if(c==null) throw new ResourceNotFoundException("Client with the email - "+email+" - doesn't exists.");
+        booking.setClient(c);
         return bookingRepo.save(booking);
     }
 
     @Override
     public Booking getBookingById(int id) {
-        return bookingRepo.getOne(id);
+        Booking book = bookingRepo.getOne(id);
+        if(book == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
+        return book;
     }
 
     @Override
     public Store getStoreByNif(String nif) {
-        return storeRepo.findByNif(nif);
+        Store store = storeRepo.findByNif(nif);
+        if(store == null) throw new ResourceNotFoundException("Store with the NIF - "+nif+" - doesn't exists.");
+        return store;
     }
 
     @Override
@@ -128,5 +136,12 @@ public class StoreService implements IStoreService {
         return ss.stream()
                 .map( i -> i.getPk().getStaff())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public com.customersscheduling.Domain.Service getService(int id) {
+        com.customersscheduling.Domain.Service serv = servicesRepo.findById(id);
+        if(serv == null) throw new ResourceNotFoundException("Service with the id - "+id+" - doesn't exists.");
+        return serv;
     }
 }
