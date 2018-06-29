@@ -26,7 +26,7 @@ public class BookingService implements IBookingService {
     @Override
     public void dailyUpdate() {
         List<Booking> books = bookingRepo.findByDate(dayFromNow(-1));
-        List<Store> stores =books.stream()
+        List<Store> stores = books.stream()
                                     .map(b -> b.getStore())
                                     .distinct()
                                     .collect(Collectors.toList());
@@ -49,19 +49,17 @@ public class BookingService implements IBookingService {
         });
     }
 
+    @Override
+    public void updateBookingOfStore(Store s, com.customersscheduling.Domain.Service service, Staff staff) {
+        //TO DO 30 days
+    }
+
     private List<Date> getSlotsForDay(Date d, StaffServices ss){
-        List<StaffTimetable> tt = staffTimetableRepo.findByPk_Staff(ss.getPk().getStaff());
-        List<StaffTimetable> ttfiltered = tt.stream()
-                .filter(stt -> stt.getPk().getTimetable().getWeekDay() == getWeekDay(d))
-                .collect(Collectors.toList());
-        Iterator<StaffTimetable> iterator = ttfiltered.iterator();
-        if(iterator.hasNext()){
-            StaffTimetable timetable = iterator.next();
-            List<Date> totDates = new ArrayList<>();
-            //TO DO
-            return totDates;
+        StaffTimetable tt = staffTimetableRepo.findByPk_StaffAndPk_Timetable_WeekDay(ss.getPk().getStaff(), getWeekDay(d));
+        if(tt!=null){
+            return getBookingSlots(ss.getPk().getStoresServices().getPk().getService(), tt.getPk().getTimetable(), d);
         }else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -75,5 +73,21 @@ public class BookingService implements IBookingService {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         return c.get(Calendar.DAY_OF_WEEK);
+    }
+
+    private List<Date> getBookingSlots(com.customersscheduling.Domain.Service s, Timetable t, Date d){
+        int interval = s.getDuration() /60; //interval in hours
+        List<Date> allSlots = new ArrayList<>();
+        Double openHour = new Double(t.getOpenHour());
+        while(openHour <= t.getInitBreak()){
+            int hour = openHour.intValue();
+            int mins = new Double(Math.floor(openHour) * 60).intValue();
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, hour);
+            cal.set(Calendar.MINUTE,mins);
+            //TO DO
+            allSlots.add(cal.getTime());
+        }
+        return null;
     }
 }

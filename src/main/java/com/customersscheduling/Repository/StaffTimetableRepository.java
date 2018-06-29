@@ -13,4 +13,6 @@ public interface StaffTimetableRepository extends JpaRepository<StaffTimetable, 
     StaffTimetable save(StaffTimetable entity);
 
     List<StaffTimetable> findByPk_Staff(Staff staff);
+
+    StaffTimetable findByPk_StaffAndPk_Timetable_WeekDay(Staff staff, int wd);
 }
