@@ -3,6 +3,7 @@ package com.customersscheduling.Domain;
 import com.customersscheduling.HALObjects.BookingResource;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table( name = "booking")
@@ -29,13 +30,17 @@ public class Booking {
     @JoinColumn(name="services_idservices",referencedColumnName="idservices",nullable=false)
     private Service service;
 
+    @Column(name="date")
+    private Date date;
+
     public Booking(){}
 
-    public Booking(Store store, Staff staff, Client client, Service service) {
+    public Booking(Store store, Staff staff, Client client, Service service, Date date) {
         this.store = store;
         this.staff = staff;
         this.client = client;
         this.service = service;
+        this.date = date;
     }
 
 
@@ -81,5 +86,13 @@ public class Booking {
 
     public BookingResource toResource() {
         return new BookingResource(this);
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

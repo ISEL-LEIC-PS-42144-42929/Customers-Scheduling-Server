@@ -3,6 +3,7 @@ package com.customersscheduling.Repository;
 import com.customersscheduling.Domain.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
@@ -16,4 +17,10 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     Booking findById(int id);
 
     List<Booking> findByService_Id(int id);
+
+    List<Booking> findByDate(Date d);
+
+    void deleteByDate(Date d);
+
+    void delete(Booking entity);
 }

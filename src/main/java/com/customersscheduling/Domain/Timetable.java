@@ -19,12 +19,12 @@ public class Timetable {
     @Column(name="finishbreak")
     private double finishBreak;
     @Column(name="weekday")
-    private String weekDay;
+    private int weekDay;
 
     public Timetable() {
     }
 
-    public Timetable(double openHour, double closeHour, double initBreak, double finishBreak, String weekDay) {
+    public Timetable(double openHour, double closeHour, double initBreak, double finishBreak, int weekDay) {
         this.openHour = openHour;
         this.closeHour = closeHour;
         this.initBreak = initBreak;
@@ -72,11 +72,11 @@ public class Timetable {
         this.finishBreak = finishBreak;
     }
 
-    public String getWeekDay() {
+    public int getWeekDay() {
         return weekDay;
     }
 
-    public void setWeekDay(String weekDay) {
+    public void setWeekDay(int weekDay) {
         this.weekDay = weekDay;
     }
 }

@@ -3,6 +3,7 @@ package com.customersscheduling.Controller;
 import com.customersscheduling.Controller.InputModels.StoreInputModel;
 import com.customersscheduling.Controller.InputModels.TimetableInputModel;
 import com.customersscheduling.Domain.*;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IPersonService;
 import com.customersscheduling.Service.IStoreService;
@@ -78,6 +79,8 @@ public class TimetableController {
         Store s = null;
         if(iterator.hasNext())
             s = iterator.next().getPk().getStore();
+        else
+            throw new ResourceNotFoundException("Store with NIF - "+nif+" - doesn't have any timetable specified");
         List<Timetable> listtt = st.stream()
                                      .map( stt -> stt.getPk().getTimetable())
                                     .collect(Collectors.toList());

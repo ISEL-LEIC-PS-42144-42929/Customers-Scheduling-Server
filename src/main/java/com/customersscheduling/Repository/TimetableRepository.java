@@ -21,5 +21,5 @@ public interface TimetableRepository extends JpaRepository<Timetable, Integer> {
                                  @Param("closehour") double ch,
                                  @Param("initbreak") double ib,
                                  @Param("finishbreak") double fb,
-                                 @Param("weekday") String wd);
+                                 @Param("weekday") int wd);
 }
