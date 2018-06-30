@@ -41,9 +41,11 @@ public class BookingService implements IBookingService {
             List<StaffServices> staff = staffServicesRepo.getByPk_StoresServices(ss);
             staff.forEach(staffServ -> {
                 List<Date> slotsForDay = getSlotsForDay(d, staffServ);
+                Staff currStaff = staffServ.getPk().getStaff();
+                StoreServicesPK pk = staffServ.getPk().getStoresServices().getPk();
                 List<Booking> books = slotsForDay.stream()
-                                                    .map(da -> new Booking(s, staffServ.getPk().getStaff(), null, staffServ.getPk().getStoresServices().getPk().getService(), da))
-                                                    .collect(Collectors.toList());
+                                                 .map(da -> new Booking(s, currStaff, null, pk.getService(), da))
+                                                 .collect(Collectors.toList());
                 bookingRepo.saveAll(books);
             });
         });
@@ -63,6 +65,31 @@ public class BookingService implements IBookingService {
         }
     }
 
+    private List<Date> getBookingSlots(com.customersscheduling.Domain.Service s, Timetable t, Date d){
+        int interval = s.getDuration() /60; //interval in hours
+        List<Date> allSlots = new ArrayList<>();
+        int hour = new Double(t.getOpenHour()).intValue();
+        int mins = new Double(Math.floor(hour) * 60).intValue();
+        while(hour <= t.getCloseHour()){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(d);
+            cal.set(Calendar.HOUR_OF_DAY, hour);
+            cal.set(Calendar.MINUTE,mins);
+            allSlots.add(cal.getTime());
+            mins += interval;
+            if(mins>60){
+                mins=0;
+                hour++;
+            }
+            if(Double.parseDouble(hour + "." + mins/60) >= t.getInitBreak()){
+                hour = new Double(t.getFinishBreak()).intValue();
+                mins = new Double(Math.floor(hour) * 60).intValue();
+            }
+        }
+        return allSlots;
+    }
+
+
     private Date dayFromNow(int step) {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, step);
@@ -73,21 +100,5 @@ public class BookingService implements IBookingService {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         return c.get(Calendar.DAY_OF_WEEK);
-    }
-
-    private List<Date> getBookingSlots(com.customersscheduling.Domain.Service s, Timetable t, Date d){
-        int interval = s.getDuration() /60; //interval in hours
-        List<Date> allSlots = new ArrayList<>();
-        Double openHour = new Double(t.getOpenHour());
-        while(openHour <= t.getInitBreak()){
-            int hour = openHour.intValue();
-            int mins = new Double(Math.floor(openHour) * 60).intValue();
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, hour);
-            cal.set(Calendar.MINUTE,mins);
-            //TO DO
-            allSlots.add(cal.getTime());
-        }
-        return null;
     }
 }
