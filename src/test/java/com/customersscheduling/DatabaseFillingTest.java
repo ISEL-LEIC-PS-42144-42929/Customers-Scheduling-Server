@@ -112,27 +112,18 @@ public class DatabaseFillingTest {
     }
 
     @Test
-    public void addStaffForServices() throws Exception{
-
-        MvcResult mvcResult = mvc.perform(get("/store/123456789/services"))
-                .andDo(print()).andExpect(status().isOk())
-                .andReturn();
-        String content = mvcResult.getResponse().getContentAsString();
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        ServicesOfStore servicesOfStore = om.readValue(content, ServicesOfStore.class);
-        List<Integer> servicesIds = Arrays.stream(servicesOfStore._embedded.serviceResourceList).map(i -> i.service.id).collect(Collectors.toList());
-        servicesIds.forEach( id -> {
-            for (int i = 0; i < 10; i++) {
-                String email = "tststaffemail"+i;
-                try {
-                    req("/store/123456789/service/"+id+"/staff/"+email, null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    public void addStaffForServices() throws Exception {
+        List<Integer> servicesIds = getServicesIds();
+        servicesIds.forEach(id -> {
+            String email = "tststaffemail9";
+            try {
+                req("/store/123456789/service/" + id + "/staff/" + email, null);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
-
     }
+
 
     private void req(String uri, Object o) throws Exception{
         String body = om.writeValueAsString(o);
@@ -140,5 +131,17 @@ public class DatabaseFillingTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    private List<Integer> getServicesIds() throws Exception{
+        MvcResult mvcResult = mvc.perform(get("/store/123456789/services"))
+                .andDo(print()).andExpect(status().isOk())
+                .andReturn();
+        String content = mvcResult.getResponse().getContentAsString();
+        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ServicesOfStore servicesOfStore = om.readValue(content, ServicesOfStore.class);
+        return Arrays.stream(servicesOfStore._embedded.serviceResourceList)
+                        .map(i -> i.service.id)
+                        .collect(Collectors.toList());
     }
 }

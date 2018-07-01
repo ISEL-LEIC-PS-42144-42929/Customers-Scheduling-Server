@@ -23,7 +23,7 @@ public class Booking {
     private Staff staff;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="client_user_person_email",referencedColumnName="user_person_email",nullable=false)
+    @JoinColumn(name="client_user_person_email",referencedColumnName="user_person_email")
     private Client client;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
