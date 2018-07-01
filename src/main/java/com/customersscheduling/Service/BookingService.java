@@ -1,6 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookingService implements IBookingService {
+
+
+    @Autowired
+    PersonRepository personRepo;
 
     @Autowired
     BookingRepository bookingRepo;
@@ -22,6 +27,24 @@ public class BookingService implements IBookingService {
 
     @Autowired
     StaffTimetableRepository staffTimetableRepo;
+
+
+    @Override
+    public Booking insertBook(int id, String email) {
+        Booking booking = bookingRepo.findById(id);
+        if(booking == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
+        Client c = (Client)personRepo.findByEmail(email);
+        if(c==null) throw new ResourceNotFoundException("Client with the email - "+email+" - doesn't exists.");
+        booking.setClient(c);
+        return bookingRepo.save(booking);
+    }
+
+    @Override
+    public Booking getBookingById(int id) {
+        Booking book = bookingRepo.getOne(id);
+        if(book == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
+        return book;
+    }
 
     @Override
     public void dailyUpdate() {

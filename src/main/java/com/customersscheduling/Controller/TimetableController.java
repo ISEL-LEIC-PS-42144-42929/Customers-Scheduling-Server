@@ -1,18 +1,16 @@
 package com.customersscheduling.Controller;
 
-import com.customersscheduling.Controller.InputModels.StoreInputModel;
 import com.customersscheduling.Controller.InputModels.TimetableInputModel;
 import com.customersscheduling.Domain.*;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.HALObjects.*;
-import com.customersscheduling.Service.IPersonService;
+import com.customersscheduling.Service.IStaffService;
 import com.customersscheduling.Service.IStoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Time;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,14 +22,12 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RequestMapping(value="/timetable", produces = "application/hal+json")
 public class TimetableController {
 
-    private final IStoreService storeService;
-    private final IPersonService personService;
+    @Autowired
+    private  IStoreService storeService;
 
+    @Autowired
+    private IStaffService personService;
 
-    public TimetableController(IStoreService businessService,IPersonService personService) {
-        this.personService = personService;
-        this.storeService = businessService;
-    }
 
 
     @PostMapping(value = "/staff/{email}")

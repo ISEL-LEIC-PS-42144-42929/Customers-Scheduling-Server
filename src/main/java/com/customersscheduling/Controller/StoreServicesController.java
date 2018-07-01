@@ -5,14 +5,14 @@ import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.HALObjects.StaffResource;
+import com.customersscheduling.Service.IServicesOfStoreService;
 import com.customersscheduling.Service.IStoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,17 +23,17 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RequestMapping(value="/store", produces = "application/hal+json")
 public class StoreServicesController {
 
-    private final IStoreService storeService;
+    @Autowired
+    private IServicesOfStoreService servicesOfStoreService;
 
-    public StoreServicesController(IStoreService businessService) {
-        this.storeService = businessService;
-    }
+    @Autowired
+    private IStoreService storeService;
 
     @PostMapping(value = "/{nif}/service")
     public Resource<ServiceResource> insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif) {
         Store store = new Store(); store.setNif(nif);
         StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
-        StoreServices storeServices = storeService.insertServiceForStore(ss);
+        StoreServices storeServices = servicesOfStoreService.insertServiceForStore(ss);
         ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource());
         Link link = linkTo(methodOn(StoreServicesController.class).insertServiceForStore(service, nif)).withSelfRel();
         return new Resource<>(serviceResource, link);
@@ -52,15 +52,14 @@ public class StoreServicesController {
 
     @GetMapping(value = "/{nif}/services/{id}")
     public Resource<ServiceResource> getService(@PathVariable int id) {
-        ServiceResource sr = storeService.getService(id).toResource(null);
+        ServiceResource sr = servicesOfStoreService.getService(id).toResource(null);
         Link link = linkTo(methodOn(StoreServicesController.class).getService(id)).withSelfRel();
         return new Resource<>(sr, sr.getLinks(link));
     }
 
-
     @GetMapping(value = "/{nif}/services/{id}/staff")
     public Resources<StaffResource> getStaffOfService(@PathVariable int id, @PathVariable String nif) {
-        List<StaffResource> staffs = storeService.getStaffOfService(id, nif)
+        List<StaffResource> staffs = servicesOfStoreService.getStaffOfService(id, nif)
                                                     .stream()
                                                     .map( i -> i.toResource())
                                                     .collect(Collectors.toList());
@@ -68,13 +67,15 @@ public class StoreServicesController {
         return new Resources<>(staffs, link);
     }
 
+
     @GetMapping(value = "/{nif}/services/{id}/disp")
     public Resources<BookingResource> getDispOfService(@PathVariable String nif, @PathVariable int id) {
-        final List<BookingResource> books = storeService.getServiceDisp(id)
-                                                        .stream()
-                                                        .map( i -> i.toResource())
-                                                        .collect(Collectors.toList());
+        final List<BookingResource> books = servicesOfStoreService.getServiceDisp(id)
+                .stream()
+                .map( i -> i.toResource())
+                .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreServicesController.class).getDispOfService(nif, id)).withSelfRel();
         return new Resources<>(books, link);
     }
+
 }

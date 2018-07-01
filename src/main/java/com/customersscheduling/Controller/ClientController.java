@@ -1,15 +1,10 @@
 package com.customersscheduling.Controller;
 
-import com.customersscheduling.Controller.InputModels.ClientStoreInputModel;
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
-import com.customersscheduling.Domain.Client;
-import com.customersscheduling.Domain.ClientStores;
-import com.customersscheduling.Domain.ClientStoresPK;
-import com.customersscheduling.Domain.Store;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ClientResource;
 import com.customersscheduling.HALObjects.StoreResource;
-import com.customersscheduling.Service.IPersonService;
+import com.customersscheduling.Service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -28,7 +23,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class ClientController {
 
     @Autowired
-    private IPersonService personService;
+    private IClientService personService;
 
     @PostMapping(value = "/client")
     public Resource<ClientResource> insertClient(@RequestBody PersonInputModel person) {

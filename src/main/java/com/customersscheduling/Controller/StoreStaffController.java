@@ -4,6 +4,7 @@ import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.Service.IBookingService;
+import com.customersscheduling.Service.IServicesOfStoreService;
 import com.customersscheduling.Service.IStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -18,7 +19,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class StoreStaffController {
 
     @Autowired
-    private IStoreService storeService;
+    private IServicesOfStoreService storeService;
 
     @Autowired
     private IBookingService bookingService;
@@ -29,7 +30,7 @@ public class StoreStaffController {
         Staff staff = new Staff(); staff.setEmail(email);
         Service service = new Service(); service.setId(id);
         StaffServices ss = new StaffServices(new StaffServicesPK(staff, new StoreServices(new StoreServicesPK(store, service))));
-        StaffServices staffServices = storeService.insertStafForService(ss);
+        StaffServices staffServices = storeService.insertStaffForService(ss);
         bookingService.updateBookingOfStore(staffServices);
         StoreServicesPK pk = staffServices.getPk().getStoresServices().getPk();
         ServiceResource sres = new ServiceResource(pk.getService(), pk.getStore().toResource());

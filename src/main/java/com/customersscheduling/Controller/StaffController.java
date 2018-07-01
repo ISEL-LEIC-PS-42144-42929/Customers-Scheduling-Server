@@ -2,7 +2,8 @@ package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.HALObjects.StaffResource;
-import com.customersscheduling.Service.IPersonService;
+import com.customersscheduling.Service.IStaffService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value="/person", produces = "application/hal+json")
 public class StaffController {
 
-    private final IPersonService personService;
-
-    public StaffController(IPersonService personService) {
-        this.personService = personService;
-    }
+    @Autowired
+    private IStaffService personService;
 
     @PostMapping(value = "/staff")
     public Resource<StaffResource> insertStaff(@RequestBody PersonInputModel person) {

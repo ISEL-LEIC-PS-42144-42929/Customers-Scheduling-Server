@@ -1,6 +1,8 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.Domain.*;
+import com.customersscheduling.Domain.Staff;
+import com.customersscheduling.Domain.StaffTimetable;
+import com.customersscheduling.Domain.Timetable;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.ClientStoresRepository;
 import com.customersscheduling.Repository.PersonRepository;
@@ -10,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class PersonService implements IPersonService {
+public class StaffService implements IStaffService {
+
 
     @Autowired
     PersonRepository personRepo;
@@ -23,19 +25,6 @@ public class PersonService implements IPersonService {
 
     @Autowired
     StaffTimetableRepository staffTimetableRepo;
-
-    @Autowired
-    ClientStoresRepository clientStoresRepo;
-
-    @Override
-    public Client insertClient(Client client) {
-        return (Client) personRepo.save(client);
-    }
-
-    @Override
-    public Owner insertOwner(Owner owner) {
-        return (Owner)personRepo.save(owner);
-    }
 
     @Override
     public Staff insertStaff(Staff staff) {
@@ -54,13 +43,6 @@ public class PersonService implements IPersonService {
         return (Staff) personRepo.findByEmail(staffTimeTable.getPk().getStaff().getEmail());
     }
 
-    @Override
-    public List<Store> getStoresByEmail(String email) {
-        return clientStoresRepo.findByPk_Client_EmailAndAccepted(email, true)
-                                .stream()
-                                .map(cs -> cs.getPk().getStore())
-                                .collect(Collectors.toList());
-    }
 
     @Override
     public List<StaffTimetable> getStaffTimetable(String email) {
@@ -71,19 +53,4 @@ public class PersonService implements IPersonService {
         return lstaff;
     }
 
-    @Override
-    public List<Store> getPendentRequests(String email) {
-        List<ClientStores> l = clientStoresRepo.findByPk_Client_EmailAndAccepted(email, false);
-        if(l.size()==0) throw new ResourceNotFoundException("Could not find any timetable for the user with the email '"+email+"'.");
-        return l.stream()
-                .map(cs -> cs.getPk().getStore())
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Client getClient(String email) {
-        Client client = (Client)personRepo.findByEmail(email);
-        if(client == null) throw new ResourceNotFoundException("Could not find user with the email '"+email+"'.");
-        return client;
-    }
 }

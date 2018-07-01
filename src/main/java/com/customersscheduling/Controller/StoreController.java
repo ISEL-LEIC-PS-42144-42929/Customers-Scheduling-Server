@@ -45,16 +45,6 @@ public class StoreController {
         return new Resource<>(storeResource, storeResource.getLinks(link));
     }
 
-    @GetMapping(value = "/owner/{email}")
-    public Resources<StoreResource> getStoreOfOwner(@PathVariable String email) {
-        List<StoreResource> storesOfUser = storeService.getStoresOfUser(email)
-                                                        .stream()
-                                                        .map( i -> i.toResource())
-                                                        .collect(Collectors.toList());
-        Link link = linkTo(methodOn(StoreController.class).getStoreOfOwner(email)).withSelfRel();
-        Resources<StoreResource> storeRe = new Resources<>(storesOfUser, link);
-        return storeRe;
-    }
 
     @PostMapping(value = "/{nif}/client/{email}")
     public Resource<StoreResource> setClientForStore(@PathVariable String nif, @PathVariable String email, @RequestBody ClientStoreInputModel csim) {
