@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name="user_person_email")
 public class Owner extends User {
 
-    @Column(name="NIF")
+    @Column(name="nif")
     private String nif;
 
     public Owner() {

@@ -48,7 +48,11 @@ public class StoreService implements IStoreService {
     @Override
     public StaffServices insertStafForService(StaffServices s) {
         personRepo.save(s.getPk().getStaff());
-        return staffServicesRepo.save(s);
+        staffServicesRepo.save(s);
+        int id = s.getPk().getStoresServices().getPk().getService().getId();
+        String email = s.getPk().getStaff().getEmail();
+        String nif = s.getPk().getStoresServices().getPk().getStore().getNif();
+        return new StaffServices(new StaffServicesPK((Staff)personRepo.findByEmail(email), new StoreServices(new StoreServicesPK(storeRepo.findByNif(nif), servicesRepo.findById(id)))));
     }
 
     @Override

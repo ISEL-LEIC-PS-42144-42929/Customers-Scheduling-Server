@@ -10,6 +10,7 @@ import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ClientResource;
 import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Service.IPersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -25,12 +26,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 @RequestMapping(value="/person", produces = "application/hal+json")
 public class ClientController {
-    private final IPersonService personService;
 
-    public ClientController(IPersonService personService) {
-        this.personService = personService;
-    }
-
+    @Autowired
+    private IPersonService personService;
 
     @PostMapping(value = "/client")
     public Resource<ClientResource> insertClient(@RequestBody PersonInputModel person) {

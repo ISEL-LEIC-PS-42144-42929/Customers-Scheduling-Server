@@ -1,17 +1,14 @@
 package com.customersscheduling.Controller.ClientDTOs;
 
 public class AddressDto {
-    private int id;
+    public int id;
+    public String zip_code;
+    public String street;
+    public String lot;
+    public String city;
+    public String country;
 
-    public AddressDto(int id) {
-        this.id = id;
+    public AddressDto() {
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

@@ -52,8 +52,19 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public void updateBookingOfStore(Store s, com.customersscheduling.Domain.Service service, Staff staff) {
-        //TO DO 30 days
+    public void updateBookingOfStore(StaffServices staffServs) {
+        int i= 0;
+        while(i<=30){
+            List<Date> freeSlots = getSlotsForDay(dayFromNow(i), staffServs);
+            Staff currStaff = staffServs.getPk().getStaff();
+            StoreServicesPK pk = staffServs.getPk().getStoresServices().getPk();
+            Store s = pk.getStore();
+            List<Booking> books = freeSlots.stream()
+                                            .map(da -> new Booking(s, currStaff, null, pk.getService(), da))
+                                            .collect(Collectors.toList());
+            bookingRepo.saveAll(books);
+            ++i;
+        }
     }
 
     private List<Date> getSlotsForDay(Date d, StaffServices ss){
@@ -66,24 +77,26 @@ public class BookingService implements IBookingService {
     }
 
     private List<Date> getBookingSlots(com.customersscheduling.Domain.Service s, Timetable t, Date d){
-        int interval = s.getDuration() /60; //interval in hours
+        int interval = s.getDuration(); //interval in minutes
         List<Date> allSlots = new ArrayList<>();
-        int hour = new Double(t.getOpenHour()).intValue();
-        int mins = new Double(Math.floor(hour) * 60).intValue();
-        while(hour <= t.getCloseHour()){
+        int hour = (int) t.getOpenHour();
+        int mins = (int)((hour - t.getOpenHour())*10);
+        boolean secondHalf = false;
+        while(hour < t.getCloseHour()){
             Calendar cal = Calendar.getInstance();
             cal.setTime(d);
             cal.set(Calendar.HOUR_OF_DAY, hour);
             cal.set(Calendar.MINUTE,mins);
             allSlots.add(cal.getTime());
             mins += interval;
-            if(mins>60){
+            if(mins>=60){
                 mins=0;
                 hour++;
             }
-            if(Double.parseDouble(hour + "." + mins/60) >= t.getInitBreak()){
-                hour = new Double(t.getFinishBreak()).intValue();
-                mins = new Double(Math.floor(hour) * 60).intValue();
+            if(!secondHalf && Double.parseDouble(hour + "." + mins/60) >= t.getInitBreak()){
+                hour = (int)t.getFinishBreak();
+                mins = (int)((hour - t.getFinishBreak())*10);
+                secondHalf = true;
             }
         }
         return allSlots;
