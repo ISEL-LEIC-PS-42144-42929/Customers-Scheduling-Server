@@ -24,6 +24,7 @@ public class StoreResource extends ResourceSupport {
         add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withRel("services"));
         add(linkTo(methodOn(StorePortfolioController.class).getPortfolioOfStore(nif)).withRel("portfolio"));
         add(linkTo(methodOn(StoreController.class).updateStoreAddress(nif, null)).withRel("update_addr"));
+        add(linkTo(methodOn(StoreController.class).updateInfoStore(nif, null)).withRel("update_info"));
     }
 
     public List<Link> getLinks(Link l) {

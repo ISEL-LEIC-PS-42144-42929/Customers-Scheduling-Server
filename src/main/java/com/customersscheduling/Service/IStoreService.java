@@ -19,4 +19,6 @@ public interface IStoreService {
     Store updateStoreTimetable(StoreTimetable storeTimetable);
 
     Store updateStoreAddress(String nif, Address address);
+
+    Store updateStore(String nif, Store store);
 }

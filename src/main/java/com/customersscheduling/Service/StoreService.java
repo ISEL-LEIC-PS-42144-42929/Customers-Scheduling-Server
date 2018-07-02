@@ -104,5 +104,17 @@ public class StoreService implements IStoreService {
         return getStoreByNif(nif);
     }
 
+    @Override
+    public Store updateStore(String nif, Store store) {
+        Store s = getStoreByNif(nif);
+        if(store.getCategory() != null)
+            s.setCategory(store.getCategory());
+        if(store.getStoreName() != null)
+            s.setStoreName(store.getStoreName());
+        if(store.getContact() != null)
+            s.setContact(store.getContact());
+        return storeRepo.save(s);
+    }
+
 
 }
