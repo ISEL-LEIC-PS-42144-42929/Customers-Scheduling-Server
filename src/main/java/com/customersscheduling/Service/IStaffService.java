@@ -16,4 +16,6 @@ public interface IStaffService {
     Staff getStaff(String email);
     Staff updateStaff(String email, Staff oldStaff);
     Staff updateStaffTimetable(StaffTimetable staffTimetable);
+
+    Staff deleteStaff(String email);
 }

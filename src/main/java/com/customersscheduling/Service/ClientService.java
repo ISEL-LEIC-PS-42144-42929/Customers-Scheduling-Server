@@ -56,4 +56,10 @@ public class ClientService implements IClientService {
         return client;
     }
 
+    @Override
+    public Client deleteClient(String email) {
+        Client client = getClient(email);
+        personRepo.delete(client);
+        return client;
+    }
 }

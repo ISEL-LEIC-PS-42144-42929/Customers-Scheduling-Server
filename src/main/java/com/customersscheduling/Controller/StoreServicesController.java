@@ -39,6 +39,17 @@ public class StoreServicesController {
         return new Resource<>(serviceResource, link);
     }
 
+    @PutMapping(value = "/{nif}/service/{id}")
+    public Resource<ServiceResource> updateService(@RequestBody ServiceInputModel service, @PathVariable String nif, @PathVariable int id) {
+        Store store = new Store(); store.setNif(nif);
+        StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
+        StoreServices storeServices = servicesOfStoreService.updateService(ss, id);
+        ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource());
+        Link link = linkTo(methodOn(StoreServicesController.class).updateService(service, nif, id)).withSelfRel();
+        return new Resource<>(serviceResource, link);
+    }
+
+
 
     @GetMapping(value = "/{nif}/services")
     public Resources<ServiceResource> getServicesOfStore(@PathVariable String nif) {

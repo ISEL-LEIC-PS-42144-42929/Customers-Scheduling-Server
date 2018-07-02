@@ -65,4 +65,11 @@ public class ClientController {
         Link link = linkTo(methodOn(ClientController.class).getStoresOfClient(email)).withSelfRel();
         return new Resources<>(stores, link);
     }
+
+    @DeleteMapping(value = "/{email}/client")
+    public Resource<ClientResource> deleteClient(@PathVariable String email) {
+        ClientResource cs = personService.deleteClient(email).toResource();
+        Link link = linkTo(methodOn(ClientController.class).getStoresOfClient(email)).withSelfRel();
+        return new Resource<>(cs, cs.getLinks(link));
+    }
 }

@@ -11,4 +11,6 @@ public interface IServicesOfStoreService {
     List<Booking> getServiceDisp(int id);
     List<Staff> getStaffOfService(int id, String nif);
     Service getService(int id);
+
+    StoreServices updateService(StoreServices ss, int id);
 }

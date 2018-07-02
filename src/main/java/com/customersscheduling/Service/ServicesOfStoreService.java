@@ -70,9 +70,17 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     }
 
     @Override
-    public com.customersscheduling.Domain.Service getService(int id) {
-        com.customersscheduling.Domain.Service serv = servicesRepo.findById(id);
+    public Service getService(int id) {
+        Service serv = servicesRepo.findById(id);
         if(serv == null) throw new ResourceNotFoundException("Service with the id - "+id+" - doesn't exists.");
         return serv;
+    }
+
+    @Override
+    public StoreServices updateService(StoreServices ss, int id) {
+        Service serv = getService(id);
+        ss.getPk().getService().setId(id);
+        servicesRepo.save(ss.getPk().getService());
+        return storeServicesRepo.save(ss);
     }
 }

@@ -9,4 +9,6 @@ public interface IOwnerService {
     Owner insertOwner(Owner owner);
 
     Owner getOwner(String email);
+
+    Owner deleteOwner(String email);
 }

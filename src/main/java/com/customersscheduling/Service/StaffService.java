@@ -1,6 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
+import com.customersscheduling.Domain.Person;
 import com.customersscheduling.Domain.Staff;
 import com.customersscheduling.Domain.StaffTimetable;
 import com.customersscheduling.Domain.Timetable;
@@ -80,6 +81,13 @@ public class StaffService implements IStaffService {
         timetableRepo.save(newTimetable);
         staffTimetableRepo.save(staffTt);
         return (Staff) personRepo.findByEmail(staffTimetable.getPk().getStaff().getEmail());
+    }
+
+    @Override
+    public Staff deleteStaff(String email) {
+        Staff s = getStaff(email);
+        personRepo.delete(s);
+        return s;
     }
 
 }

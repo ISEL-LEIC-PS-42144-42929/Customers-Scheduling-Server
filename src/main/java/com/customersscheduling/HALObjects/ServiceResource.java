@@ -22,6 +22,7 @@ public class ServiceResource extends ResourceSupport {
         if(store!=null){
             add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(store.getStore().getNif())).withRel("get_store_services"));
             add(linkTo(methodOn(StoreServicesController.class).insertServiceForStore(null, store.getStore().getNif())).withRel("insert_store_service"));
+            add(linkTo(methodOn(StoreServicesController.class).updateService(null, store.getStore().getNif(), service.getId())).withRel("update"));
         }
 
     }
