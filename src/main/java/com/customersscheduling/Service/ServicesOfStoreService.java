@@ -43,8 +43,8 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
 
     @Override
     public StoreServices insertServiceForStore(StoreServices s) {
-        com.customersscheduling.Domain.Service serv = s.getPk().getService();
-        com.customersscheduling.Domain.Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
+        Service serv = s.getPk().getService();
+        Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
         if(s1!=null) s.getPk().getService().setId(s1.getId());
         servicesRepo.save(s.getPk().getService());
         return storeServicesRepo.save(s);
@@ -82,5 +82,16 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
         ss.getPk().getService().setId(id);
         servicesRepo.save(ss.getPk().getService());
         return storeServicesRepo.save(ss);
+    }
+
+    @Override
+    public Service deleteService(String nif, int id) {
+        Service s = getService(id);
+        StoreServices ss = storeServicesRepo.findByPk_Service_Id(id);
+        if(ss!=null)
+            storeServicesRepo.delete(ss);
+        else
+            throw new ResourceNotFoundException("Service with the ID - "+id+" - doesn't belong to the Store with the NIF - "+nif);
+        return s;
     }
 }

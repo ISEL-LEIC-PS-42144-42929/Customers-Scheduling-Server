@@ -1,6 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
+import com.customersscheduling.HALObjects.ServiceResource;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface IServicesOfStoreService {
     Service getService(int id);
 
     StoreServices updateService(StoreServices ss, int id);
+
+    Service deleteService(String nif, int id);
 }

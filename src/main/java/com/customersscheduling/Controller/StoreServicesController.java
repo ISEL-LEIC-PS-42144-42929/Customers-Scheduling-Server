@@ -89,4 +89,10 @@ public class StoreServicesController {
         return new Resources<>(books, link);
     }
 
+    @DeleteMapping(value = "/{nif}/service/{id}")
+    public Resource<ServiceResource> deleteService(@PathVariable String nif, @PathVariable int id) {
+        ServiceResource service = servicesOfStoreService.deleteService(nif, id).toResource(null);
+        Link link = linkTo(methodOn(StoreServicesController.class).deleteService(nif, id)).withSelfRel();
+        return new Resource<>(service, service.getLinks(link));
+    }
 }

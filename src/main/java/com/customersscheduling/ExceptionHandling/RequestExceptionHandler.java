@@ -15,6 +15,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.TransactionRequiredException;
 import java.util.Optional;
 
 @ControllerAdvice
@@ -33,6 +34,11 @@ public class RequestExceptionHandler {
     @ExceptionHandler(InvalidBodyException.class)
     public final ResponseEntity<VndErrors> handle(InvalidBodyException ex, HttpServletRequest request){
         return error(ex,HttpStatus.NOT_FOUND, "Body values are incorrect");
+    }
+
+    @ExceptionHandler(TransactionRequiredException.class)
+    public final ResponseEntity<VndErrors> handle(TransactionRequiredException ex, HttpServletRequest request){
+        return error(ex,HttpStatus.NOT_FOUND, "Some problem occurred while accessing database");
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
