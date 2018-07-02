@@ -8,7 +8,7 @@ import java.util.List;
 public interface IStoreService {
 
     Store insertStore(Store store);
-    Store getStoreByNif(String nif);
+    Store getStore(String nif);
     List<Store> getStoresOfUser(String email);
     List<Client> getPendentRequests(String nif);
     Store insertClientForStore(ClientStores cs);
@@ -21,4 +21,6 @@ public interface IStoreService {
     Store updateStoreAddress(String nif, Address address);
 
     Store updateStore(String nif, Store store);
+
+    Store deleteStore(String nif);
 }

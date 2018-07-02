@@ -7,10 +7,8 @@ import com.customersscheduling.Service.IStoreService;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +29,7 @@ public class StoreController {
 
     @GetMapping(value = "/{nif}")
     public Resource<StoreResource> getStore(@PathVariable String nif) {
-        StoreResource res = storeService.getStoreByNif(nif).toResource();
+        StoreResource res = storeService.getStore(nif).toResource();
         Link link = linkTo(methodOn(StoreController.class).getStore(nif)).withSelfRel();
         return new Resource<>(res, res.getLinks(link));
     }
@@ -85,6 +83,14 @@ public class StoreController {
         Link link = linkTo(methodOn(StoreController.class)
                 .getPendentRequestsOfStore(nif)).withSelfRel();
         return new Resources<>(clients, link);
+    }
+
+    @DeleteMapping(value = "/{nif}")
+    public Resource<StoreResource> deleteStore(@PathVariable String nif) {
+        StoreResource storeResource = storeService.deleteStore(nif).toResource();
+        Link link = linkTo(methodOn(StoreController.class).deleteStore(nif)).withSelfRel();
+        Resource<StoreResource> rp = new Resource<>(storeResource, storeResource.getLinks(link));
+        return rp;
     }
 
 }

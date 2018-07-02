@@ -34,7 +34,7 @@ public class StoreService implements IStoreService {
 
 
     @Override
-    public Store getStoreByNif(String nif) {
+    public Store getStore(String nif) {
         Store store = storeRepo.findByNif(nif);
         if(store == null) throw new ResourceNotFoundException("Store with the NIF - "+nif+" - doesn't exists.");
         return store;
@@ -92,21 +92,21 @@ public class StoreService implements IStoreService {
         stt.getPk().setTimetable(newTimetable);
         timetableRepo.save(newTimetable);
         storeTimetableRepo.save(stt);
-        return getStoreByNif(storeTimetable.getPk().getStore().getNif());
+        return getStore(storeTimetable.getPk().getStore().getNif());
     }
 
     @Override
     public Store updateStoreAddress(String nif, Address address) {
-        Store s = getStoreByNif(nif);
+        Store s = getStore(nif);
         address.setId(s.getAddress().getId());
         s.setAddress(address);
         storeRepo.save(s);
-        return getStoreByNif(nif);
+        return getStore(nif);
     }
 
     @Override
     public Store updateStore(String nif, Store store) {
-        Store s = getStoreByNif(nif);
+        Store s = getStore(nif);
         if(store.getCategory() != null)
             s.setCategory(store.getCategory());
         if(store.getStoreName() != null)
@@ -114,6 +114,13 @@ public class StoreService implements IStoreService {
         if(store.getContact() != null)
             s.setContact(store.getContact());
         return storeRepo.save(s);
+    }
+
+    @Override
+    public Store deleteStore(String nif) {
+        Store s = getStore(nif);
+        storeRepo.delete(s);
+        return s;
     }
 
 
