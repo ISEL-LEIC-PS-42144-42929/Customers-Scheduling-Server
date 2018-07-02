@@ -95,5 +95,14 @@ public class StoreService implements IStoreService {
         return getStoreByNif(storeTimetable.getPk().getStore().getNif());
     }
 
+    @Override
+    public Store updateStoreAddress(String nif, Address address) {
+        Store s = getStoreByNif(nif);
+        address.setId(s.getAddress().getId());
+        s.setAddress(address);
+        storeRepo.save(s);
+        return getStoreByNif(nif);
+    }
+
 
 }

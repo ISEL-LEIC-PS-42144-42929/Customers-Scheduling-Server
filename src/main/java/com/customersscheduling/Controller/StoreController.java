@@ -45,6 +45,16 @@ public class StoreController {
         return new Resource<>(storeResource, storeResource.getLinks(link));
     }
 
+    @PutMapping(value = "/{nif}/address/{id}")
+    public Resource<StoreResource> updateStoreAddress(@PathVariable String nif, @RequestBody AddressInputModel addr) {
+        Address address = addr.toDto();
+        Store st = new Store();
+        st.setNif(nif);
+        StoreResource storeResource = storeService.updateStoreAddress(nif, address).toResource();
+        Link link = linkTo(methodOn(StoreController.class).updateStoreAddress(nif, addr)).withSelfRel();
+        return new Resource<>(storeResource, storeResource.getLinks(link));
+    }
+
 
     @PostMapping(value = "/{nif}/client/{email}")
     public Resource<StoreResource> setClientForStore(@PathVariable String nif, @PathVariable String email, @RequestBody ClientStoreInputModel csim) {

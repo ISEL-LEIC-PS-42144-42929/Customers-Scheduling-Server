@@ -17,4 +17,6 @@ public interface IStoreService {
     List<StoreServices> getServicesOfStore(String nif);
 
     Store updateStoreTimetable(StoreTimetable storeTimetable);
+
+    Store updateStoreAddress(String nif, Address address);
 }
