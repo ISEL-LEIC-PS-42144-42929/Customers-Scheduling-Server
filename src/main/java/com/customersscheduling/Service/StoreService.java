@@ -82,5 +82,18 @@ public class StoreService implements IStoreService {
         return storeServicesRepo.findByPk_Store_Nif(nif);
     }
 
+    @Override
+    public Store updateStoreTimetable(StoreTimetable storeTimetable) {
+        int weekDay = storeTimetable.getPk().getTimetable().getWeekDay();
+        StoreTimetable stt = storeTimetableRepo.findByPk_StoreAndPk_Timetable_WeekDay(storeTimetable.getPk().getStore(), weekDay);
+        if(stt==null) throw new ResourceNotFoundException("Timetable with the specified Store and Weekday can't be updated because doesn't exists.");
+        Timetable newTimetable = storeTimetable.getPk().getTimetable();
+        newTimetable.setId(stt.getPk().getTimetable().getId());
+        stt.getPk().setTimetable(newTimetable);
+        timetableRepo.save(newTimetable);
+        storeTimetableRepo.save(stt);
+        return getStoreByNif(storeTimetable.getPk().getStore().getNif());
+    }
+
 
 }

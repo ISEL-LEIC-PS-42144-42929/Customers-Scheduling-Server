@@ -73,6 +73,7 @@ public class StaffService implements IStaffService {
     @Override
     public Staff updateStaffTimetable(StaffTimetable staffTimetable) {
         StaffTimetable staffTt = staffTimetableRepo.findByPk_StaffAndPk_Timetable_WeekDay(staffTimetable.getPk().getStaff(), staffTimetable.getPk().getTimetable().getWeekDay());
+        if(staffTt==null) throw new ResourceNotFoundException("Timetable with the specified Staff and Weekday can't be updated because doesn't exists.");
         Timetable newTimetable = staffTimetable.getPk().getTimetable();
         newTimetable.setId(staffTt.getPk().getTimetable().getId());
         staffTt.getPk().setTimetable(newTimetable);

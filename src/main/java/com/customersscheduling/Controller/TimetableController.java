@@ -78,6 +78,16 @@ public class TimetableController {
         return new Resource<StoreResource>(storeResource, storeResource.getLinks(link));
     }
 
+    @PutMapping(value = "/store/{nif}/{weekDay}")
+    public Resource<StoreResource> updateStoreTimetable(@PathVariable String nif, @PathVariable int weekDay,  @RequestBody TimetableInputModel timetable) {
+        if(timetable.week_day!=weekDay) throw new InvalidBodyException("Weekday specified on query isn't coerent with the body's one ( "+weekDay+"!="+timetable.week_day+").");
+        Store s = new Store();
+        s.setNif(nif);
+        Timetable tt = timetable.toDto();
+        StoreResource storeResource = storeService.updateStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s))).toResource();
+        Link link = linkTo(methodOn(TimetableController.class).insertStoreTimetable(nif,timetable)).withSelfRel();
+        return new Resource<>(storeResource, storeResource.getLinks(link));
+    }
 
     @GetMapping(value = "/store/{nif}")
     public Resource<StoreTimetableResource> getStoreTimetable(@PathVariable String nif) {
