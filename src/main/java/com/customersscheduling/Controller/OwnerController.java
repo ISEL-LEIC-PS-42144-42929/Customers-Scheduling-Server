@@ -31,13 +31,17 @@ public class OwnerController {
     @PostMapping(value = "/owner")
     public Resource<OwnerResource> insertOwner(@RequestBody OwnerInputModel owner) {
         OwnerResource personResource = personService.insertOwner(owner.toOwnerDto()).toResource();
-        Resource<OwnerResource> rp = new Resource<>(personResource);
+        Link link = linkTo(methodOn(OwnerController.class).insertOwner(owner)).withSelfRel();
+        Resource<OwnerResource> rp = new Resource<>(personResource, personResource.getLinks(link));
         return rp;
     }
 
     @GetMapping(value = "/owner/{email}")
-    public Resources<OwnerResource> getOwner(@PathVariable String email) {
-        return null;
+    public Resource<OwnerResource> getOwner(@PathVariable String email) {
+        OwnerResource personResource = personService.getOwner(email).toResource();
+        Link link = linkTo(methodOn(OwnerController.class).getOwner(email)).withSelfRel();
+        Resource<OwnerResource> rp = new Resource<>(personResource, personResource.getLinks(link));
+        return rp;
     }
 
 

@@ -1,8 +1,10 @@
 package com.customersscheduling.Service;
 
+import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Domain.Staff;
 import com.customersscheduling.Domain.StaffTimetable;
 import com.customersscheduling.Domain.Timetable;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.ClientStoresRepository;
 import com.customersscheduling.Repository.PersonRepository;
@@ -51,6 +53,32 @@ public class StaffService implements IStaffService {
         List<StaffTimetable> lstaff = staffTimetableRepo.findByPk_Staff(staff);
         if(lstaff.size()==0) throw new ResourceNotFoundException("Could not find any timetable for the user with the email '"+email+"'.");
         return lstaff;
+    }
+
+    @Override
+    public Staff getStaff(String email) {
+        Staff s = (Staff)personRepo.findByEmail(email);
+        if(s==null) throw new ResourceNotFoundException("Staff with the email - "+email+" - doesn't exist.");
+        return s;
+    }
+
+    @Override
+    public Staff updateStaff(String email, Staff oldStaff) {
+        if(oldStaff.getEmail()==null || !oldStaff.getEmail().equals(email)) throw new InvalidBodyException("Staff object sent on body is incompleted");
+        Staff s = (Staff)personRepo.findByEmail(email);
+        if(s==null) throw new ResourceNotFoundException("Could not update Staff with the email - "+email+" - because it doesn't exists");
+        return (Staff)personRepo.save(oldStaff);
+    }
+
+    @Override
+    public Staff updateStaffTimetable(StaffTimetable staffTimetable) {
+        StaffTimetable staffTt = staffTimetableRepo.findByPk_StaffAndPk_Timetable_WeekDay(staffTimetable.getPk().getStaff(), staffTimetable.getPk().getTimetable().getWeekDay());
+        Timetable newTimetable = staffTimetable.getPk().getTimetable();
+        newTimetable.setId(staffTt.getPk().getTimetable().getId());
+        staffTt.getPk().setTimetable(newTimetable);
+        timetableRepo.save(newTimetable);
+        staffTimetableRepo.save(staffTt);
+        return (Staff) personRepo.findByEmail(staffTimetable.getPk().getStaff().getEmail());
     }
 
 }

@@ -1,7 +1,9 @@
 package com.customersscheduling.ExceptionHandling;
 
+import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.springframework.dao.*;
 import org.springframework.hateoas.VndErrors;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,12 @@ public class RequestExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public final ResponseEntity<VndErrors> handle(ResourceNotFoundException ex, HttpServletRequest request){
-        return error(ex,HttpStatus.NOT_FOUND, "error");
+        return error(ex,HttpStatus.NOT_FOUND, "Some resource couldn't be found");
+    }
+
+    @ExceptionHandler(InvalidBodyException.class)
+    public final ResponseEntity<VndErrors> handle(InvalidBodyException ex, HttpServletRequest request){
+        return error(ex,HttpStatus.NOT_FOUND, "Body values are incorrect");
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)

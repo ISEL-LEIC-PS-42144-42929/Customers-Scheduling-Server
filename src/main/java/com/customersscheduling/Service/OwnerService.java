@@ -19,4 +19,9 @@ public class OwnerService implements IOwnerService {
         return (Owner)personRepo.save(owner);
     }
 
+    @Override
+    public Owner getOwner(String email) {
+        return (Owner)personRepo.findByEmail(email);
+    }
+
 }

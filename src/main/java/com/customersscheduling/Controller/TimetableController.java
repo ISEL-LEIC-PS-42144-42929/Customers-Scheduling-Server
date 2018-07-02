@@ -2,10 +2,12 @@ package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.TimetableInputModel;
 import com.customersscheduling.Domain.*;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IStaffService;
 import com.customersscheduling.Service.IStoreService;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -28,7 +30,16 @@ public class TimetableController {
     @Autowired
     private IStaffService personService;
 
-
+    @PutMapping(value = "/staff/{email}/{weekDay}")
+    public Resource<StaffResource> updateStaffTimetable(@PathVariable String email, @PathVariable int weekDay,  @RequestBody TimetableInputModel timetable) {
+        if(timetable.week_day!=weekDay) throw new InvalidBodyException("Weekday specified on query isn't coerent with the body's one ( "+weekDay+"!="+timetable.week_day+").");
+        Staff staff = new Staff(); staff.setEmail(email);
+        Timetable tt = timetable.toDto();
+        StaffResource staffResource = personService.updateStaffTimetable(new StaffTimetable(new StaffTimetablePK(tt, staff))).toResource();
+        Link link = linkTo(methodOn(TimetableController.class).updateStaffTimetable(email, weekDay, timetable)).withSelfRel();
+        Resource<StaffResource> staffRe = new Resource<>(staffResource, staffResource.getLinks(link));
+        return staffRe;
+    }
 
     @PostMapping(value = "/staff/{email}")
     public Resource<StaffResource> insertStaffTimetable(@PathVariable String email, @RequestBody TimetableInputModel timetable) {
