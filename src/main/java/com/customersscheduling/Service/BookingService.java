@@ -50,9 +50,9 @@ public class BookingService implements IBookingService {
     public void dailyUpdate() {
         List<Booking> books = bookingRepo.findByDate(dayFromNow(-1));
         List<Store> stores = books.stream()
-                                    .map(b -> b.getStore())
-                                    .distinct()
-                                    .collect(Collectors.toList());
+                            .map(b -> b.getStore())
+                            .distinct()
+                            .collect(Collectors.toList());
         stores.forEach( s -> updateBookingOfStore(s, dayFromNow(30)));
         books.forEach( b -> bookingRepo.delete(b));
     }

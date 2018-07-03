@@ -44,11 +44,11 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
 
         // pass through filter chain to do the actual request handling
         filterChain.doFilter(wrappedRequest, response);
-        logger.info("status: "+response.getStatus());
-        logger.info("method: " + request.getMethod());
-        logger.info("path: "+ request.getRequestURI());
-        logger.info("query: "+ request.getQueryString());
-        logger.info("payload: " + getBody(wrappedRequest));
+        logger.debug("status: "+response.getStatus());
+        logger.debug("method: " + request.getMethod());
+        logger.debug("path: "+ request.getRequestURI());
+        logger.debug("query: "+ request.getQueryString());
+        logger.debug("payload: " + getBody(wrappedRequest));
     }
 
     private String getBody(ContentCachingRequestWrapper request) {
