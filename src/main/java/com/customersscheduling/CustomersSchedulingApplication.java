@@ -1,5 +1,8 @@
 package com.customersscheduling;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.sql.DataSource;
+import java.io.FileInputStream;
 
 
 @EnableJpaRepositories(basePackages = "com.customersscheduling.Repository")
@@ -21,7 +25,8 @@ import javax.sql.DataSource;
 @ComponentScan
 public class CustomersSchedulingApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
+
 		SpringApplication.run(CustomersSchedulingApplication.class, args);
 
 	}

@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "83972953232",
+    "firebase_url": "https://customers-scheduling.firebaseio.com",
+    "project_id": "customers-scheduling",
+    "storage_bucket": "customers-scheduling.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83972953232:android:8fc69f05d71ec72a",
+        "android_client_info": {
+          "package_name": "com.ps.isel.customersscheduling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83972953232-dh7d722f3gasufu5ibkrtbr9rqrj4o0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ps.isel.customersscheduling",
+            "certificate_hash": "41917b22b035291fa5d40a063f49a3a6e4f57d80"
+          }
+        },
+        {
+          "client_id": "83972953232-4dpedskg3rhpbacd3as1pij759f3a3c1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ps.isel.customersscheduling",
+            "certificate_hash": "6402a7bb24f810de6f43bdfbfd5c998d76de2b76"
+          }
+        },
+        {
+          "client_id": "83972953232-tfptaq384kdsdqm1t3ul60j0igshj0lk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJDsQR0p3SZAQcmr7IH6XCCjULELvsO4o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83972953232-tfptaq384kdsdqm1t3ul60j0igshj0lk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

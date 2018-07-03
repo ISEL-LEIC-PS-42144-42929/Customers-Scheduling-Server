@@ -124,6 +124,14 @@ public class DatabaseFillingTest {
         });
     }
 
+    @Test
+    public void addScoresToStore() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            String email="tstclientemail"+i;
+            //req("/person/client", c);
+        }
+    }
+
 
     private void req(String uri, Object o) throws Exception{
         String body = om.writeValueAsString(o);

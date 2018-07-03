@@ -1,6 +1,7 @@
 package com.customersscheduling.ExceptionHandling;
 
 import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.JwtTokenMissingException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.omg.CORBA.DynAnyPackage.Invalid;
@@ -34,6 +35,11 @@ public class RequestExceptionHandler {
     @ExceptionHandler(InvalidBodyException.class)
     public final ResponseEntity<VndErrors> handle(InvalidBodyException ex, HttpServletRequest request){
         return error(ex,HttpStatus.NOT_FOUND, "Body values are incorrect");
+    }
+
+    @ExceptionHandler(JwtTokenMissingException.class)
+    public final ResponseEntity<VndErrors> handle(JwtTokenMissingException ex, HttpServletRequest request){
+        return error(ex,HttpStatus.UNAUTHORIZED, "Request must contain the authorization header with the correct Bearer token");
     }
 
     @ExceptionHandler(TransactionRequiredException.class)

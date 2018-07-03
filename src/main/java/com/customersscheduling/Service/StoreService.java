@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,6 +15,9 @@ public class StoreService implements IStoreService {
 
     @Autowired
     StoreRepository storeRepo;
+
+    @Autowired
+    ClientStoresRepository clientStoreRepo;
 
     @Autowired
     StoreServicesRepository storeServicesRepo;
@@ -121,6 +125,16 @@ public class StoreService implements IStoreService {
         Store s = getStore(nif);
         storeRepo.delete(s);
         return s;
+    }
+
+    @Override
+    public double getScore(String nif) {
+        List<ClientStores> cs = clientStoresRepo.findByPk_Store_NifAndAccepted(nif, true);
+        return cs.stream()
+                .mapToInt(i -> i.getScore())
+                .filter(i -> i != -1)
+                .average()
+                .orElse(0);
     }
 
 

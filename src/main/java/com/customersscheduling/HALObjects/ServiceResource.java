@@ -19,11 +19,12 @@ public class ServiceResource extends ResourceSupport {
     public ServiceResource(Service service, StoreResource store) {
         this.service = service;
         this.store = store;
-        if(store!=null){
-            add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(store.getStore().getNif())).withRel("get_store_services"));
-            add(linkTo(methodOn(StoreServicesController.class).insertServiceForStore(null, store.getStore().getNif())).withRel("insert_store_service"));
-            add(linkTo(methodOn(StoreServicesController.class).updateService(null, store.getStore().getNif(), service.getId())).withRel("update"));
-        }
+        String nif = store == null ? "{nif}" : store.getStore().getNif();
+        add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withRel("get_store_services"));
+        add(linkTo(methodOn(StoreServicesController.class).insertServiceForStore(null, nif)).withRel("insert_store_service"));
+        add(linkTo(methodOn(StoreServicesController.class).updateService(null, nif, service.getId())).withRel("update"));
+        add(linkTo(methodOn(StoreServicesController.class).getStaffOfService(service.getId(), nif)).withRel("staff"));
+
 
     }
 

@@ -23,4 +23,6 @@ public interface IStoreService {
     Store updateStore(String nif, Store store);
 
     Store deleteStore(String nif);
+
+    double getScore(String nif);
 }

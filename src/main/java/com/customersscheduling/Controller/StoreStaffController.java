@@ -1,6 +1,5 @@
 package com.customersscheduling.Controller;
 
-import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.Service.IBookingService;
@@ -19,7 +18,10 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class StoreStaffController {
 
     @Autowired
-    private IServicesOfStoreService storeService;
+    private IServicesOfStoreService servicesStoreService;
+
+    @Autowired
+    private IStoreService storeService;
 
     @Autowired
     private IBookingService bookingService;
@@ -30,10 +32,10 @@ public class StoreStaffController {
         Staff staff = new Staff(); staff.setEmail(email);
         Service service = new Service(); service.setId(id);
         StaffServices ss = new StaffServices(new StaffServicesPK(staff, new StoreServices(new StoreServicesPK(store, service))));
-        StaffServices staffServices = storeService.insertStaffForService(ss);
+        StaffServices staffServices = servicesStoreService.insertStaffForService(ss);
         bookingService.updateBookingOfStore(staffServices);
         StoreServicesPK pk = staffServices.getPk().getStoresServices().getPk();
-        ServiceResource sres = new ServiceResource(pk.getService(), pk.getStore().toResource());
+        ServiceResource sres = new ServiceResource(pk.getService(), pk.getStore().toResource(storeService.getScore(nif)));
         Link link = linkTo(methodOn(StoreStaffController.class).insertStaffForService(email, nif, id)).withSelfRel();
         return new Resource<>(sres, sres.getLinks(link));
     }

@@ -15,9 +15,11 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class StoreResource extends ResourceSupport {
 
     private Store store;
+    private double score;
 
-    public StoreResource(Store store) {
+    public StoreResource(Store store, double score) {
         this.store = store;
+        this.score = score;
         String nif = store.getNif();
         add(linkTo(methodOn(StoreController.class).getStore(nif)).withRel("get"));
         add(linkTo(methodOn(StoreController.class).insertStore(null,null)).withRel("insert"));

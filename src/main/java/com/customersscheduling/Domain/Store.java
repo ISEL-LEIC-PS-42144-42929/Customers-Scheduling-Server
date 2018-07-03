@@ -85,7 +85,7 @@ public class Store {
         this.storeName = storeName;
     }
 
-    public StoreResource toResource() {
-        return new StoreResource(this);
+    public StoreResource toResource(double score) {
+        return new StoreResource(this, score);
     }
 }

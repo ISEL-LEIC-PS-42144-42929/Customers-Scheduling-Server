@@ -58,7 +58,7 @@ public class OwnerController {
     public Resources<StoreResource> getStoreOfOwner(@PathVariable String email) {
         List<StoreResource> storesOfUser = storeService.getStoresOfUser(email)
                 .stream()
-                .map( i -> i.toResource())
+                .map( i -> i.toResource(storeService.getScore(i.getNif())))
                 .collect(Collectors.toList());
         Link link = linkTo(methodOn(OwnerController.class).getStoreOfOwner(email)).withSelfRel();
         Resources<StoreResource> storeRe = new Resources<>(storesOfUser, link);

@@ -73,7 +73,7 @@ public class TimetableController {
         Store s = new Store();
         s.setNif(nif);
         Timetable tt = timetable.toDto();
-        StoreResource storeResource = storeService.insertStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s))).toResource();
+        StoreResource storeResource = storeService.insertStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s))).toResource(storeService.getScore(nif));
         Link link = linkTo(methodOn(TimetableController.class).insertStoreTimetable(nif,timetable)).withSelfRel();
         return new Resource<StoreResource>(storeResource, storeResource.getLinks(link));
     }
@@ -84,7 +84,7 @@ public class TimetableController {
         Store s = new Store();
         s.setNif(nif);
         Timetable tt = timetable.toDto();
-        StoreResource storeResource = storeService.updateStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s))).toResource();
+        StoreResource storeResource = storeService.updateStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s))).toResource(storeService.getScore(nif));
         Link link = linkTo(methodOn(TimetableController.class).insertStoreTimetable(nif,timetable)).withSelfRel();
         return new Resource<>(storeResource, storeResource.getLinks(link));
     }
@@ -102,7 +102,7 @@ public class TimetableController {
                                      .map( stt -> stt.getPk().getTimetable())
                                     .collect(Collectors.toList());
 
-        StoreTimetableResource stResource = new StoreTimetableResource(listtt, s.toResource());
+        StoreTimetableResource stResource = new StoreTimetableResource(listtt, s.toResource(storeService.getScore(nif)));
         Link link = linkTo(methodOn(TimetableController.class).getStoreTimetable(nif)).withSelfRel();
         return new Resource<StoreTimetableResource>(stResource, stResource.getLinks(link));
     }

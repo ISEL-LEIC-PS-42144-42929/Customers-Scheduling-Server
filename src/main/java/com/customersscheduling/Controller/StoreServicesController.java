@@ -34,7 +34,7 @@ public class StoreServicesController {
         Store store = new Store(); store.setNif(nif);
         StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
         StoreServices storeServices = servicesOfStoreService.insertServiceForStore(ss);
-        ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource());
+        ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource(storeService.getScore(nif)));
         Link link = linkTo(methodOn(StoreServicesController.class).insertServiceForStore(service, nif)).withSelfRel();
         return new Resource<>(serviceResource, link);
     }
@@ -44,7 +44,7 @@ public class StoreServicesController {
         Store store = new Store(); store.setNif(nif);
         StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
         StoreServices storeServices = servicesOfStoreService.updateService(ss, id);
-        ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource());
+        ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource(storeService.getScore(nif)));
         Link link = linkTo(methodOn(StoreServicesController.class).updateService(service, nif, id)).withSelfRel();
         return new Resource<>(serviceResource, link);
     }
@@ -55,7 +55,7 @@ public class StoreServicesController {
     public Resources<ServiceResource> getServicesOfStore(@PathVariable String nif) {
         List<ServiceResource> sr = storeService.getServicesOfStore(nif)
                                                 .stream()
-                                                .map( i -> new ServiceResource(i.getPk().getService(), i.getPk().getStore().toResource()))
+                                                .map( i -> new ServiceResource(i.getPk().getService(), i.getPk().getStore().toResource(storeService.getScore(nif))))
                                                 .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withSelfRel();
         return new Resources<>(sr, link);

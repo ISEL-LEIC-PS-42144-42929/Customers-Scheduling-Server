@@ -5,6 +5,7 @@ import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ClientResource;
 import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Service.IClientService;
+import com.customersscheduling.Service.IStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -25,6 +26,9 @@ public class ClientController {
     @Autowired
     private IClientService personService;
 
+    @Autowired
+    private IStoreService storeService;
+
     @PostMapping(value = "/client")
     public Resource<ClientResource> insertClient(@RequestBody PersonInputModel person) {
         ClientResource personResource = personService.insertClient(person.toClientDto()).toResource();
@@ -44,7 +48,7 @@ public class ClientController {
     public Resources<StoreResource> getPendentRequestOfClient(@PathVariable String email) {
         List<StoreResource> stores = personService.getPendentRequests(email)
                                                     .stream()
-                                                    .map( c -> c.toResource())
+                                                    .map( c -> c.toResource(storeService.getScore(c.getNif())))
                                                     .collect(Collectors.toList());
         Link link = linkTo(methodOn(ClientController.class)
                 .getPendentRequestOfClient(email)).withSelfRel();
@@ -60,7 +64,7 @@ public class ClientController {
     public Resources<StoreResource> getStoresOfClient(@PathVariable String email) {
         List<StoreResource> stores = personService.getStoresByEmail(email)
                                                     .stream()
-                                                    .map( c -> c.toResource())
+                                                    .map( c -> c.toResource(storeService.getScore(c.getNif())))
                                                     .collect(Collectors.toList());
         Link link = linkTo(methodOn(ClientController.class).getStoresOfClient(email)).withSelfRel();
         return new Resources<>(stores, link);
