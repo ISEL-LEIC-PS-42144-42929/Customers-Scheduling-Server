@@ -5,13 +5,15 @@ import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFou
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = ResourceNotFoundException.class)
 public class BookingService implements IBookingService {
 
 
@@ -32,6 +34,7 @@ public class BookingService implements IBookingService {
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public Booking insertBook(int id, String email) {
         Booking booking = bookingRepo.findById(id);
         if(booking == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
@@ -42,6 +45,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Booking getBookingById(int id) {
         Booking book = bookingRepo.getOne(id);
         if(book == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
@@ -49,6 +53,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public void dailyUpdate() {
         List<Booking> books = bookingRepo.findByDate(dayFromNow(-1));
         List<Store> stores = books.stream()
@@ -60,6 +65,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public void updateBookingOfStore(Store s, Date d) {
         List<StoreServices> services = storeServRepo.findByPk_Store(s);
         services.forEach( ss -> {
@@ -77,6 +83,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public void updateBookingOfStore(StaffServices staffServs) {
         int i= 0;
         while(i<=30){

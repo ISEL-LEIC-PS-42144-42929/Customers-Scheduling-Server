@@ -4,13 +4,15 @@ import com.customersscheduling.Domain.*;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
-@Transactional
+@Transactional(rollbackFor = ResourceNotFoundException.class)
 public class ServicesOfStoreService implements IServicesOfStoreService {
 
     @Autowired
@@ -33,6 +35,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public StaffServices insertStaffForService(StaffServices s) {
         personRepo.save(s.getPk().getStaff());
         staffServicesRepo.save(s);
@@ -44,6 +47,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public StoreServices insertServiceForStore(StoreServices s) {
         Service serv = s.getPk().getService();
         Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
@@ -54,6 +58,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<Booking> getServiceDisp(int id) {
         List<Booking> list = bookingRepo.findByService_Id(id);
         for (Booking booking : list) {
@@ -64,6 +69,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Staff> getStaffOfService(int id, String nif) {
         List<StaffServices> ss = staffServicesRepo.getByPk_StoresServices_Pk_Service_IdAndPk_StoresServices_Pk_Store_Nif(id, nif);
         return ss.stream()
@@ -72,6 +78,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Service getService(int id) {
         Service serv = servicesRepo.findById(id);
         if(serv == null) throw new ResourceNotFoundException("Service with the id - "+id+" - doesn't exists.");
@@ -79,6 +86,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public StoreServices updateService(StoreServices ss, int id) {
         Service serv = getService(id);
         ss.getPk().getService().setId(id);
@@ -87,6 +95,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     }
 
     @Override
+    @Transactional
     public Service deleteService(String nif, int id) {
         Service s = getService(id);
         StoreServices ss = storeServicesRepo.findByPk_Service_Id(id);

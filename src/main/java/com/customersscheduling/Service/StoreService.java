@@ -5,14 +5,16 @@ import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFou
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = ResourceNotFoundException.class)
 public class StoreService implements IStoreService {
 
     @Autowired
@@ -34,12 +36,14 @@ public class StoreService implements IStoreService {
     StoreTimetableRepository storeTimetableRepo;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store insertStore(Store store) {
         return storeRepo.save(store);
     }
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Store getStore(String nif) {
         Store store = storeRepo.findByNif(nif);
         if(store == null) throw new ResourceNotFoundException("Store with the NIF - "+nif+" - doesn't exists.");
@@ -47,6 +51,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresOfUser(String email) {
         return storeRepo.findByOwnerEmail(email);
     }
@@ -61,12 +66,14 @@ public class StoreService implements IStoreService {
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store insertClientForStore(ClientStores cs) {
         clientStoresRepo.save(cs);
         return storeRepo.findByNif(cs.getPk().getStore().getNif());
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store insertStoreTimetable(StoreTimetable storeTimetable) {
         Timetable tt = storeTimetable.getPk().getTimetable();
         Timetable onDb = null;
@@ -79,16 +86,19 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<StoreTimetable> getStoreTimetable(String nif) {
         return storeTimetableRepo.findByPk_Store_Nif(nif);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<StoreServices> getServicesOfStore(String  nif) {
         return storeServicesRepo.findByPk_Store_Nif(nif);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store updateStoreTimetable(StoreTimetable storeTimetable) {
         int weekDay = storeTimetable.getPk().getTimetable().getWeekDay();
         StoreTimetable stt = storeTimetableRepo.findByPk_StoreAndPk_Timetable_WeekDay(storeTimetable.getPk().getStore(), weekDay);
@@ -102,6 +112,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store updateStoreAddress(String nif, Address address) {
         Store s = getStore(nif);
         address.setId(s.getAddress().getId());
@@ -111,6 +122,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store updateStore(String nif, Store store) {
         Store s = getStore(nif);
         if(store.getCategory() != null)
@@ -123,6 +135,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store deleteStore(String nif) {
         Store s = getStore(nif);
         storeRepo.delete(s);
@@ -130,6 +143,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public double getScore(String nif) {
         List<ClientStores> cs = clientStoresRepo.findByPk_Store_NifAndAccepted(nif, true);
         return cs.stream()

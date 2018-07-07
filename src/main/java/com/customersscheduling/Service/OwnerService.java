@@ -8,12 +8,13 @@ import com.customersscheduling.Repository.StaffTimetableRepository;
 import com.customersscheduling.Repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = ResourceNotFoundException.class)
 public class OwnerService implements IOwnerService {
 
     @Autowired
@@ -25,6 +26,7 @@ public class OwnerService implements IOwnerService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Owner getOwner(String email) {
         Owner o=  (Owner)personRepo.findByEmail(email);
         if(o == null) throw new ResourceNotFoundException("Staff with the email - "+email+" - doesn't exists.");
@@ -32,6 +34,7 @@ public class OwnerService implements IOwnerService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public Owner deleteOwner(String email) {
         Owner o = getOwner(email);
         personRepo.delete(o);
