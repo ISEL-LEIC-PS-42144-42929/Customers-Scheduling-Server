@@ -5,10 +5,12 @@ import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFou
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
+@Transactional
 public class ServicesOfStoreService implements IServicesOfStoreService {
 
     @Autowired

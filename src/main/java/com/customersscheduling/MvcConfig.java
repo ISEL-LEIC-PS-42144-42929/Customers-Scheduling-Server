@@ -11,6 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import static org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType.HAL;
@@ -18,7 +19,7 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 //@EnableHypermediaSupport(type = HAL)
 @Configuration
 @EnableScheduling
-@ComponentScan({"com.customersscheduling.Controller","com.customersscheduling.Service"})
+@ComponentScan({"com.customersscheduling.Controller","com.customersscheduling.Service", "com.customersscheduling.ExceptionHandling"})
 public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
@@ -29,4 +30,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     public void dailyBookingUpdate() {
         //bookingService.dailyUpdate();
     }
+
+
 }

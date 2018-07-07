@@ -15,12 +15,14 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.io.FileInputStream;
 
 
 @EnableJpaRepositories(basePackages = "com.customersscheduling.Repository")
+@EnableTransactionManagement
 @SpringBootApplication
 @ComponentScan
 public class CustomersSchedulingApplication {

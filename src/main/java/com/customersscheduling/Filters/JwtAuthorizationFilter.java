@@ -1,9 +1,12 @@
 package com.customersscheduling.Filters;
 
 import com.customersscheduling.Domain.Client;
-import com.customersscheduling.ExceptionHandling.CustomExceptions.JwtTokenMissingException;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.JwtTokenException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
+import com.customersscheduling.ExceptionHandling.ErrorModel;
 import com.customersscheduling.Service.ClientService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -13,17 +16,12 @@ import com.google.firebase.auth.FirebaseToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
@@ -49,21 +47,25 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-/*
+
         String header = request.getHeader("Authorization");
         logger.info("Authorization header: "+header);
 
         if (header == null || !header.startsWith("Bearer ")) {
             logger.error("Authorization header doesn't have the right format");
-            throw new JwtTokenMissingException("No JWT token found in request headers");
+            //throw new JwtTokenException("No JWT token found in request headers");
+            respondError("No JWT token found in request headers", request.getRequestURI(), response);
+            return;
         }
 
         String idToken = header.substring(7);
         FirebaseToken decodedToken = null;
         try {
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-        } catch (FirebaseAuthException e) {
-            throw new JwtTokenMissingException("ID Token couldn't be verified");
+        } catch (FirebaseAuthException | IllegalArgumentException e) {
+            //throw new JwtTokenException("ID Token couldn't be verified");
+            respondError("ID Token couldn't be verified", request.getRequestURI(), response);
+            return;
         }
 
         String email = decodedToken.getEmail();
@@ -74,7 +76,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             c.setEmail(email);
             c.setName(decodedToken.getName());
             service.insertClient(c);
-        }*/
+        }
         filterChain.doFilter(request, response);
+    }
+
+    public void respondError(String message, String uri, HttpServletResponse response) throws IOException {
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        ErrorModel error = new ErrorModel("Authentication Error", message, uri);
+        response.getWriter().write(convertObjectToJson(error));
+    }
+
+    public String convertObjectToJson(Object object) throws JsonProcessingException {
+        if (object == null) {
+            return null;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(object);
     }
 }
