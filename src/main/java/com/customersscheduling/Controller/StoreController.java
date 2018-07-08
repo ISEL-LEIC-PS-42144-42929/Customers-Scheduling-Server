@@ -34,7 +34,7 @@ public class StoreController {
         return new Resource<>(res, res.getLinks(link));
     }
 
-    @PostMapping(value = "/{email}")
+    @PostMapping(value = "/owner/{email}")
     public Resource<StoreResource> insertStore(@PathVariable String email, @RequestBody StoreInputModel store) {
         Owner o = new Owner();
         o.setEmail(email);

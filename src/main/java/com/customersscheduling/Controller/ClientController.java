@@ -36,7 +36,7 @@ public class ClientController {
         return new Resource<>(personResource, personResource.getLinks(link));
     }
 
-    @GetMapping(value = "/{email}/client")
+    @GetMapping(value = "/client/{email}")
     public Resource<ClientResource> getClient(@PathVariable String email) {
         ClientResource c = personService.getClient(email).toResource();
         Link link = linkTo(methodOn(ClientController.class).getClient(email)).withSelfRel();
@@ -44,7 +44,7 @@ public class ClientController {
     }
 
 
-    @GetMapping(value = "/{email}/pendentrequests")
+    @GetMapping(value = "/client/{email}/pendentrequests")
     public Resources<StoreResource> getPendentRequestOfClient(@PathVariable String email) {
         List<StoreResource> stores = personService.getPendentRequests(email)
                                                     .stream()
@@ -55,12 +55,12 @@ public class ClientController {
         return new Resources<>(stores, link);
     }
 
-    @GetMapping(value = "/{email}/books")
+    @GetMapping(value = "/client/{email}/books")
     public ResponseEntity<Resources<BookingResource>> getBooksOfClient(@PathVariable String email) {
         return null;
     }
 
-    @GetMapping(value = "/{email}/client/stores")
+    @GetMapping(value = "/client/{email}/stores")
     public Resources<StoreResource> getStoresOfClient(@PathVariable String email) {
         List<StoreResource> stores = personService.getStoresByEmail(email)
                                                     .stream()
@@ -70,7 +70,7 @@ public class ClientController {
         return new Resources<>(stores, link);
     }
 
-    @DeleteMapping(value = "/{email}/client")
+    @DeleteMapping(value = "/client/{email}")
     public Resource<ClientResource> deleteClient(@PathVariable String email) {
         ClientResource cs = personService.deleteClient(email).toResource();
         Link link = linkTo(methodOn(ClientController.class).getStoresOfClient(email)).withSelfRel();

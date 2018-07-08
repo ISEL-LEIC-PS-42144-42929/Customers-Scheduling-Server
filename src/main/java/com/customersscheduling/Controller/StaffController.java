@@ -27,7 +27,7 @@ public class StaffController {
         return rp;
     }
 
-    @GetMapping(value = "/{email}/staff")
+    @GetMapping(value = "/staff/{email}")
     public Resource<StaffResource> getStaff(@PathVariable String email) {
         StaffResource personResource = personService.getStaff(email).toResource();
         Link link = linkTo(methodOn(StaffController.class).getStaff(email)).withSelfRel();
@@ -35,7 +35,7 @@ public class StaffController {
         return rp;
     }
 
-    @PutMapping(value = "/{email}/staff")
+    @PutMapping(value = "/staff/{email}")
     public Resource<StaffResource> updateStaff(@PathVariable String email, @RequestBody PersonInputModel person) {
         StaffResource personResource = personService.updateStaff(email, person.toStaffDto()).toResource();
         Link link = linkTo(methodOn(StaffController.class).getStaff(email)).withSelfRel();
@@ -43,7 +43,7 @@ public class StaffController {
         return rp;
     }
 
-    @DeleteMapping(value = "/{email}/staff")
+    @DeleteMapping(value = "/staff/{email}")
     public Resource<StaffResource> deleteStaff(@PathVariable String email) {
         StaffResource personResource = personService.deleteStaff(email).toResource();
         Link link = linkTo(methodOn(StaffController.class).deleteStaff(email)).withSelfRel();

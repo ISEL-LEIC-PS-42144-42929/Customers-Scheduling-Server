@@ -1,7 +1,6 @@
 package com.customersscheduling.HALObjects;
 
 import com.customersscheduling.Controller.StaffController;
-import com.customersscheduling.Controller.TimetableController;
 import com.customersscheduling.Domain.Staff;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;

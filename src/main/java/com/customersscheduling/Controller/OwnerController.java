@@ -36,14 +36,14 @@ public class OwnerController {
         return rp;
     }
 
-    @GetMapping(value = "/{email}/owner")
+    @GetMapping(value = "/owner/{email}")
     public Resource<OwnerResource> getOwner(@PathVariable String email) {
         OwnerResource personResource = personService.getOwner(email).toResource();
         Link link = linkTo(methodOn(OwnerController.class).getOwner(email)).withSelfRel();
         Resource<OwnerResource> rp = new Resource<>(personResource, personResource.getLinks(link));
         return rp;
     }
-    @DeleteMapping(value = "/{email}/owner")
+    @DeleteMapping(value = "/owner/{email}")
     public Resource<OwnerResource> deleteOwner(@PathVariable String email) {
         OwnerResource personResource = personService.deleteOwner(email).toResource();
         Link link = linkTo(methodOn(OwnerController.class).deleteOwner(email)).withSelfRel();

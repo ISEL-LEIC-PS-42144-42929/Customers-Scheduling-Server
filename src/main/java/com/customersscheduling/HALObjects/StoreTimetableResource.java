@@ -1,8 +1,5 @@
 package com.customersscheduling.HALObjects;
 
-import com.customersscheduling.Controller.StoreController;
-import com.customersscheduling.Controller.TimetableController;
-import com.customersscheduling.Domain.Store;
 import com.customersscheduling.Domain.Timetable;
 import org.springframework.hateoas.Link;
 
