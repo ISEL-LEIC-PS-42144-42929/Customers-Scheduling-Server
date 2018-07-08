@@ -7,6 +7,7 @@ import com.customersscheduling.Repository.PersonRepository;
 import com.customersscheduling.Repository.StaffTimetableRepository;
 import com.customersscheduling.Repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,6 +27,7 @@ public class OwnerService implements IOwnerService {
     }
 
     @Override
+    @Cacheable(value = "owner")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Owner getOwner(String email) {
         Owner o=  (Owner)personRepo.findByEmail(email);

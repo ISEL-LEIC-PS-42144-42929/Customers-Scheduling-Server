@@ -12,6 +12,7 @@ import com.customersscheduling.Repository.PersonRepository;
 import com.customersscheduling.Repository.StaffTimetableRepository;
 import com.customersscheduling.Repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -54,6 +55,7 @@ public class StaffService implements IStaffService {
 
 
     @Override
+    @Cacheable(value = "stafftimetables")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<StaffTimetable> getStaffTimetable(String email) {
         Staff staff = (Staff) personRepo.findByEmail(email);
@@ -64,6 +66,7 @@ public class StaffService implements IStaffService {
     }
 
     @Override
+    @Cacheable(value = "staffs")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Staff getStaff(String email) {
         Staff s = (Staff)personRepo.findByEmail(email);

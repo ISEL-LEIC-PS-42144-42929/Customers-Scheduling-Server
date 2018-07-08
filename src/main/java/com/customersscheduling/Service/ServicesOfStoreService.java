@@ -4,6 +4,7 @@ import com.customersscheduling.Domain.*;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
 
 
     @Override
+    @Cacheable(value = "books")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<Booking> getServiceDisp(int id) {
         List<Booking> list = bookingRepo.findByService_Id(id);
@@ -69,6 +71,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     }
 
     @Override
+    @Cacheable(value = "staffs")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Staff> getStaffOfService(int id, String nif) {
         List<StaffServices> ss = staffServicesRepo.getByPk_StoresServices_Pk_Service_IdAndPk_StoresServices_Pk_Store_Nif(id, nif);
@@ -78,6 +81,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     }
 
     @Override
+    @Cacheable(value = "services")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Service getService(int id) {
         Service serv = servicesRepo.findById(id);

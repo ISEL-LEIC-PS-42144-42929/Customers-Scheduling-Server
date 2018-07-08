@@ -4,6 +4,7 @@ import com.customersscheduling.Domain.*;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -45,6 +46,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
+    @Cacheable(value = "book")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Booking getBookingById(int id) {
         Booking book = bookingRepo.getOne(id);

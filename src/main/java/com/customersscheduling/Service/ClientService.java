@@ -9,6 +9,7 @@ import com.customersscheduling.Repository.PersonRepository;
 import com.customersscheduling.Repository.StaffTimetableRepository;
 import com.customersscheduling.Repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -34,6 +35,7 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    @Cacheable(value = "stores")
     @Transactional( propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED ,readOnly = true )
     public List<Store> getStoresByEmail(String email) {
         return clientStoresRepo.findByPk_Client_EmailAndAccepted(email, true)
@@ -45,6 +47,7 @@ public class ClientService implements IClientService {
 
 
     @Override
+    @Cacheable(value = "stores")
     @Transactional( propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED ,readOnly = true )
     public List<Store> getPendentRequests(String email) {
         List<ClientStores> l = clientStoresRepo.findByPk_Client_EmailAndAccepted(email, false);
@@ -56,6 +59,7 @@ public class ClientService implements IClientService {
 
 
     @Override
+    @Cacheable(value = "client")
     @Transactional( propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED ,readOnly = true )
     public Client getClient(String email) {
         Client client = (Client)personRepo.findByEmail(email);

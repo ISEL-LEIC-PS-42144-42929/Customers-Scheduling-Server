@@ -4,6 +4,7 @@ import com.customersscheduling.Domain.*;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -43,6 +44,7 @@ public class StoreService implements IStoreService {
 
 
     @Override
+    @Cacheable(value = "stores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Store getStore(String nif) {
         Store store = storeRepo.findByNif(nif);
@@ -51,12 +53,14 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Cacheable(value = "stores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresOfUser(String email) {
         return storeRepo.findByOwnerEmail(email);
     }
 
     @Override
+    @Cacheable(value = "clients")
     public List<Client> getPendentRequests(String nif) {
         return  clientStoresRepo.findByPk_Store_NifAndAccepted(nif, false)
                                 .stream()
@@ -86,12 +90,14 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Cacheable(value = "storetimetables")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<StoreTimetable> getStoreTimetable(String nif) {
         return storeTimetableRepo.findByPk_Store_Nif(nif);
     }
 
     @Override
+    @Cacheable(value = "storeservices")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<StoreServices> getServicesOfStore(String  nif) {
         return storeServicesRepo.findByPk_Store_Nif(nif);
