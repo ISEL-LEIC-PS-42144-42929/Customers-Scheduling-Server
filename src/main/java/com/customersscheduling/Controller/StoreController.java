@@ -26,13 +26,23 @@ public class StoreController {
         this.storeService = businessService;
     }
 
-    @GetMapping(value = "/")
-    public Resources<StoreResource> getStoreByName(@RequestParam("name") String name) {
+    @GetMapping(value = "/", params = "name")
+    public Resources<StoreResource> getStoresByName(@RequestParam("name") String name) {
         List<StoreResource> res = storeService.getStoresByName(name)
                                             .stream()
                                             .map(s -> s.toResource(storeService.getScore(s.getNif())))
                                             .collect(Collectors.toList());
-        Link link = linkTo(methodOn(StoreController.class).getStoreByName(name)).withSelfRel();
+        Link link = linkTo(methodOn(StoreController.class).getStoresByName(name)).withSelfRel();
+        return new Resources<>(res, link);
+    }
+
+    @GetMapping(value = "/", params = {"category","location"})
+    public Resources<StoreResource> getStoresByCategoryAndLocation(@RequestParam("category") String category, @RequestParam("location") String location) {
+        List<StoreResource> res = storeService.getStoresByLocationAndCategory(location, category)
+                                                .stream()
+                                                .map(s -> s.toResource(storeService.getScore(s.getNif())))
+                                                .collect(Collectors.toList());
+        Link link = linkTo(methodOn(StoreController.class).getStoresByCategoryAndLocation(category, location)).withSelfRel();
         return new Resources<>(res, link);
     }
 

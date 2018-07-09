@@ -164,5 +164,10 @@ public class StoreService implements IStoreService {
         return storeRepo.findByName(name);
     }
 
+    @Override
+    public List<Store> getStoresByLocationAndCategory(String location, String category) {
+        return storeRepo.findByAddress_CityAndCategory_Name(location, category);
+    }
+
 
 }

@@ -27,4 +27,6 @@ public interface IStoreService {
     double getScore(String nif);
 
     List<Store> getStoresByName(String name);
+
+    List<Store> getStoresByLocationAndCategory(String location, String category);
 }
