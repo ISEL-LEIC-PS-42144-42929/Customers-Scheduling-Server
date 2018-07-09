@@ -24,7 +24,7 @@ public class ServiceResource extends ResourceSupport {
         add(linkTo(methodOn(StoreServicesController.class).insertServiceForStore(null, nif)).withRel("insert_store_service"));
         add(linkTo(methodOn(StoreServicesController.class).updateService(null, nif, service.getId())).withRel("update"));
         add(linkTo(methodOn(StoreServicesController.class).getStaffOfService(service.getId(), nif)).withRel("staff"));
-
+        add(linkTo(methodOn(StoreServicesController.class).getDispOfService(nif, service.getId())).withRel("staff"));
 
     }
 

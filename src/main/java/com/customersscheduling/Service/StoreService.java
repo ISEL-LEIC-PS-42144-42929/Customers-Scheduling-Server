@@ -159,5 +159,10 @@ public class StoreService implements IStoreService {
                 .orElse(0);
     }
 
+    @Override
+    public List<Store> getStoresByName(String name) {
+        return storeRepo.findByName(name);
+    }
+
 
 }

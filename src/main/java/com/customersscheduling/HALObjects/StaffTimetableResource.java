@@ -1,5 +1,6 @@
 package com.customersscheduling.HALObjects;
 
+import com.customersscheduling.Controller.StaffTimetableController;
 import com.customersscheduling.Domain.Timetable;
 import org.springframework.hateoas.Link;
 
@@ -15,8 +16,8 @@ public class StaffTimetableResource extends TimetableResource {
     public StaffTimetableResource(List<Timetable> t, StaffResource s) {
         super(t);
         this.staff = s;
-        add(linkTo(methodOn(TimetableController.class).getStaffTimetable(s.getPerson().getEmail())).withRel("get"));
-        add(linkTo(methodOn(TimetableController.class).insertStaffTimetable(s.getPerson().getEmail(), null)).withRel("insert"));
+        add(linkTo(methodOn(StaffTimetableController.class).getStaffTimetable(s.getPerson().getEmail())).withRel("get"));
+        add(linkTo(methodOn(StaffTimetableController.class).insertStaffTimetable(s.getPerson().getEmail(), null)).withRel("insert"));
     }
 
     public List<Link> getLinks(Link l) {

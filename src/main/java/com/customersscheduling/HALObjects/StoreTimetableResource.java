@@ -1,5 +1,6 @@
 package com.customersscheduling.HALObjects;
 
+import com.customersscheduling.Controller.StoreTimetableController;
 import com.customersscheduling.Domain.Timetable;
 import org.springframework.hateoas.Link;
 
@@ -15,8 +16,8 @@ public class StoreTimetableResource extends TimetableResource  {
     public StoreTimetableResource(List<Timetable> t, StoreResource s) {
         super(t);
         this.store = s;
-        add(linkTo(methodOn(TimetableController.class).getStoreTimetable(s.getStore().getNif())).withRel("get"));
-        add(linkTo(methodOn(TimetableController.class).insertStoreTimetable(s.getStore().getNif(), null)).withRel("insert"));
+        add(linkTo(methodOn(StoreTimetableController.class).getStoreTimetable(s.getStore().getNif())).withRel("get"));
+        add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(s.getStore().getNif(), null)).withRel("insert"));
     }
 
     public List<Link> getLinks(Link l) {

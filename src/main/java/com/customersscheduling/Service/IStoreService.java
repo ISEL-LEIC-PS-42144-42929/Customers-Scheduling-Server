@@ -25,4 +25,6 @@ public interface IStoreService {
     Store deleteStore(String nif);
 
     double getScore(String nif);
+
+    List<Store> getStoresByName(String name);
 }

@@ -29,7 +29,7 @@ public class StoreServicesController {
     @Autowired
     private IStoreService storeService;
 
-    @PostMapping(value = "/{nif}/service")
+    @PostMapping(value = "/{nif}/services")
     public Resource<ServiceResource> insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif) {
         Store store = new Store(); store.setNif(nif);
         StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
@@ -39,7 +39,7 @@ public class StoreServicesController {
         return new Resource<>(serviceResource, link);
     }
 
-    @PutMapping(value = "/{nif}/service/{id}")
+    @PutMapping(value = "/{nif}/services/{id}")
     public Resource<ServiceResource> updateService(@RequestBody ServiceInputModel service, @PathVariable String nif, @PathVariable int id) {
         Store store = new Store(); store.setNif(nif);
         StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
