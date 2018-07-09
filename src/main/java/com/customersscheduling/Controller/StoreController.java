@@ -26,6 +26,16 @@ public class StoreController {
         this.storeService = businessService;
     }
 
+    @GetMapping(value = "/{nif}/clients")
+    public Resources<ClientResource> getClientsOfStore(@RequestParam("nif") String nif) {
+        List<ClientResource> res = storeService.getClientsOfStore(nif)
+                                        .stream()
+                                        .map(i->i.toResource())
+                                        .collect(Collectors.toList());
+        Link link = linkTo(methodOn(StoreController.class).getStoresByName(nif)).withSelfRel();
+        return new Resources<>(res, link);
+    }
+
     @GetMapping(value = "/", params = "name")
     public Resources<StoreResource> getStoresByName(@RequestParam("name") String name) {
         List<StoreResource> res = storeService.getStoresByName(name)

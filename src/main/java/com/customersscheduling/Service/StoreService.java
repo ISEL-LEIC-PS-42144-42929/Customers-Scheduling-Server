@@ -21,8 +21,6 @@ public class StoreService implements IStoreService {
     @Autowired
     StoreRepository storeRepo;
 
-    @Autowired
-    ClientStoresRepository clientStoreRepo;
 
     @Autowired
     StoreServicesRepository storeServicesRepo;
@@ -35,6 +33,9 @@ public class StoreService implements IStoreService {
 
     @Autowired
     StoreTimetableRepository storeTimetableRepo;
+
+    @Autowired
+    PersonRepository personRepo;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
@@ -160,13 +161,27 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Cacheable(value = "stores")
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresByName(String name) {
         return storeRepo.findByName(name);
     }
 
     @Override
+    @Cacheable(value = "stores")
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresByLocationAndCategory(String location, String category) {
         return storeRepo.findByAddress_CityAndCategory_Name(location, category);
+    }
+
+    @Override
+    @Cacheable(value = "clients")
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
+    public List<Client> getClientsOfStore(String nif) {
+        return clientStoresRepo.findByPk_Store_NifAndAccepted(nif, true)
+                .stream()
+                .map( c -> (Client)personRepo.findByEmail(c.getPk().getClient().getEmail()))
+                .collect(Collectors.toList());
     }
 
 

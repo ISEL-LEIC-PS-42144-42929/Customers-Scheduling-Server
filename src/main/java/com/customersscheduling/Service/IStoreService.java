@@ -29,4 +29,6 @@ public interface IStoreService {
     List<Store> getStoresByName(String name);
 
     List<Store> getStoresByLocationAndCategory(String location, String category);
+
+    List<Client> getClientsOfStore(String nif);
 }
