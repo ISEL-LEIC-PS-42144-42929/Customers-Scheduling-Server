@@ -39,7 +39,7 @@ public class BookingService implements IBookingService {
     public Booking insertBook(int id, String email) {
         Booking booking = bookingRepo.findById(id);
         if(booking == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
-        Client c = (Client)personRepo.findByEmail(email);
+        Client c = (Client)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Staff "+email+" doesn't exists."));
         if(c==null) throw new ResourceNotFoundException("Client with the email - "+email+" - doesn't exists.");
         booking.setClient(c);
         return bookingRepo.save(booking);

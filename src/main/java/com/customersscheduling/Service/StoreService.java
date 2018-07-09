@@ -182,7 +182,7 @@ public class StoreService implements IStoreService {
     public List<Client> getClientsOfStore(String nif) {
         return clientStoresRepo.findByPk_Store_NifAndAccepted(nif, true)
                 .stream()
-                .map( c -> (Client)personRepo.findByEmail(c.getPk().getClient().getEmail()))
+                .map( c -> (Client)personRepo.findByEmail(c.getPk().getClient().getEmail()).orElseThrow(()->new ResourceNotFoundException("Client "+c.getPk().getClient().getEmail()+"doesn't exists.")))
                 .collect(Collectors.toList());
     }
 
@@ -192,7 +192,7 @@ public class StoreService implements IStoreService {
     public List<Staff> getStaff(String nif) {
         return staffRepo.getByPk_StoresServices_Pk_Store_Nif(nif)
                 .stream()
-                .map(s -> (Staff)personRepo.findByEmail(s.getPk().getStaff().getEmail()))
+                .map(s -> (Staff)personRepo.findByEmail(s.getPk().getStaff().getEmail()).orElseThrow(()->new ResourceNotFoundException("Staff "+s.getPk().getStaff().getEmail()+" doesn't exists.")))
                 .collect(Collectors.toList());
     }
 

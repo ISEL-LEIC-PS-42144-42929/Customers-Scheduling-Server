@@ -50,7 +50,7 @@ public class StaffService implements IStaffService {
         }
         timetableRepo.save(staffTimeTable.getPk().getTimetable());
         staffTimetableRepo.save(staffTimeTable);
-        return (Staff) personRepo.findByEmail(staffTimeTable.getPk().getStaff().getEmail());
+        return (Staff) personRepo.findByEmail(staffTimeTable.getPk().getStaff().getEmail()).orElseThrow(()->new ResourceNotFoundException("Staff "+staffTimeTable.getPk().getStaff().getEmail()+" doesn't exists."));
     }
 
 
@@ -58,7 +58,7 @@ public class StaffService implements IStaffService {
     @Cacheable(value = "stafftimetables")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<StaffTimetable> getStaffTimetable(String email) {
-        Staff staff = (Staff) personRepo.findByEmail(email);
+        Staff staff = (Staff) personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Staff "+email+" doesn't exists."));
         if(staff == null) throw new ResourceNotFoundException("Could not find staff with the email '"+email+"'.");
         List<StaffTimetable> lstaff = staffTimetableRepo.findByPk_Staff(staff);
         if(lstaff.size()==0) throw new ResourceNotFoundException("Could not find any timetable for the user with the email '"+email+"'.");
@@ -69,7 +69,7 @@ public class StaffService implements IStaffService {
     @Cacheable(value = "staffs")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Staff getStaff(String email) {
-        Staff s = (Staff)personRepo.findByEmail(email);
+        Staff s = (Staff)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Staff "+email+" doesn't exists."));
         if(s==null) throw new ResourceNotFoundException("Staff with the email - "+email+" - doesn't exist.");
         return s;
     }
@@ -78,8 +78,7 @@ public class StaffService implements IStaffService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Staff updateStaff(String email, Staff oldStaff) {
         if(oldStaff.getEmail()==null || !oldStaff.getEmail().equals(email)) throw new InvalidBodyException("Staff object sent on body is incompleted");
-        Staff s = (Staff)personRepo.findByEmail(email);
-        if(s==null) throw new ResourceNotFoundException("Could not update Staff with the email - "+email+" - because it doesn't exists");
+        Staff s = (Staff)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Staff "+email+" doesn't exists."));
         return (Staff)personRepo.save(oldStaff);
     }
 
@@ -93,7 +92,7 @@ public class StaffService implements IStaffService {
         staffTt.getPk().setTimetable(newTimetable);
         timetableRepo.save(newTimetable);
         staffTimetableRepo.save(staffTt);
-        return (Staff) personRepo.findByEmail(staffTimetable.getPk().getStaff().getEmail());
+        return (Staff) personRepo.findByEmail(staffTimetable.getPk().getStaff().getEmail()).orElseThrow(()->new ResourceNotFoundException("Staff "+staffTimetable.getPk().getStaff().getEmail()+" doesn't exists."));
     }
 
     @Override
