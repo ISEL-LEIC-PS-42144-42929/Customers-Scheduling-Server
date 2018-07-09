@@ -4,8 +4,12 @@ import com.customersscheduling.Domain.Address;
 import com.customersscheduling.Domain.Category;
 import com.customersscheduling.Domain.Owner;
 import com.customersscheduling.Domain.Store;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class StoreInputModel {
+    @JsonIgnore
+    public String ownerNif; //only on first store
+
     public String name;
     public String contact;
     public String category;

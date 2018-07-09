@@ -6,10 +6,17 @@ import javax.persistence.*;
 
 @Entity
 @Table( name = "Client")
-@PrimaryKeyJoinColumn(name="user_person_email")
-public class Client extends User {
+@Inheritance(strategy=InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name="person_email")
+public class Client extends Person {
+
+
 
     public Client(){
+    }
+
+    public Client(String email){
+        super(email);
     }
 
     public Client(String email, String name) {

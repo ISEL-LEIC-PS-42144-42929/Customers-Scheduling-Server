@@ -16,10 +16,9 @@ public class OwnerResource extends ResourceSupport {
 
     public OwnerResource(Owner person) {
         this.person = person;
-
-        add(linkTo(methodOn(OwnerController.class).getOwner(person.getEmail())).withRel("get"));
+        add(linkTo(methodOn(OwnerController.class).getOwner(person.getClient().getEmail())).withRel("get"));
         add(linkTo(methodOn(OwnerController.class).insertOwner(null)).withRel("insert"));
-        add(linkTo(methodOn(OwnerController.class).getStoreOfOwner(person.getEmail())).withRel("stores"));
+        add(linkTo(methodOn(OwnerController.class).getStoreOfOwner(person.getClient().getEmail())).withRel("stores"));
     }
 
     public List<Link> getLinks(Link l) {

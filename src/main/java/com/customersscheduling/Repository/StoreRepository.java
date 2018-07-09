@@ -17,7 +17,7 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
 
     Store findByNif(String nif);
 
-    List<Store> findByOwnerEmail(String email);
+    List<Store> findByOwner_Client_Email(String email);
 
     @Query("SELECT s FROM Store s WHERE s.storeName LIKE '%:name%'")
     List<Store> findByName(@Param("name") String name);

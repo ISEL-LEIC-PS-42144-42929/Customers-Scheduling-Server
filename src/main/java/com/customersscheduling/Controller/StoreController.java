@@ -3,7 +3,9 @@ package com.customersscheduling.Controller;
 import com.customersscheduling.Controller.InputModels.*;
 import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.*;
+import com.customersscheduling.Service.IOwnerService;
 import com.customersscheduling.Service.IStoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -20,10 +22,14 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RequestMapping(value="/store", produces = "application/hal+json")
 public class StoreController {
 
-    private final IStoreService storeService;
+    @Autowired
+    private IStoreService storeService;
 
-    public StoreController(IStoreService businessService) {
-        this.storeService = businessService;
+    @Autowired
+    private IOwnerService ownerService;
+
+    public StoreController() {
+
     }
 
     @GetMapping(value = "/{nif}/clients")
@@ -67,7 +73,11 @@ public class StoreController {
     @PostMapping(value = "/owner/{email}")
     public Resource<StoreResource> insertStore(@PathVariable String email, @RequestBody StoreInputModel store) {
         Owner o = new Owner();
-        o.setEmail(email);
+        Client c = new Client(email);
+        if(store.nif!=null){
+            o.setNif(store.ownerNif);
+            ownerService.insertOwner(o);
+        }
         StoreResource storeResource = storeService.insertStore(store.toDto(o)).toResource(0);
         Link link = linkTo(methodOn(StoreController.class).insertStore(email, store)).withSelfRel();
         return new Resource<>(storeResource, storeResource.getLinks(link));

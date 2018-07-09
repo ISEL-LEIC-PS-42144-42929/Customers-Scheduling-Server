@@ -30,7 +30,7 @@ public class OwnerController {
 
     @PostMapping(value = "/owner")
     public Resource<OwnerResource> insertOwner(@RequestBody OwnerInputModel owner) {
-        OwnerResource personResource = personService.insertOwner(owner.toOwnerDto()).toResource();
+        OwnerResource personResource = personService.insertOwner(owner.toOwnerDto()).toOwnerResource();
         Link link = linkTo(methodOn(OwnerController.class).insertOwner(owner)).withSelfRel();
         Resource<OwnerResource> rp = new Resource<>(personResource, personResource.getLinks(link));
         return rp;
@@ -38,14 +38,14 @@ public class OwnerController {
 
     @GetMapping(value = "/owner/{email}")
     public Resource<OwnerResource> getOwner(@PathVariable String email) {
-        OwnerResource personResource = personService.getOwner(email).toResource();
+        OwnerResource personResource = personService.getOwner(email).toOwnerResource();
         Link link = linkTo(methodOn(OwnerController.class).getOwner(email)).withSelfRel();
         Resource<OwnerResource> rp = new Resource<>(personResource, personResource.getLinks(link));
         return rp;
     }
     @DeleteMapping(value = "/owner/{email}")
     public Resource<OwnerResource> deleteOwner(@PathVariable String email) {
-        OwnerResource personResource = personService.deleteOwner(email).toResource();
+        OwnerResource personResource = personService.deleteOwner(email).toOwnerResource();
         Link link = linkTo(methodOn(OwnerController.class).deleteOwner(email)).withSelfRel();
         Resource<OwnerResource> rp = new Resource<>(personResource, personResource.getLinks(link));
         return rp;

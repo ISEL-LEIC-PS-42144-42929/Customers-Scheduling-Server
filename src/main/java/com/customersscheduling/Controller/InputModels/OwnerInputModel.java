@@ -1,14 +1,15 @@
 package com.customersscheduling.Controller.InputModels;
 
+import com.customersscheduling.Domain.Client;
 import com.customersscheduling.Domain.Owner;
 
 public class OwnerInputModel extends PersonInputModel{
     public String nif;
 
     public Owner toOwnerDto(){
-        Owner o = new Owner(email, name, nif);
-        o.setContact(contact);
-        o.setGender(gender == true ? 1 : 0);
+        Client c= new Client();
+        c.setEmail(email);
+        Owner o = new Owner(nif, c);
         return o;
     }
 }

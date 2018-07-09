@@ -31,7 +31,7 @@ public class Store {
     private String nif;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="owner_user_person_email",referencedColumnName="user_person_email",nullable=false)
+    @JoinColumn(name="owner_client_person_email",referencedColumnName="client_person_email",nullable=false)
     private Owner owner;
 
     public Store(){}
@@ -87,5 +87,13 @@ public class Store {
 
     public StoreResource toResource(double score) {
         return new StoreResource(this, score);
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 }

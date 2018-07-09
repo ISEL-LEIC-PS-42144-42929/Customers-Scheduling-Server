@@ -39,6 +39,10 @@ public class Person implements Serializable{
         this.gender=gender;
     }
 
+    public Person(String email) {
+        this.email = email;
+    }
+
     public String getEmail() {
         return email;
     }

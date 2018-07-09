@@ -12,7 +12,7 @@ public class ClientStoresPK implements Serializable {
     private Store store;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="client_user_person_email",referencedColumnName="user_person_email",nullable=false)
+    @JoinColumn(name="client_person_email",referencedColumnName="person_email",nullable=false)
     private Client client;
 
     public ClientStoresPK(){}

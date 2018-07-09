@@ -2,25 +2,32 @@ package com.customersscheduling.Domain;
 
 import com.customersscheduling.HALObjects.OwnerResource;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table( name = "Owner")
-@PrimaryKeyJoinColumn(name="user_person_email")
-public class Owner extends User {
+@Table(name = "Owner")
+public class Owner implements Serializable {
 
+    @Id
     @Column(name="nif")
     private String nif;
+
+    @OneToOne(targetEntity = Client.class)
+    @JoinColumn(name="client_person_email",referencedColumnName="person_email",nullable=false, updatable = false, insertable = false)
+    private Client client;;
+
 
     public Owner() {
     }
 
-    public Owner(String email, String name, String nif) {
-        super(email, name);
-        this.nif = nif;
+    public Owner(String nif, Client client) {
+        this.client=client;
+        this.nif=nif;
+    }
+
+    public OwnerResource toOwnerResource() {
+        return new OwnerResource(this);
     }
 
     public String getNif() {
@@ -31,7 +38,11 @@ public class Owner extends User {
         this.nif = nif;
     }
 
-    public OwnerResource toResource() {
-        return new OwnerResource(this);
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
