@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = ResourceNotFoundException.class)
 public class ClientService implements IClientService {
 
-
     @Autowired
     PersonRepository personRepo;
 

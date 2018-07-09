@@ -31,4 +31,6 @@ public interface IStoreService {
     List<Store> getStoresByLocationAndCategory(String location, String category);
 
     List<Client> getClientsOfStore(String nif);
+
+    List<Staff> getStaff(String nif);
 }

@@ -21,7 +21,6 @@ public class StoreService implements IStoreService {
     @Autowired
     StoreRepository storeRepo;
 
-
     @Autowired
     StoreServicesRepository storeServicesRepo;
 
@@ -36,6 +35,9 @@ public class StoreService implements IStoreService {
 
     @Autowired
     PersonRepository personRepo;
+
+    @Autowired
+    StaffServicesRepository staffRepo;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
@@ -181,6 +183,16 @@ public class StoreService implements IStoreService {
         return clientStoresRepo.findByPk_Store_NifAndAccepted(nif, true)
                 .stream()
                 .map( c -> (Client)personRepo.findByEmail(c.getPk().getClient().getEmail()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Cacheable(value = "staff")
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
+    public List<Staff> getStaff(String nif) {
+        return staffRepo.getByPk_StoresServices_Pk_Store_Nif(nif)
+                .stream()
+                .map(s -> (Staff)personRepo.findByEmail(s.getPk().getStaff().getEmail()))
                 .collect(Collectors.toList());
     }
 

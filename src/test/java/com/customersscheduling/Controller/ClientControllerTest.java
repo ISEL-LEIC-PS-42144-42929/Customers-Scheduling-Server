@@ -41,7 +41,6 @@ public class ClientControllerTest {
         this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
-
     @Test
     public void insertClient() throws Exception{
         PersonInputModel c = new PersonInputModel();

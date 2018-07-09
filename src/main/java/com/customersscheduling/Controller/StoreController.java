@@ -27,7 +27,7 @@ public class StoreController {
     }
 
     @GetMapping(value = "/{nif}/clients")
-    public Resources<ClientResource> getClientsOfStore(@RequestParam("nif") String nif) {
+    public Resources<ClientResource> getClientsOfStore(@PathVariable String nif) {
         List<ClientResource> res = storeService.getClientsOfStore(nif)
                                         .stream()
                                         .map(i->i.toResource())
@@ -60,7 +60,8 @@ public class StoreController {
     public Resource<StoreResource> getStore(@PathVariable String nif) {
         StoreResource res = storeService.getStore(nif).toResource(storeService.getScore(nif));
         Link link = linkTo(methodOn(StoreController.class).getStore(nif)).withSelfRel();
-        return new Resource<>(res, res.getLinks(link));
+        res.add(link);
+        return new Resource<>(res);
     }
 
     @PostMapping(value = "/owner/{email}")

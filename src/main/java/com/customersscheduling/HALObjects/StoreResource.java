@@ -3,6 +3,7 @@ package com.customersscheduling.HALObjects;
 import com.customersscheduling.Controller.StoreController;
 import com.customersscheduling.Controller.StorePortfolioController;
 import com.customersscheduling.Controller.StoreServicesController;
+import com.customersscheduling.Controller.StoreStaffController;
 import com.customersscheduling.Domain.Store;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
@@ -27,6 +28,9 @@ public class StoreResource extends ResourceSupport {
         add(linkTo(methodOn(StorePortfolioController.class).getPortfolioOfStore(nif)).withRel("portfolio"));
         add(linkTo(methodOn(StoreController.class).updateStoreAddress(nif, null)).withRel("update_addr"));
         add(linkTo(methodOn(StoreController.class).updateInfoStore(nif, null)).withRel("update_info"));
+        add(linkTo(methodOn(StoreController.class).getClientsOfStore(nif)).withRel("clients"));
+        add(linkTo(methodOn(StoreController.class).getPendentRequestsOfStore(nif)).withRel("pendent_requests"));
+        add(linkTo(methodOn(StoreStaffController.class).getStaffOfStore(nif)).withRel("staff"));
     }
 
     public List<Link> getLinks(Link l) {
@@ -40,5 +44,13 @@ public class StoreResource extends ResourceSupport {
 
     public void setStore(Store store) {
         this.store = store;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }
