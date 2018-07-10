@@ -38,7 +38,7 @@ public class ClientRepositoryTests {
     private PersonRepository repo;
 
     @Test
-    public void testFindByName() {
+    public void testFindByEmail() {
         entityManager.persist(getClient());
         Optional<Person> client = repo.findByEmail("Foo");
         assertEquals("Foo", client.get().getEmail());

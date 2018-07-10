@@ -3,13 +3,18 @@ package com.customersscheduling.Controller;
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
 
 import com.customersscheduling.Domain.Client;
+import com.customersscheduling.Service.ClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,6 +24,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.xml.ws.Response;
 
+import java.util.function.Consumer;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -27,33 +34,31 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureMockMvc
 public class ClientControllerTest {
 
+    @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private WebApplicationContext context;
+    @MockBean
+    private ClientService service;
 
     ObjectMapper om = new ObjectMapper();
 
-    @Before
-    public void setUp() throws Exception {
-        this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
-    }
+    private final String [] authHeader = {"Authorization", "Bearer unittest"};
+    private final String POST_CLIENT_URI = "/person/client";
 
     @Test
     public void insertClient() throws Exception{
-        PersonInputModel c = new PersonInputModel();
-        c.email="tstclientemail"; c.name="tstclientname";
+        PersonInputModel c = getClientInputModel();
         String body = om.writeValueAsString(c);
-        MvcResult result = mvc.perform(post("/person/client").content(body)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                        .andDo(print())
-                        .andExpect(status().isOk())
-                        .andReturn();
-        String resultContent = result.getResponse().getContentAsString();
-        //Response response = om.readValue(resultContent, Response.class);
-        //Assert.assertTrue(response.isDone() == Boolean.TRUE);
+        mvc.perform(post(POST_CLIENT_URI)
+                        .header(authHeader[0], authHeader[1])
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andReturn();
     }
 
     @Test

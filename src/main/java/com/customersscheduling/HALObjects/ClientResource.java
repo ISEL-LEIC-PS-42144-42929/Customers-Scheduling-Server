@@ -16,8 +16,7 @@ public class ClientResource extends ResourceSupport {
     public ClientResource(Client person) {
         this.person = person;
         add(linkTo(methodOn(ClientController.class).getClient(person.getEmail())).withRel("get"));
-        add(linkTo(methodOn(ClientController.class).insertClient(null)).withRel("insert"));
-
+        add(linkTo(methodOn(ClientController.class).insertClient(null, null)).withRel("insert"));
         add(linkTo(methodOn(ClientController.class).getPendentRequestOfClient(person.getEmail())).withRel("pendent_requests"));
         add(linkTo(methodOn(ClientController.class).getStoresOfClient(person.getEmail())).withRel("stores"));
     }
