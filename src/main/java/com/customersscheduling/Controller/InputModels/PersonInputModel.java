@@ -16,10 +16,4 @@ public class PersonInputModel {
         return client;
     }
 
-    public Staff toStaffDto() {
-        Staff staff = new Staff(email, name);
-        staff.setContact(contact);
-        staff.setGender(gender == true ? 1 : 0);
-        return staff;
-    }
 }

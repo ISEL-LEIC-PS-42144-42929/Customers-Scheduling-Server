@@ -27,7 +27,8 @@ public class StoreResource extends ResourceSupport {
         add(linkTo(methodOn(StoreController.class).updateInfoStore(nif, null)).withRel("update_info"));
         add(linkTo(methodOn(StoreController.class).getClientsOfStore(nif)).withRel("clients"));
         add(linkTo(methodOn(StoreController.class).getPendentRequestsOfStore(nif)).withRel("pendent_requests"));
-        add(linkTo(methodOn(StoreStaffController.class).getStaffOfStore(nif)).withRel("staff"));
+        add(linkTo(methodOn(StoreStaffController.class).getStaffOfStore(nif)).withRel("get_staff"));
+        add(linkTo(methodOn(StoreStaffController.class).insertStaffForService(null,nif,-1, null)).withRel("insert_staff"));
         add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif, null, null)).withRel("timetable"));
     }
 

@@ -1,6 +1,7 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
+import com.customersscheduling.Controller.InputModels.StaffInputModel;
 import com.customersscheduling.HALObjects.OwnerResource;
 import com.customersscheduling.HALObjects.StaffResource;
 import com.customersscheduling.Service.IStaffService;
@@ -24,9 +25,9 @@ public class StaffController {
     private IStaffService personService;
 
     @PostMapping(value = "/staff")
-    public Resource<StaffResource> insertStaff(@RequestBody PersonInputModel person, HttpServletResponse resp) {
-        StaffResource personResource = personService.insertStaff(person.toStaffDto()).toResource();
-        Link link = linkTo(methodOn(StaffController.class).insertStaff(person, null)).withSelfRel();
+    public Resource<StaffResource> insertStaff(@RequestBody StaffInputModel staff, HttpServletResponse resp) {
+        StaffResource personResource = personService.insertStaff(staff.toDto()).toResource();
+        Link link = linkTo(methodOn(StaffController.class).insertStaff(staff, null)).withSelfRel();
         personResource.add(link);
         resp.setStatus(HttpStatus.CREATED.value());
         return new Resource<>(personResource);
@@ -41,8 +42,8 @@ public class StaffController {
     }
 
     @PutMapping(value = "/staff/{email}")
-    public Resource<StaffResource> updateStaff(@PathVariable String email, @RequestBody PersonInputModel person) {
-        StaffResource personResource = personService.updateStaff(email, person.toStaffDto()).toResource();
+    public Resource<StaffResource> updateStaff(@PathVariable String email, @RequestBody StaffInputModel person) {
+        StaffResource personResource = personService.updateStaff(email, person.toDto()).toResource();
         Link link = linkTo(methodOn(StaffController.class).getStaff(email)).withSelfRel();
         personResource.add(link);
         return new Resource<>(personResource);

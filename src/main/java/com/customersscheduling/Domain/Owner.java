@@ -14,7 +14,7 @@ public class Owner implements Serializable {
     private String nif;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name="client_person_email",referencedColumnName="person_email")//, nullable=false, updatable = false, insertable = false)
+    @JoinColumn(name="client_person_email",referencedColumnName="person_email", nullable = false)
     private Client client;;
 
 
