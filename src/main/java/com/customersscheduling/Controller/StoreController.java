@@ -72,15 +72,11 @@ public class StoreController {
 
     @PostMapping(value = "/owner/{email}")
     public Resource<StoreResource> insertStore(@PathVariable String email, @RequestBody StoreInputModel store) {
-        Owner o = new Owner();
-        Client c = new Client(email);
-        if(store.nif!=null){
-            o.setNif(store.ownerNif);
-            ownerService.insertOwner(o);
-        }
+        Owner o = ownerService.getOwner(email);
         StoreResource storeResource = storeService.insertStore(store.toDto(o)).toResource(0);
         Link link = linkTo(methodOn(StoreController.class).insertStore(email, store)).withSelfRel();
-        return new Resource<>(storeResource, storeResource.getLinks(link));
+        storeResource.add(link);
+        return new Resource<>(storeResource);
     }
 
     @PutMapping(value = "/{nif}/address/{id}")
@@ -90,14 +86,16 @@ public class StoreController {
         st.setNif(nif);
         StoreResource storeResource = storeService.updateStoreAddress(nif, address).toResource(storeService.getScore(nif));
         Link link = linkTo(methodOn(StoreController.class).updateStoreAddress(nif, addr)).withSelfRel();
-        return new Resource<>(storeResource, storeResource.getLinks(link));
+        storeResource.add(link);
+        return new Resource<>(storeResource);
     }
 
     @PutMapping(value = "/{nif}/info")
     public Resource<StoreResource> updateInfoStore(@PathVariable String nif, @RequestBody StoreInputModel store) {
         StoreResource storeResource = storeService.updateStore(nif, store.toDto(new Owner())).toResource(storeService.getScore(nif));
         Link link = linkTo(methodOn(StoreController.class).updateInfoStore(nif, store)).withSelfRel();
-        return new Resource<>(storeResource, storeResource.getLinks(link));
+        storeResource.add(link);
+        return new Resource<>(storeResource);
     }
 
 

@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.annotation.Order;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -26,8 +27,8 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 @Configuration
 @EnableScheduling
 @EnableCaching
-@EnableTransactionManagement
-@ComponentScan({"com.customersscheduling.Controller","com.customersscheduling.Service", "com.customersscheduling.ExceptionHandling"})
+@EnableTransactionManagement(proxyTargetClass=true)
+@ComponentScan({"com.customersscheduling.Controller","com.customersscheduling.Service", "com.customersscheduling.ExceptionHandling", "com.customersscheduling.Repository"})
 public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired

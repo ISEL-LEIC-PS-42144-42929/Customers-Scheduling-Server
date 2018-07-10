@@ -1,9 +1,6 @@
 package com.customersscheduling.HALObjects;
 
-import com.customersscheduling.Controller.StoreController;
-import com.customersscheduling.Controller.StorePortfolioController;
-import com.customersscheduling.Controller.StoreServicesController;
-import com.customersscheduling.Controller.StoreStaffController;
+import com.customersscheduling.Controller.*;
 import com.customersscheduling.Domain.Store;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
@@ -31,6 +28,7 @@ public class StoreResource extends ResourceSupport {
         add(linkTo(methodOn(StoreController.class).getClientsOfStore(nif)).withRel("clients"));
         add(linkTo(methodOn(StoreController.class).getPendentRequestsOfStore(nif)).withRel("pendent_requests"));
         add(linkTo(methodOn(StoreStaffController.class).getStaffOfStore(nif)).withRel("staff"));
+        add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif, null)).withRel("timetable"));
     }
 
     public List<Link> getLinks(Link l) {

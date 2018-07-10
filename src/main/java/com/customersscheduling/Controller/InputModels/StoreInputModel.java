@@ -7,8 +7,6 @@ import com.customersscheduling.Domain.Store;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class StoreInputModel {
-    @JsonIgnore
-    public String ownerNif; //only on first store
 
     public String name;
     public String contact;

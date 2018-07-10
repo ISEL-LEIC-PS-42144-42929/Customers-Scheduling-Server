@@ -1,5 +1,6 @@
 package com.customersscheduling.Service;
 
+import com.customersscheduling.Domain.Client;
 import com.customersscheduling.Domain.Owner;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
@@ -16,19 +17,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class OwnerService implements IOwnerService {
 
     @Autowired
-    OwnerRepository personRepo;
+    OwnerRepository ownerRepo;
+
+    @Autowired
+    PersonRepository personRepo;
 
     @Override
     public Owner insertOwner(Owner owner) {
-        return (Owner)personRepo.save(owner);
+        Client c = (Client) personRepo.findByEmail(owner.getClient().getEmail()).orElseThrow(()->new ResourceNotFoundException("Client "+owner.getClient().getEmail()+" doesn't exists."));;
+        owner.setClient(c);
+        return ownerRepo.save(owner);
     }
 
     @Override
     @Cacheable(value = "owner")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Owner getOwner(String email) {
-        Owner o=  (Owner)personRepo.findByClient_Email(email);//.orElseThrow(()->new ResourceNotFoundException("Owner "+email+" doesn't exists."));
-        if(o == null) throw new ResourceNotFoundException("Staff with the email - "+email+" - doesn't exists.");
+        Owner o=  (Owner) ownerRepo.findByClient_Email(email);//.orElseThrow(()->new ResourceNotFoundException("Owner "+email+" doesn't exists."));
+        if(o == null) throw new ResourceNotFoundException("Owner with the email - "+email+" - doesn't exists.");
         return o;
     }
 
@@ -36,7 +42,7 @@ public class OwnerService implements IOwnerService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public Owner deleteOwner(String email) {
         Owner o = getOwner(email);
-        personRepo.delete(o);
+        ownerRepo.delete(o);
         return o;
     }
 

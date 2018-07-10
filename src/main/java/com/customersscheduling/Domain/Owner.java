@@ -13,8 +13,8 @@ public class Owner implements Serializable {
     @Column(name="nif")
     private String nif;
 
-    @OneToOne(targetEntity = Client.class)
-    @JoinColumn(name="client_person_email",referencedColumnName="person_email",nullable=false, updatable = false, insertable = false)
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name="client_person_email",referencedColumnName="person_email")//, nullable=false, updatable = false, insertable = false)
     private Client client;;
 
 

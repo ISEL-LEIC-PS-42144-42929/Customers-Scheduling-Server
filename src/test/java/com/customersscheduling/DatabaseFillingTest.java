@@ -52,7 +52,7 @@ public class DatabaseFillingTest {
         }
         //1 Owner
         OwnerInputModel o= new OwnerInputModel();
-        o.email="tstowneremail"; o.name="tstownername"; o.nif="123456789";
+        o.email="tstowneremail"; o.nif="123456789";
         req("/person/owner", o);
         //10 Staff
         for (int i = 0; i < 10; i++) {

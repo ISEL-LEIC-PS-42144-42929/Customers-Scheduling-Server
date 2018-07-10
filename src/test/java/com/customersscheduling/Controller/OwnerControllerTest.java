@@ -38,8 +38,8 @@ public class OwnerControllerTest {
     @Test
     public void insertOwner() throws Exception{
         OwnerInputModel c = new OwnerInputModel();
-        c.email="tstowneremail"; c.name="tstownername";
-        c.name="123456789";
+        c.email="tstowneremail";
+        c.nif="123456789";
         String body = om.writeValueAsString(c);
         mvc.perform(post("/person/owner").content(body)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))

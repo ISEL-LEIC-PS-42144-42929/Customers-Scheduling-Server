@@ -3,8 +3,9 @@ package com.customersscheduling.Controller.InputModels;
 import com.customersscheduling.Domain.Client;
 import com.customersscheduling.Domain.Owner;
 
-public class OwnerInputModel extends PersonInputModel{
+public class OwnerInputModel {
     public String nif;
+    public String email;
 
     public Owner toOwnerDto(){
         Client c= new Client();
