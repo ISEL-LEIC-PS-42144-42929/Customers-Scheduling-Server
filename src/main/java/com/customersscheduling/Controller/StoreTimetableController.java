@@ -13,8 +13,10 @@ import com.customersscheduling.Service.IStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,13 +33,15 @@ public class StoreTimetableController {
     private IStoreService storeService;
 
     @PostMapping(value = "/{nif}/timetable")
-    public Resource<StoreResource> insertStoreTimetable(@PathVariable String nif, @RequestBody TimetableInputModel timetable) {
+    public Resource<StoreResource> insertStoreTimetable(@PathVariable String nif, @RequestBody TimetableInputModel timetable, HttpServletResponse resp) {
         Store s = new Store();
         s.setNif(nif);
         Timetable tt = timetable.toDto();
         StoreResource storeResource = storeService.insertStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s))).toResource(storeService.getScore(nif));
-        Link link = linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif,timetable)).withSelfRel();
-        return new Resource<StoreResource>(storeResource, storeResource.getLinks(link));
+        Link link = linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif,timetable, null)).withSelfRel();
+        storeResource.add(link);
+        resp.setStatus(HttpStatus.CREATED.value());
+        return new Resource<StoreResource>(storeResource);
     }
 
     @PutMapping(value = "/{nif}/timetable")
@@ -47,8 +51,9 @@ public class StoreTimetableController {
         s.setNif(nif);
         Timetable tt = timetable.toDto();
         StoreResource storeResource = storeService.updateStoreTimetable(new StoreTimetable(new StoreTimetablePK(tt, s))).toResource(storeService.getScore(nif));
-        Link link = linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif,timetable)).withSelfRel();
-        return new Resource<>(storeResource, storeResource.getLinks(link));
+        Link link = linkTo(methodOn(StoreTimetableController.class).updateStoreTimetable(nif,weekDay, timetable)).withSelfRel();
+        storeResource.add(link);
+        return new Resource<>(storeResource);
     }
 
     @GetMapping(value = "/{nif}/timetable")
@@ -66,6 +71,7 @@ public class StoreTimetableController {
 
         StoreTimetableResource stResource = new StoreTimetableResource(listtt, s.toResource(storeService.getScore(nif)));
         Link link = linkTo(methodOn(StoreTimetableController.class).getStoreTimetable(nif)).withSelfRel();
-        return new Resource<StoreTimetableResource>(stResource, stResource.getLinks(link));
+        stResource.add(link);
+        return new Resource<StoreTimetableResource>(stResource);
     }
 }

@@ -54,7 +54,9 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
         Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
         if(s1!=null) s.getPk().getService().setId(s1.getId());
         servicesRepo.save(s.getPk().getService());
-        return storeServicesRepo.save(s);
+        StoreServices ss = storeServicesRepo.save(s);
+        ss.getPk().setStore(storeRepo.findByNif(ss.getPk().getStore().getNif()));
+        return ss;
     }
 
 

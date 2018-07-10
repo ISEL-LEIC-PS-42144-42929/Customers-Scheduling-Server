@@ -17,7 +17,7 @@ public class StoreTimetableResource extends TimetableResource  {
         super(t);
         this.store = s;
         add(linkTo(methodOn(StoreTimetableController.class).getStoreTimetable(s.getStore().getNif())).withRel("get"));
-        add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(s.getStore().getNif(), null)).withRel("insert"));
+        add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(s.getStore().getNif(), null, null)).withRel("insert"));
     }
 
     public List<Link> getLinks(Link l) {

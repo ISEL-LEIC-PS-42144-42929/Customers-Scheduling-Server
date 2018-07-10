@@ -20,7 +20,7 @@ public class StoreResource extends ResourceSupport {
         this.score = score;
         String nif = store.getNif();
         add(linkTo(methodOn(StoreController.class).getStore(nif)).withRel("get"));
-        add(linkTo(methodOn(StoreController.class).insertStore(null,null)).withRel("insert"));
+        add(linkTo(methodOn(StoreController.class).insertStore(null,null, null)).withRel("insert"));
         add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withRel("services"));
         add(linkTo(methodOn(StorePortfolioController.class).getPortfolioOfStore(nif)).withRel("portfolio"));
         add(linkTo(methodOn(StoreController.class).updateStoreAddress(nif, null)).withRel("update_addr"));
@@ -28,7 +28,7 @@ public class StoreResource extends ResourceSupport {
         add(linkTo(methodOn(StoreController.class).getClientsOfStore(nif)).withRel("clients"));
         add(linkTo(methodOn(StoreController.class).getPendentRequestsOfStore(nif)).withRel("pendent_requests"));
         add(linkTo(methodOn(StoreStaffController.class).getStaffOfStore(nif)).withRel("staff"));
-        add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif, null)).withRel("timetable"));
+        add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif, null, null)).withRel("timetable"));
     }
 
     public List<Link> getLinks(Link l) {

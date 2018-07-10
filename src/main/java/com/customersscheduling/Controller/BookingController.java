@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,9 +28,11 @@ public class BookingController {
     private IBookingService bookingService;
 
     @PostMapping(value = "/{nif}/book/{id}")
-    public Resource<BookingResource> insertBook(@PathVariable String nif, @PathVariable int id, @RequestBody BookInputModel input) {
+    public Resource<BookingResource> insertBook(@PathVariable String nif, @PathVariable int id, @RequestBody BookInputModel input, HttpServletResponse resp) {
         BookingResource booking = bookingService.insertBook(id, input.client_email).toResource();
-        Link link = linkTo(methodOn(BookingController.class).insertBook(nif, id, input)).withSelfRel();
-        return new Resource<>(booking, booking.getLinks(link));
+        Link link = linkTo(methodOn(BookingController.class).insertBook(nif, id, input, null)).withSelfRel();
+        booking.add(link);
+        resp.setStatus(HttpStatus.CREATED.value());
+        return new Resource<>(booking);
     }
 }

@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,11 +73,12 @@ public class StoreController {
     }
 
     @PostMapping(value = "/owner/{email}")
-    public Resource<StoreResource> insertStore(@PathVariable String email, @RequestBody StoreInputModel store) {
+    public Resource<StoreResource> insertStore(@PathVariable String email, @RequestBody StoreInputModel store, HttpServletResponse resp) {
         Owner o = ownerService.getOwner(email);
         StoreResource storeResource = storeService.insertStore(store.toDto(o)).toResource(0);
-        Link link = linkTo(methodOn(StoreController.class).insertStore(email, store)).withSelfRel();
+        Link link = linkTo(methodOn(StoreController.class).insertStore(email, store, null)).withSelfRel();
         storeResource.add(link);
+        resp.setStatus(HttpStatus.CREATED.value());
         return new Resource<>(storeResource);
     }
 
@@ -100,15 +103,17 @@ public class StoreController {
 
 
     @PostMapping(value = "/{nif}/client/{email}")
-    public Resource<StoreResource> setClientForStore(@PathVariable String nif, @PathVariable String email, @RequestBody ClientStoreInputModel csim) {
+    public Resource<StoreResource> setClientForStore(@PathVariable String nif, @PathVariable String email, @RequestBody ClientStoreInputModel csim, HttpServletResponse resp) {
         Client c = new Client();
         c.setEmail(email);
         Store s = new Store();
         s.setNif(nif);
         ClientStores cs = new ClientStores(new ClientStoresPK(s,c),csim.accepted, csim.score);
         StoreResource storeResource = storeService.insertClientForStore(cs).toResource(storeService.getScore(nif));
-        Link self = linkTo(methodOn(StoreController.class).setClientForStore(nif, email, csim)).withSelfRel();
-        return new Resource<>(storeResource, storeResource.getLinks(self));
+        Link self = linkTo(methodOn(StoreController.class).setClientForStore(nif, email, csim, null)).withSelfRel();
+        storeResource.add(self);
+        resp.setStatus(HttpStatus.CREATED.value());
+        return new Resource<>(storeResource);
     }
 
 
@@ -127,8 +132,8 @@ public class StoreController {
     public Resource<StoreResource> deleteStore(@PathVariable String nif) {
         StoreResource storeResource = storeService.deleteStore(nif).toResource(storeService.getScore(nif));
         Link link = linkTo(methodOn(StoreController.class).deleteStore(nif)).withSelfRel();
-        Resource<StoreResource> rp = new Resource<>(storeResource, storeResource.getLinks(link));
-        return rp;
+        storeResource.add(link);
+        return new Resource<>(storeResource);
     }
 
 }

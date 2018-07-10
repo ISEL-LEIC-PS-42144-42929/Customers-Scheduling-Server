@@ -12,8 +12,10 @@ import com.customersscheduling.Service.IStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,18 +37,19 @@ public class StaffTimetableController {
         Timetable tt = timetable.toDto();
         StaffResource staffResource = personService.updateStaffTimetable(new StaffTimetable(new StaffTimetablePK(tt, staff))).toResource();
         Link link = linkTo(methodOn(StaffTimetableController.class).updateStaffTimetable(email, weekDay, timetable)).withSelfRel();
-        Resource<StaffResource> staffRe = new Resource<>(staffResource, staffResource.getLinks(link));
-        return staffRe;
+        staffResource.add(link);
+        return new Resource<>(staffResource);
     }
 
     @PostMapping(value = "/staff/{email}/timetable")
-    public Resource<StaffResource> insertStaffTimetable(@PathVariable String email, @RequestBody TimetableInputModel timetable) {
+    public Resource<StaffResource> insertStaffTimetable(@PathVariable String email, @RequestBody TimetableInputModel timetable, HttpServletResponse resp) {
         Staff staff = new Staff(); staff.setEmail(email);
         Timetable tt = timetable.toDto();
         StaffResource staffResource = personService.insertStaffTimetable(new StaffTimetable(new StaffTimetablePK(tt, staff))).toResource();
-        Link link = linkTo(methodOn(StaffTimetableController.class).insertStaffTimetable(email, timetable)).withSelfRel();
-        Resource<StaffResource> staffRe = new Resource<>(staffResource, staffResource.getLinks(link));
-        return staffRe;
+        Link link = linkTo(methodOn(StaffTimetableController.class).insertStaffTimetable(email, timetable, null)).withSelfRel();
+        resp.setStatus(HttpStatus.CREATED.value());
+        staffResource.add(link);
+        return new Resource<>(staffResource);
     }
 
     @GetMapping(value = "/staff/{email}/timetable")

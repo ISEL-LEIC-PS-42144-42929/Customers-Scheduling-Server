@@ -26,6 +26,8 @@ import javax.xml.ws.Response;
 
 import java.util.function.Consumer;
 
+import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -40,25 +42,23 @@ public class ClientControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
-    private ClientService service;
-
     ObjectMapper om = new ObjectMapper();
 
     private final String [] authHeader = {"Authorization", "Bearer unittest"};
     private final String POST_CLIENT_URI = "/person/client";
+    private final String RESPONSE_CONTENT_TYPE="application/hal+json";
 
     @Test
-    public void insertClient() throws Exception{
+    public void insertClientTest() throws Exception{
         PersonInputModel c = getClientInputModel();
         String body = om.writeValueAsString(c);
         mvc.perform(post(POST_CLIENT_URI)
                         .header(authHeader[0], authHeader[1])
-                .content(body)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                        .content(body)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andReturn();
+                .andExpect(content().contentTypeCompatibleWith(RESPONSE_CONTENT_TYPE));
     }
 
     @Test

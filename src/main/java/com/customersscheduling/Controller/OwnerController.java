@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,19 +31,20 @@ public class OwnerController {
 
 
     @PostMapping(value = "/owner")
-    public Resource<OwnerResource> insertOwner(@RequestBody OwnerInputModel owner) {
+    public Resource<OwnerResource> insertOwner(@RequestBody OwnerInputModel owner, HttpServletResponse resp) {
         OwnerResource personResource = personService.insertOwner(owner.toOwnerDto()).toOwnerResource();
-        Link link = linkTo(methodOn(OwnerController.class).insertOwner(owner)).withSelfRel();
-        Resource<OwnerResource> rp = new Resource<>(personResource, personResource.getLinks(link));
-        return rp;
+        Link link = linkTo(methodOn(OwnerController.class).insertOwner(owner, null)).withSelfRel();
+        personResource.add(link);
+        resp.setStatus(HttpStatus.CREATED.value());
+        return new Resource<>(personResource);
     }
 
     @GetMapping(value = "/owner/{email}")
     public Resource<OwnerResource> getOwner(@PathVariable String email) {
         OwnerResource personResource = personService.getOwner(email).toOwnerResource();
         Link link = linkTo(methodOn(OwnerController.class).getOwner(email)).withSelfRel();
-        Resource<OwnerResource> rp = new Resource<>(personResource, personResource.getLinks(link));
-        return rp;
+        personResource.add(link);
+        return new Resource<>(personResource);
     }
     @DeleteMapping(value = "/owner/{email}")
     public Resource<OwnerResource> deleteOwner(@PathVariable String email) {

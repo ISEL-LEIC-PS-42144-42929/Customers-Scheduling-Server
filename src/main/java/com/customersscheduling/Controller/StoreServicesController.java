@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +32,15 @@ public class StoreServicesController {
     private IStoreService storeService;
 
     @PostMapping(value = "/{nif}/services")
-    public Resource<ServiceResource> insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif) {
+    public Resource<ServiceResource> insertServiceForStore(@RequestBody ServiceInputModel service, @PathVariable String nif, HttpServletResponse resp) {
         Store store = new Store(); store.setNif(nif);
         StoreServices ss = new StoreServices(new StoreServicesPK(store,service.toDto()));
         StoreServices storeServices = servicesOfStoreService.insertServiceForStore(ss);
         ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource(storeService.getScore(nif)));
-        Link link = linkTo(methodOn(StoreServicesController.class).insertServiceForStore(service, nif)).withSelfRel();
-        return new Resource<>(serviceResource, link);
+        Link link = linkTo(methodOn(StoreServicesController.class).insertServiceForStore(service, nif, null)).withSelfRel();
+        serviceResource.add(link);
+        resp.setStatus(HttpStatus.CREATED.value());
+        return new Resource<>(serviceResource);
     }
 
     @PutMapping(value = "/{nif}/services/{id}")
@@ -46,7 +50,8 @@ public class StoreServicesController {
         StoreServices storeServices = servicesOfStoreService.updateService(ss, id);
         ServiceResource serviceResource = new ServiceResource(storeServices.getPk().getService(), storeServices.getPk().getStore().toResource(storeService.getScore(nif)));
         Link link = linkTo(methodOn(StoreServicesController.class).updateService(service, nif, id)).withSelfRel();
-        return new Resource<>(serviceResource, link);
+        serviceResource.add(link);
+        return new Resource<>(serviceResource);
     }
 
 
@@ -65,7 +70,8 @@ public class StoreServicesController {
     public Resource<ServiceResource> getService(@PathVariable int id) {
         ServiceResource sr = servicesOfStoreService.getService(id).toResource(null);
         Link link = linkTo(methodOn(StoreServicesController.class).getService(id)).withSelfRel();
-        return new Resource<>(sr, sr.getLinks(link));
+        sr.add(link);
+        return new Resource<>(sr);
     }
 
     @GetMapping(value = "/{nif}/services/{id}/staff")
@@ -93,6 +99,7 @@ public class StoreServicesController {
     public Resource<ServiceResource> deleteService(@PathVariable String nif, @PathVariable int id) {
         ServiceResource service = servicesOfStoreService.deleteService(nif, id).toResource(null);
         Link link = linkTo(methodOn(StoreServicesController.class).deleteService(nif, id)).withSelfRel();
-        return new Resource<>(service, service.getLinks(link));
+        service.add(link);
+        return new Resource<>(service);
     }
 }

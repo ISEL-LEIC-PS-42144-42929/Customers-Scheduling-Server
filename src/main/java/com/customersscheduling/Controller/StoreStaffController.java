@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +34,7 @@ public class StoreStaffController {
     private IBookingService bookingService;
 
     @PostMapping(value = "/{nif}/service/{id}/staff/{email}")
-    public Resource<ServiceResource> insertStaffForService(@PathVariable String email, @PathVariable String nif, @PathVariable int id) {
+    public Resource<ServiceResource> insertStaffForService(@PathVariable String email, @PathVariable String nif, @PathVariable int id, HttpServletResponse resp) {
         Store store = new Store(); store.setNif(nif);
         Staff staff = new Staff(); staff.setEmail(email);
         Service service = new Service(); service.setId(id);
@@ -41,8 +43,10 @@ public class StoreStaffController {
         bookingService.updateBookingOfStore(staffServices);
         StoreServicesPK pk = staffServices.getPk().getStoresServices().getPk();
         ServiceResource sres = new ServiceResource(pk.getService(), pk.getStore().toResource(storeService.getScore(nif)));
-        Link link = linkTo(methodOn(StoreStaffController.class).insertStaffForService(email, nif, id)).withSelfRel();
-        return new Resource<>(sres, sres.getLinks(link));
+        Link link = linkTo(methodOn(StoreStaffController.class).insertStaffForService(email, nif, id, null)).withSelfRel();
+        sres.add(link);
+        resp.setStatus(HttpStatus.CREATED.value());
+        return new Resource<>(sres);
     }
 
     @GetMapping(value = "/{nif}/staff")

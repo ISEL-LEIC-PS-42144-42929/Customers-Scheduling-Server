@@ -45,7 +45,8 @@ public class ClientController {
     public Resource<ClientResource> getClient(@PathVariable String email) {
         ClientResource c = personService.getClient(email).toResource();
         Link link = linkTo(methodOn(ClientController.class).getClient(email)).withSelfRel();
-        return new Resource<>(c, c.getLinks(link));
+        c.add(link);
+        return new Resource<>(c);
     }
 
 
@@ -79,6 +80,7 @@ public class ClientController {
     public Resource<ClientResource> deleteClient(@PathVariable String email) {
         ClientResource cs = personService.deleteClient(email).toResource();
         Link link = linkTo(methodOn(ClientController.class).getStoresOfClient(email)).withSelfRel();
-        return new Resource<>(cs, cs.getLinks(link));
+        cs.add(link);
+        return new Resource<>(cs);
     }
 }
