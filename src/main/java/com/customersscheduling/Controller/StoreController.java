@@ -1,6 +1,7 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.*;
+import com.customersscheduling.Controller.Util.ResourcesUtil;
 import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.*;
 import com.customersscheduling.Service.IOwnerService;
@@ -41,7 +42,7 @@ public class StoreController {
                                         .map(i->i.toResource())
                                         .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreController.class).getStoresByName(nif)).withSelfRel();
-        return new Resources<>(res, link);
+        return ResourcesUtil.getResources(ClientResource.class, res, link);
     }
 
     @GetMapping(value = "/", params = "name")
@@ -51,7 +52,7 @@ public class StoreController {
                                             .map(s -> s.toResource(storeService.getScore(s.getNif())))
                                             .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreController.class).getStoresByName(name)).withSelfRel();
-        return new Resources<>(res, link);
+        return ResourcesUtil.getResources(StoreResource.class, res, link);
     }
 
     @GetMapping(value = "/", params = {"category","location"})
@@ -61,7 +62,7 @@ public class StoreController {
                                                 .map(s -> s.toResource(storeService.getScore(s.getNif())))
                                                 .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreController.class).getStoresByCategoryAndLocation(category, location)).withSelfRel();
-        return new Resources<>(res, link);
+        return ResourcesUtil.getResources(StoreResource.class, res, link);
     }
 
     @GetMapping(value = "/{nif}")
@@ -125,7 +126,7 @@ public class StoreController {
                                                     .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreController.class)
                 .getPendentRequestsOfStore(nif)).withSelfRel();
-        return new Resources<>(clients, link);
+        return ResourcesUtil.getResources(ClientResource.class, clients, link);
     }
 
     @DeleteMapping(value = "/{nif}")

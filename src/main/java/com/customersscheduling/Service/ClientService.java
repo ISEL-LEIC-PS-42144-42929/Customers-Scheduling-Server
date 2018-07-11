@@ -1,15 +1,13 @@
 package com.customersscheduling.Service;
 
+import com.customersscheduling.Domain.Booking;
 import com.customersscheduling.Domain.Client;
 import com.customersscheduling.Domain.ClientStores;
 import com.customersscheduling.Domain.Store;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ValueAlreadyExistsException;
-import com.customersscheduling.Repository.ClientStoresRepository;
-import com.customersscheduling.Repository.PersonRepository;
-import com.customersscheduling.Repository.StaffTimetableRepository;
-import com.customersscheduling.Repository.TimetableRepository;
+import com.customersscheduling.Repository.*;
 import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -31,6 +29,9 @@ public class ClientService implements IClientService {
 
     @Autowired
     ClientStoresRepository clientStoresRepo;
+
+    @Autowired
+    BookingRepository bookingRepo;
 
     @Override
     public Client insertClient(Client client) {
@@ -60,7 +61,6 @@ public class ClientService implements IClientService {
     @Transactional( propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED ,readOnly = true )
     public List<Store> getPendentRequests(String email) {
         List<ClientStores> l = clientStoresRepo.findByPk_Client_EmailAndAccepted(email, false);
-        if(l.size()==0) throw new ResourceNotFoundException("Could not find any timetable for the user with the email '"+email+"'.");
         return l.stream()
                 .map(cs -> cs.getPk().getStore())
                 .collect(Collectors.toList());
@@ -82,5 +82,10 @@ public class ClientService implements IClientService {
         Client client = getClient(email);
         personRepo.delete(client);
         return client;
+    }
+
+    @Override
+    public List<Booking> getBooks(String email) {
+        return bookingRepo.findByClient_Email(email);
     }
 }

@@ -24,4 +24,6 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     void deleteByDate(Date d);
 
     void delete(Booking entity);
+
+    List<Booking> findByClient_Email(String email);
 }

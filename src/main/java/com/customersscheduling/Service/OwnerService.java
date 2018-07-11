@@ -24,7 +24,7 @@ public class OwnerService implements IOwnerService {
 
     @Override
     public Owner insertOwner(Owner owner) {
-        Client c = (Client) personRepo.findByEmail(owner.getClient().getEmail()).orElseThrow(()->new ResourceNotFoundException("Client "+owner.getClient().getEmail()+" doesn't exists."));;
+        Client c = (Client) personRepo.findByEmail(owner.getClient().getEmail()).orElseThrow(()->new ResourceNotFoundException("Owner "+owner.getClient().getEmail()+" doesn't exists."));;
         owner.setClient(c);
         return ownerRepo.save(owner);
     }

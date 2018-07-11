@@ -60,26 +60,24 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String idToken = header.substring(7);
 
-        if(idToken.equals("unittest"))
-            filterChain.doFilter(request, response);
+        if(!idToken.equals("unittest")){
+            FirebaseToken decodedToken = null;
+            try {
+                decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+            } catch (FirebaseAuthException | IllegalArgumentException e) {
+                respondError("ID Token couldn't be verified", request.getRequestURI(), response);
+                return;
+            }
 
-        FirebaseToken decodedToken = null;
-        try {
-            decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-        } catch (FirebaseAuthException | IllegalArgumentException e) {
-            //throw new JwtTokenException("ID Token couldn't be verified");
-            respondError("ID Token couldn't be verified", request.getRequestURI(), response);
-            return;
-        }
-
-        String email = decodedToken.getEmail();
-        try{
-            service.getClient(email);
-        }catch(ResourceNotFoundException e){
-            Client c = new Client();
-            c.setEmail(email);
-            c.setName(decodedToken.getName());
-            service.insertClient(c);
+            String email = decodedToken.getEmail();
+            try{
+                service.getClient(email);
+            }catch(ResourceNotFoundException e){
+                Client c = new Client();
+                c.setEmail(email);
+                c.setName(decodedToken.getName());
+                service.insertClient(c);
+            }
         }
         filterChain.doFilter(request, response);
     }

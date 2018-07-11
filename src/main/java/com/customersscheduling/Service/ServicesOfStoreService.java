@@ -46,7 +46,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
         return new StaffServices(
                 new StaffServicesPK((Staff)personRepo.findByEmail(email).orElseThrow(()->
                                                 new ResourceNotFoundException("Staff "+email+" doesn't exists."))
-                                    , new StoreServices(new StoreServicesPK(storeRepo.findByNif(nif).orElseThrow(()->
+                                    , new StoreServices(new StoreServicesPK(storeRepo.findById(nif).orElseThrow(()->
                                                                     new ResourceNotFoundException("Store "+nif+" doesn't exists.")),
                                                                             servicesRepo.findById(id).orElseThrow(()->
                                                                     new ResourceNotFoundException("Service "+id+" doesn't exists.")))
@@ -65,7 +65,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
         );
         servicesRepo.save(s.getPk().getService());
         StoreServices ss = storeServicesRepo.save(s);
-        ss.getPk().setStore(storeRepo.findByNif(ss.getPk().getStore().getNif()).orElseThrow(()->
+        ss.getPk().setStore(storeRepo.findById(ss.getPk().getStore().getNif()).orElseThrow(()->
                 new ResourceNotFoundException("Store "+s.getPk().getStore().getNif()+" doesn't exists.")
         ));
         return ss;
@@ -81,7 +81,7 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
             booking.setService(servicesRepo.findById(booking.getService().getId()).orElseThrow(()->
                     new ResourceNotFoundException("Service with the id "+booking.getService().getId()+" doesn't exists."))
             );
-            booking.setStore(storeRepo.findByNif(booking.getStore().getNif()).orElseThrow(()->
+            booking.setStore(storeRepo.findById(booking.getStore().getNif()).orElseThrow(()->
                     new ResourceNotFoundException("Store with the nif "+booking.getStore().getNif()+" doesn't exists."))
             );
         }

@@ -1,5 +1,6 @@
 package com.customersscheduling.Controller;
 
+import com.customersscheduling.Controller.Util.ResourcesUtil;
 import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.ServiceResource;
 import com.customersscheduling.HALObjects.StaffResource;
@@ -57,6 +58,6 @@ public class StoreStaffController {
                                                 .collect(Collectors.toList());
 
         Link link = linkTo(methodOn(StoreStaffController.class).getStaffOfStore(nif)).withSelfRel();
-        return  new Resources<>(staff, link);
+        return ResourcesUtil.getResources(StaffResource.class, staff, link);
     }
 }

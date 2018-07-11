@@ -11,12 +11,12 @@ import java.util.Optional;
 import static org.hibernate.hql.internal.antlr.HqlTokenTypes.FROM;
 import static org.hibernate.loader.Loader.SELECT;
 
-public interface StoreRepository extends JpaRepository<Store, Integer> {
+public interface StoreRepository extends JpaRepository<Store, String> {
 
     @Override
     Store save(Store entity);
 
-    Optional<Store> findByNif(String nif);
+    Store findByNif(String nif);
 
     List<Store> findByOwner_Client_Email(String email);
 

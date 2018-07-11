@@ -1,9 +1,13 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
+import com.customersscheduling.Controller.Util.ResourcesUtil;
+import com.customersscheduling.Domain.Booking;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ClientResource;
+import com.customersscheduling.HALObjects.StaffResource;
 import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.Repository.BookingRepository;
 import com.customersscheduling.Service.IClientService;
 import com.customersscheduling.Service.IStoreService;
 import com.google.api.gax.rpc.StatusCode;
@@ -58,12 +62,18 @@ public class ClientController {
                                                     .collect(Collectors.toList());
         Link link = linkTo(methodOn(ClientController.class)
                 .getPendentRequestOfClient(email)).withSelfRel();
-        return new Resources<>(stores, link);
+        return ResourcesUtil.getResources(StoreResource.class, stores, link);
     }
 
     @GetMapping(value = "/client/{email}/books")
-    public ResponseEntity<Resources<BookingResource>> getBooksOfClient(@PathVariable String email) {
-        return null;
+    public Resources<BookingResource> getBooksOfClient(@PathVariable String email) {
+        List<BookingResource> books = personService.getBooks(email)
+                                                    .stream()
+                                                    .map( i -> i.toResource())
+                                                    .collect(Collectors.toList());
+        Link link = linkTo(methodOn(ClientController.class)
+                .getBooksOfClient(email)).withSelfRel();
+        return ResourcesUtil.getResources(BookingResource.class, books, link);
     }
 
     @GetMapping(value = "/client/{email}/stores")
@@ -73,7 +83,7 @@ public class ClientController {
                                                     .map( c -> c.toResource(storeService.getScore(c.getNif())))
                                                     .collect(Collectors.toList());
         Link link = linkTo(methodOn(ClientController.class).getStoresOfClient(email)).withSelfRel();
-        return new Resources<>(stores, link);
+        return ResourcesUtil.getResources(StoreResource.class, stores, link);
     }
 
     @DeleteMapping(value = "/client/{email}")

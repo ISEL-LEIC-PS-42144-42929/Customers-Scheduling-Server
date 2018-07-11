@@ -1,5 +1,6 @@
 package com.customersscheduling.Service;
 
+import com.customersscheduling.Domain.Booking;
 import com.customersscheduling.Domain.Client;
 import com.customersscheduling.Domain.Store;
 import org.springframework.hateoas.ResourceAssembler;
@@ -14,4 +15,6 @@ public interface IClientService {
     Client getClient(String email);
 
     Client deleteClient(String email);
+
+    List<Booking> getBooks(String email);
 }

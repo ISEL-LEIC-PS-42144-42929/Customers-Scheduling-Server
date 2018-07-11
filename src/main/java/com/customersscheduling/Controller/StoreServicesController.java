@@ -1,6 +1,7 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.ServiceInputModel;
+import com.customersscheduling.Controller.Util.ResourcesUtil;
 import com.customersscheduling.Domain.*;
 import com.customersscheduling.HALObjects.BookingResource;
 import com.customersscheduling.HALObjects.ServiceResource;
@@ -63,7 +64,7 @@ public class StoreServicesController {
                                                 .map( i -> new ServiceResource(i.getPk().getService(), i.getPk().getStore().toResource(storeService.getScore(nif))))
                                                 .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withSelfRel();
-        return new Resources<>(sr, link);
+        return ResourcesUtil.getResources(ServiceResource.class, sr, link);
     }
 
     @GetMapping(value = "/{nif}/services/{id}")
@@ -81,7 +82,7 @@ public class StoreServicesController {
                                                     .map( i -> i.toResource())
                                                     .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreServicesController.class).getStaffOfService(id, nif)).withSelfRel();
-        return new Resources<>(staffs, link);
+        return ResourcesUtil.getResources(StaffResource.class, staffs, link);
     }
 
 
@@ -92,7 +93,7 @@ public class StoreServicesController {
                 .map( i -> i.toResource())
                 .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreServicesController.class).getDispOfService(nif, id)).withSelfRel();
-        return new Resources<>(books, link);
+        return ResourcesUtil.getResources(BookingResource.class, books, link);
     }
 
     @DeleteMapping(value = "/{nif}/service/{id}")

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
@@ -50,9 +51,10 @@ public class StoreService implements IStoreService {
     @Cacheable(value = "stores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Store getStore(String nif) {
-        return storeRepo.findByNif(nif).orElseThrow(()->
+        Optional<Store> byNif = storeRepo.findById(nif);
+        return  byNif.get();/*.orElseThrow(()->
                 new ResourceNotFoundException("Store with the nif "+nif+" doesn't exists.")
-        );
+        );*/
     }
 
     @Override
@@ -161,14 +163,14 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    @Cacheable(value = "stores")
+    //@Cacheable(value = "stores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresByName(String name) {
         return storeRepo.findByName(name);
     }
 
     @Override
-    @Cacheable(value = "stores")
+    //@Cacheable(value = "stores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresByLocationAndCategory(String location, String category) {
         return storeRepo.findByAddress_CityAndCategory_Name(location, category);
