@@ -33,9 +33,9 @@ public class OwnerService implements IOwnerService {
     @Cacheable(value = "owner")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Owner getOwner(String email) {
-        Owner o=  (Owner) ownerRepo.findByClient_Email(email);//.orElseThrow(()->new ResourceNotFoundException("Owner "+email+" doesn't exists."));
-        if(o == null) throw new ResourceNotFoundException("Owner with the email - "+email+" - doesn't exists.");
-        return o;
+        return ownerRepo.findByClient_Email(email).orElseThrow(()->
+                new ResourceNotFoundException("Owner "+email+" doesn't exists.")
+        );
     }
 
     @Override

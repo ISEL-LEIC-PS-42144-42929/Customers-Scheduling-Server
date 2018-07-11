@@ -12,5 +12,5 @@ public interface OwnerRepository extends JpaRepository<Owner, Client> {
     @Override
     Owner save(Owner entity);
 
-    Owner findByClient_Email(String email);
+    Optional<Owner> findByClient_Email(String email);
 }

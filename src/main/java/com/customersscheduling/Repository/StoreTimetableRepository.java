@@ -7,6 +7,7 @@ import com.customersscheduling.Domain.StoreTimetablePK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StoreTimetableRepository extends JpaRepository<StoreTimetable, StoreTimetablePK> {
 
@@ -17,5 +18,5 @@ public interface StoreTimetableRepository extends JpaRepository<StoreTimetable, 
 
     List<StoreTimetable> findByPk_Store_Nif(String nif);
 
-    StoreTimetable findByPk_StoreAndPk_Timetable_WeekDay(Store store, int weekDay);
+    Optional<StoreTimetable> findByPk_StoreAndPk_Timetable_WeekDay(Store store, int weekDay);
 }

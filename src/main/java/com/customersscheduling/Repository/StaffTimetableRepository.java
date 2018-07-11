@@ -6,6 +6,7 @@ import com.customersscheduling.Domain.StaffTimetablePK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StaffTimetableRepository extends JpaRepository<StaffTimetable, StaffTimetablePK> {
 
@@ -14,5 +15,5 @@ public interface StaffTimetableRepository extends JpaRepository<StaffTimetable, 
 
     List<StaffTimetable> findByPk_Staff(Staff staff);
 
-    StaffTimetable findByPk_StaffAndPk_Timetable_WeekDay(Staff staff, int wd);
+    Optional<StaffTimetable> findByPk_StaffAndPk_Timetable_WeekDay(Staff staff, int wd);
 }

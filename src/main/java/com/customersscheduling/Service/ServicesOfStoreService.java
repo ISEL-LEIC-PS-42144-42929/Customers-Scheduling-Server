@@ -43,7 +43,16 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
         int id = s.getPk().getStoresServices().getPk().getService().getId();
         String email = s.getPk().getStaff().getEmail();
         String nif = s.getPk().getStoresServices().getPk().getStore().getNif();
-        return new StaffServices(new StaffServicesPK((Staff)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Staff "+email+" doesn't exists.")), new StoreServices(new StoreServicesPK(storeRepo.findByNif(nif), servicesRepo.findById(id)))));
+        return new StaffServices(
+                new StaffServicesPK((Staff)personRepo.findByEmail(email).orElseThrow(()->
+                                                new ResourceNotFoundException("Staff "+email+" doesn't exists."))
+                                    , new StoreServices(new StoreServicesPK(storeRepo.findByNif(nif).orElseThrow(()->
+                                                                    new ResourceNotFoundException("Store "+nif+" doesn't exists.")),
+                                                                            servicesRepo.findById(id).orElseThrow(()->
+                                                                    new ResourceNotFoundException("Service "+id+" doesn't exists.")))
+                                                        )
+                )
+        );
     }
 
 
@@ -51,11 +60,14 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public StoreServices insertServiceForStore(StoreServices s) {
         Service serv = s.getPk().getService();
-        Service s1 = servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration());
-        if(s1!=null) s.getPk().getService().setId(s1.getId());
+        servicesRepo.findService(serv.getDescription(), serv.getPrice(), serv.getTitle(), serv.getDuration()).ifPresent( service ->
+                s.getPk().getService().setId(service.getId())
+        );
         servicesRepo.save(s.getPk().getService());
         StoreServices ss = storeServicesRepo.save(s);
-        ss.getPk().setStore(storeRepo.findByNif(ss.getPk().getStore().getNif()));
+        ss.getPk().setStore(storeRepo.findByNif(ss.getPk().getStore().getNif()).orElseThrow(()->
+                new ResourceNotFoundException("Store "+s.getPk().getStore().getNif()+" doesn't exists.")
+        ));
         return ss;
     }
 
@@ -66,8 +78,12 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     public List<Booking> getServiceDisp(int id) {
         List<Booking> list = bookingRepo.findByService_Id(id);
         for (Booking booking : list) {
-            booking.setService(servicesRepo.findById(booking.getService().getId()));
-            booking.setStore(storeRepo.findByNif(booking.getStore().getNif()));
+            booking.setService(servicesRepo.findById(booking.getService().getId()).orElseThrow(()->
+                    new ResourceNotFoundException("Service with the id "+booking.getService().getId()+" doesn't exists."))
+            );
+            booking.setStore(storeRepo.findByNif(booking.getStore().getNif()).orElseThrow(()->
+                    new ResourceNotFoundException("Store with the nif "+booking.getStore().getNif()+" doesn't exists."))
+            );
         }
         return list;
     }
@@ -86,9 +102,9 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     @Cacheable(value = "services")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Service getService(int id) {
-        Service serv = servicesRepo.findById(id);
-        if(serv == null) throw new ResourceNotFoundException("Service with the id - "+id+" - doesn't exists.");
-        return serv;
+        return servicesRepo.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Service with the id "+id+" doesn't exists.")
+        );
     }
 
     @Override
@@ -104,11 +120,10 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     @Transactional
     public Service deleteService(String nif, int id) {
         Service s = getService(id);
-        StoreServices ss = storeServicesRepo.findByPk_Service_Id(id);
-        if(ss!=null)
-            storeServicesRepo.delete(ss);
-        else
-            throw new ResourceNotFoundException("Service with the ID - "+id+" - doesn't belong to the Store with the NIF - "+nif);
-        return s;
+        StoreServices ss = storeServicesRepo.findByPk_Service_Id(id).orElseThrow(()->
+                new ResourceNotFoundException("Service with the ID - "+id+" - doesn't belong to the Store with the NIF - "+nif));
+
+        storeServicesRepo.delete(ss);
+        return ss.getPk().getService();
     }
 }

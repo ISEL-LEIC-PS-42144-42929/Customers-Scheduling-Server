@@ -6,6 +6,7 @@ import com.customersscheduling.Domain.StoreServices;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StaffServicesRepository extends JpaRepository<StaffServices, StaffServicesPK> {
 
@@ -16,7 +17,7 @@ public interface StaffServicesRepository extends JpaRepository<StaffServices, St
 
     List<StaffServices> getByPk_StoresServices_Pk_Store_Nif(String nif);
 
-    StaffServices getByPk_StoresServices_Pk_Service_IdAndPk_StoresServices_Pk_Store_NifAndPk_Staff_Email(int id, String nif, String email);
+    Optional<StaffServices> getByPk_StoresServices_Pk_Service_IdAndPk_StoresServices_Pk_Store_NifAndPk_Staff_Email(int id, String nif, String email);
 
     List<StaffServices> getByPk_StoresServices(StoreServices ss);
 }

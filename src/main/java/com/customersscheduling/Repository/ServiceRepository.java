@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
     @Override
@@ -14,11 +16,11 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
             "s.price = :price and " +
             "s.title = :title and " +
             "s.duration = :duration")
-    Service findService(@Param("description") String descr,
+    Optional<Service> findService(@Param("description") String descr,
                         @Param("price") double price,
                         @Param("title") String title,
                         @Param("duration") int duration);
 
-    Service findById(int id);
+    Optional<Service> findById(int id);
 
 }

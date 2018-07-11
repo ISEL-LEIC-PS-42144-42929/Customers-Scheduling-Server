@@ -37,7 +37,7 @@ public class BookingService implements IBookingService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public Booking insertBook(int id, String email) {
-        Booking booking = bookingRepo.findById(id);
+        Booking booking = bookingRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Book with the id "+id+" doesn't exists."));
         if(booking == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
         Client c = (Client)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Staff "+email+" doesn't exists."));
         if(c==null) throw new ResourceNotFoundException("Client with the email - "+email+" - doesn't exists.");
@@ -49,15 +49,16 @@ public class BookingService implements IBookingService {
     @Cacheable(value = "book")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Booking getBookingById(int id) {
-        Booking book = bookingRepo.getOne(id);
-        if(book == null) throw new ResourceNotFoundException("Book with the id - "+id+" - doesn't exists.");
-        return book;
+        return bookingRepo.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Book with the id "+id+" doesn't exists.")
+        );
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public void dailyUpdate() {
-        List<Booking> books = bookingRepo.findByDate(dayFromNow(-1));
+        Date date = dayFromNow(-1);
+        List<Booking> books = bookingRepo.findByDate(date);
         List<Store> stores = books.stream()
                             .map(b -> b.getStore())
                             .distinct()
@@ -102,7 +103,7 @@ public class BookingService implements IBookingService {
     }
 
     private List<Date> getSlotsForDay(Date d, StaffServices ss){
-        StaffTimetable tt = staffTimetableRepo.findByPk_StaffAndPk_Timetable_WeekDay(ss.getPk().getStaff(), getWeekDay(d));
+        StaffTimetable tt = staffTimetableRepo.findByPk_StaffAndPk_Timetable_WeekDay(ss.getPk().getStaff(), getWeekDay(d)).get();
         if(tt!=null){
             return getBookingSlots(ss.getPk().getStoresServices().getPk().getService(), tt.getPk().getTimetable(), d);
         }else {

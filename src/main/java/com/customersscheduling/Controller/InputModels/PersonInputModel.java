@@ -7,12 +7,12 @@ public class PersonInputModel {
     public String email;
     public String name;
     public String contact;
-    public boolean gender;
+    public int gender;
 
     public Client toClientDto() {
         Client client = new Client(email, name);
         client.setContact(contact);
-        client.setGender(gender == true ? 1 : 0);
+        client.setGender(gender);
         return client;
     }
 

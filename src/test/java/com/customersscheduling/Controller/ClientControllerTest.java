@@ -87,7 +87,7 @@ public class ClientControllerTest {
         PersonInputModel person = new PersonInputModel();
         person.email="tstclient";
         person.contact="tstclientemail";
-        person.gender=true;
+        person.gender=1;
         person.name="tstclientname";
         return person;
     }

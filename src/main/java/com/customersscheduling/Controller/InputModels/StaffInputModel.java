@@ -13,7 +13,7 @@ public class StaffInputModel extends PersonInputModel {
         Staff staff = new Staff(email, name, s);
         if(contact!=null)
             staff.setContact(contact);
-        staff.setGender(gender == true ? 1 : 0);
+        staff.setGender(gender);
         return staff;
     }
 

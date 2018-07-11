@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
@@ -14,7 +15,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Override
     Booking getOne(Integer integer);
 
-    Booking findById(int id);
+    Optional<Booking> findById(int id);
 
     List<Booking> findByService_Id(int id);
 

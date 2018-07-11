@@ -50,9 +50,9 @@ public class StoreService implements IStoreService {
     @Cacheable(value = "stores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Store getStore(String nif) {
-        Store store = storeRepo.findByNif(nif);
-        if(store == null) throw new ResourceNotFoundException("Store with the NIF - "+nif+" - doesn't exists.");
-        return store;
+        return storeRepo.findByNif(nif).orElseThrow(()->
+                new ResourceNotFoundException("Store with the nif "+nif+" doesn't exists.")
+        );
     }
 
     @Override
@@ -76,20 +76,17 @@ public class StoreService implements IStoreService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store insertClientForStore(ClientStores cs) {
         clientStoresRepo.save(cs);
-        return storeRepo.findByNif(cs.getPk().getStore().getNif());
+        return getStore(cs.getPk().getStore().getNif());
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store insertStoreTimetable(StoreTimetable storeTimetable) {
         Timetable tt = storeTimetable.getPk().getTimetable();
-        Timetable onDb = null;
-        if((onDb=timetableRepo.findByTimetableDay(tt.getOpenHour(), tt.getCloseHour(), tt.getInitBreak(), tt.getFinishBreak(), tt.getWeekDay()))!=null){
-            tt.setId(onDb.getId());
-        }
+        timetableRepo.findByTimetableDay(tt.getOpenHour(), tt.getCloseHour(), tt.getInitBreak(), tt.getFinishBreak(), tt.getWeekDay()).ifPresent(onDb -> tt.setId(onDb.getId()));
         timetableRepo.save(storeTimetable.getPk().getTimetable());
         storeTimetableRepo.save(storeTimetable);
-        return storeRepo.findByNif(storeTimetable.getPk().getStore().getNif());
+        return getStore(storeTimetable.getPk().getStore().getNif());
     }
 
     @Override
@@ -110,8 +107,9 @@ public class StoreService implements IStoreService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store updateStoreTimetable(StoreTimetable storeTimetable) {
         int weekDay = storeTimetable.getPk().getTimetable().getWeekDay();
-        StoreTimetable stt = storeTimetableRepo.findByPk_StoreAndPk_Timetable_WeekDay(storeTimetable.getPk().getStore(), weekDay);
-        if(stt==null) throw new ResourceNotFoundException("Timetable with the specified Store and Weekday can't be updated because doesn't exists.");
+        StoreTimetable stt = storeTimetableRepo.findByPk_StoreAndPk_Timetable_WeekDay(storeTimetable.getPk().getStore(), weekDay).orElseThrow(()->
+                new ResourceNotFoundException("Timetable with the specified Store and Weekday can't be updated because doesn't exists.")
+        );
         Timetable newTimetable = storeTimetable.getPk().getTimetable();
         newTimetable.setId(stt.getPk().getTimetable().getId());
         stt.getPk().setTimetable(newTimetable);
