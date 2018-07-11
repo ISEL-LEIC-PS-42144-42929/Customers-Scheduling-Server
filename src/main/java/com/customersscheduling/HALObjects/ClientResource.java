@@ -1,6 +1,7 @@
 package com.customersscheduling.HALObjects;
 
 import com.customersscheduling.Controller.ClientController;
+import com.customersscheduling.Controller.StoreController;
 import com.customersscheduling.Domain.Client;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
@@ -19,6 +20,7 @@ public class ClientResource extends ResourceSupport {
         add(linkTo(methodOn(ClientController.class).insertClient(null, null)).withRel("insert"));
         add(linkTo(methodOn(ClientController.class).getPendentRequestOfClient(person.getEmail())).withRel("pendent_requests"));
         add(linkTo(methodOn(ClientController.class).getStoresOfClient(person.getEmail())).withRel("stores"));
+        add(linkTo(methodOn(StoreController.class).setClientForStore(null, person.getEmail(), null, null)).withRel("set_store"));
     }
 
     public List<Link> getLinks(Link l) {

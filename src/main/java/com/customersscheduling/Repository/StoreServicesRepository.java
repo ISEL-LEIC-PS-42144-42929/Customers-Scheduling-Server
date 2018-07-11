@@ -20,4 +20,5 @@ public interface StoreServicesRepository  extends JpaRepository<StoreServices, S
 
     Optional<StoreServices> findByPk_Service_Id(int id);
 
+    void deleteByPk_Store_Nif(String nif);
 }

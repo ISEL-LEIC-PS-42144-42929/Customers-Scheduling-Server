@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +37,13 @@ public class StoreService implements IStoreService {
     PersonRepository personRepo;
 
     @Autowired
-    StaffServicesRepository staffRepo;
+    StaffServicesRepository staffServsRepo;
+
+    @Autowired
+    StaffRepository staffRepo;
+
+    @Autowired
+    BookingRepository bookingRepo;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
@@ -51,10 +56,9 @@ public class StoreService implements IStoreService {
     @Cacheable(value = "stores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Store getStore(String nif) {
-        Optional<Store> byNif = storeRepo.findById(nif);
-        return  byNif.get();/*.orElseThrow(()->
+        return  storeRepo.findById(nif).orElseThrow(()->
                 new ResourceNotFoundException("Store with the nif "+nif+" doesn't exists.")
-        );*/
+        );
     }
 
     @Override
@@ -147,6 +151,11 @@ public class StoreService implements IStoreService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store deleteStore(String nif) {
         Store s = getStore(nif);
+        clientStoresRepo.deleteByPk_Store_Nif(nif);
+        staffServsRepo.deleteByPk_StoresServices_Pk_Store_Nif(nif);
+        storeServicesRepo.deleteByPk_Store_Nif(nif);
+        staffRepo.deleteByStore_Nif(nif);
+        bookingRepo.deleteByStore_Nif(nif);
         storeRepo.delete(s);
         return s;
     }
@@ -190,7 +199,7 @@ public class StoreService implements IStoreService {
     @Cacheable(value = "staff")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Staff> getStaff(String nif) {
-        return staffRepo.getByPk_StoresServices_Pk_Store_Nif(nif)
+        return staffServsRepo.getByPk_StoresServices_Pk_Store_Nif(nif)
                 .stream()
                 .map(s -> (Staff)personRepo.findByEmail(s.getPk().getStaff().getEmail()).orElseThrow(()->new ResourceNotFoundException("Staff "+s.getPk().getStaff().getEmail()+" doesn't exists.")))
                 .collect(Collectors.toList());

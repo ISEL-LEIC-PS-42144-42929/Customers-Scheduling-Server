@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static com.customersscheduling.Controller.ClientControllerTest.POST_CLIENT_URI;
-import static com.customersscheduling.Controller.ClientControllerTest.getClientInputModel;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,13 +42,21 @@ public class OwnerControllerTest {
     private final String DELETE_OWNER_URI = "/person/owner/%s";
     private final String RESPONSE_CONTENT_TYPE="application/hal+json;charset=UTF-8";
 
+    private ClientControllerTest clientTests;
+
     public OwnerControllerTest(MockMvc mvc) {
         this.mvc = mvc;
+        init();
+    }
+
+    @Before
+    public void init(){
+        clientTests = new ClientControllerTest(mvc);
     }
 
     @Test
     public void insertOwnerTest() throws Exception{
-        String clientBody = om.writeValueAsString(getClientInputModel());
+        String clientBody = om.writeValueAsString(clientTests.getClientInputModel());
         mvc.perform(post(POST_CLIENT_URI)
                 .header(authHeader[0], authHeader[1])
                 .content(clientBody)

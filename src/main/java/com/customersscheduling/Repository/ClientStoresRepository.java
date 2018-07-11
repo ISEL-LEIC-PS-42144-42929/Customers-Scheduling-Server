@@ -19,4 +19,6 @@ public interface ClientStoresRepository extends JpaRepository<ClientStores, Inte
     List<ClientStores> findByPk_Store_NifAndAccepted(String nif, boolean a);
 
     List<ClientStores> findByPk_Client_EmailAndAccepted(String email, boolean a);
+
+    void deleteByPk_Store_Nif(String nif);
 }

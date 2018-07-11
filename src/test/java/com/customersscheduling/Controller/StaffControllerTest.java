@@ -46,7 +46,7 @@ public class StaffControllerTest {
 
     @Before
     public void init(){
-        storeTests = new StoreControllerTest(mvc);
+        storeTests = StoreControllerTest.getInstance(mvc);
     }
 
     @Test
@@ -62,7 +62,6 @@ public class StaffControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(RESPONSE_CONTENT_TYPE))
                 .andExpect(jsonPath("$.person.name").value(c.name));
-        deleteStaffTest();
     }
 
 

@@ -3,6 +3,8 @@ package com.customersscheduling.Domain;
 import com.customersscheduling.HALObjects.StoreResource;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Store")
 @Table( name = "Store")
@@ -10,7 +12,8 @@ public class Store {
 
     @OneToOne(cascade = {
             CascadeType.PERSIST,
-            CascadeType.MERGE})
+            CascadeType.MERGE,
+            CascadeType.REMOVE})
     @JoinColumn(name="address_id",referencedColumnName="id",nullable=false)
     private Address address;
 
@@ -96,4 +99,5 @@ public class Store {
     public void setOwner(Owner owner) {
         this.owner = owner;
     }
+
 }
