@@ -7,10 +7,8 @@ import com.customersscheduling.Domain.StaffTimetable;
 import com.customersscheduling.Domain.Timetable;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
-import com.customersscheduling.Repository.ClientStoresRepository;
-import com.customersscheduling.Repository.PersonRepository;
-import com.customersscheduling.Repository.StaffTimetableRepository;
-import com.customersscheduling.Repository.TimetableRepository;
+import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -29,6 +27,9 @@ public class StaffService implements IStaffService {
     PersonRepository personRepo;
 
     @Autowired
+    StoreRepository storeRepo;
+
+    @Autowired
     TimetableRepository timetableRepo;
 
     @Autowired
@@ -37,6 +38,9 @@ public class StaffService implements IStaffService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Staff insertStaff(Staff staff) {
+        staff.setStore(storeRepo.findById(staff.getStore().getNif()).orElseThrow( () ->
+                new ResourceNotFoundException("Couldn't insert staff because the store with NIF "+staff.getStore().getNif()+" doesn't exists."))
+        );
         return (Staff)personRepo.save(staff);
     }
 

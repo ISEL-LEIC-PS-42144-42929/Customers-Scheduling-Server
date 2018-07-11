@@ -58,7 +58,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    @Cacheable(value = "stores")
+    @Cacheable(value = "ownerstores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresOfUser(String email) {
         return storeRepo.findByOwner_Client_Email(email);

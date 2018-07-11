@@ -40,6 +40,10 @@ public class ClientControllerTest {
     private final String RESPONSE_CONTENT_TYPE="application/hal+json;charset=UTF-8";
     private final String RESPONSE_PROBLEM_CONTENT_TYPE="application/problem+json";
 
+    public ClientControllerTest(MockMvc mvc) {
+        this.mvc = mvc;
+    }
+
     @Test
     public void insertClientTest() throws Exception{
         PersonInputModel c = getClientInputModel();
@@ -130,7 +134,7 @@ public class ClientControllerTest {
                 .andExpect(content().contentType(RESPONSE_PROBLEM_CONTENT_TYPE));
     }
 
-    public static PersonInputModel getClientInputModel(){
+    public PersonInputModel getClientInputModel(){
         PersonInputModel person = new PersonInputModel();
         person.email="tstclient";
         person.contact="tstclientemail";

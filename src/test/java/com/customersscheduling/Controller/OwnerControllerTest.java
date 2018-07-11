@@ -19,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static com.customersscheduling.Controller.ClientControllerTest.POST_CLIENT_URI;
 import static com.customersscheduling.Controller.ClientControllerTest.getClientInputModel;
 import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -41,20 +42,9 @@ public class OwnerControllerTest {
     private final String GET_OWNER_URI = "/person/owner/%s";
     private final String DELETE_OWNER_URI = "/person/owner/%s";
     private final String RESPONSE_CONTENT_TYPE="application/hal+json;charset=UTF-8";
-    private final String RESPONSE_PROBLEM_CONTENT_TYPE="application/problem+json";
 
-    /*Without the client isn't possible to create a Owner*/
-    @Test
-    public void insertOwnerWithErrorTest() throws Exception{
-        OwnerInputModel o = getOwnerInputModel();
-        String body = om.writeValueAsString(o);
-        mvc.perform(post(POST_OWNER_URI)
-                    .header(authHeader[0], authHeader[1])
-                    .content(body)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentTypeCompatibleWith(RESPONSE_PROBLEM_CONTENT_TYPE));
+    public OwnerControllerTest(MockMvc mvc) {
+        this.mvc = mvc;
     }
 
     @Test
@@ -88,6 +78,19 @@ public class OwnerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
                 .andExpect(jsonPath("$.person.nif").value(c.nif));
+    }
+
+    @Test
+    public void deleteOwnerTest() throws Exception {
+        insertOwnerTest();
+        OwnerInputModel c = getOwnerInputModel();
+        String URI = String.format(DELETE_OWNER_URI, c.email);
+        mvc.perform(delete(URI)
+                .header(authHeader[0], authHeader[1])
+                .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE));
     }
 
     public OwnerInputModel getOwnerInputModel(){

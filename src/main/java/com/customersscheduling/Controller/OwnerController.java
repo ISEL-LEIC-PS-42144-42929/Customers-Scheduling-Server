@@ -1,6 +1,7 @@
 package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.OwnerInputModel;
+import com.customersscheduling.Controller.Util.ResourcesUtil;
 import com.customersscheduling.HALObjects.OwnerResource;
 import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Service.IOwnerService;
@@ -46,6 +47,8 @@ public class OwnerController {
         personResource.add(link);
         return new Resource<>(personResource);
     }
+
+
     @DeleteMapping(value = "/owner/{email}")
     public Resource<OwnerResource> deleteOwner(@PathVariable String email) {
         OwnerResource personResource = personService.deleteOwner(email).toOwnerResource();
@@ -55,8 +58,6 @@ public class OwnerController {
     }
 
 
-
-
     @GetMapping(value = "/owner/{email}/stores")
     public Resources<StoreResource> getStoreOfOwner(@PathVariable String email) {
         List<StoreResource> storesOfUser = storeService.getStoresOfUser(email)
@@ -64,8 +65,7 @@ public class OwnerController {
                 .map( i -> i.toResource(storeService.getScore(i.getNif())))
                 .collect(Collectors.toList());
         Link link = linkTo(methodOn(OwnerController.class).getStoreOfOwner(email)).withSelfRel();
-        Resources<StoreResource> storeRe = new Resources<>(storesOfUser, link);
-        return storeRe;
+        return ResourcesUtil.getResources(StoreResource.class, storesOfUser, link);
     }
 }
 
