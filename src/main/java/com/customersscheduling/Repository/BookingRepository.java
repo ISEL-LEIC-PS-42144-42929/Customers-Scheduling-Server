@@ -28,4 +28,6 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findByClient_Email(String email);
 
     void deleteByStore_Nif(String nif);
+
+    void deleteByClient_Email(String email);
 }

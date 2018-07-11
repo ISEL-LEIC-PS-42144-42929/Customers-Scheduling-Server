@@ -35,6 +35,9 @@ public class StaffService implements IStaffService {
     @Autowired
     StaffTimetableRepository staffTimetableRepo;
 
+    @Autowired
+    StaffServicesRepository staffServsRepo;
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Staff insertStaff(Staff staff) {
@@ -110,6 +113,8 @@ public class StaffService implements IStaffService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Staff deleteStaff(String email) {
         Staff s = getStaff(email);
+        staffServsRepo.deleteByPk_Staff_Email(email);
+        staffTimetableRepo.deleteByPk_Staff_Email(email);
         personRepo.delete(s);
         return s;
     }

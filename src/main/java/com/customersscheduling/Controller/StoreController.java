@@ -45,7 +45,7 @@ public class StoreController {
         return ResourcesUtil.getResources(ClientResource.class, res, link);
     }
 
-    @GetMapping(value = "/", params = "name")
+    @GetMapping(value = "", params = "name")
     public Resources<StoreResource> getStoresByName(@RequestParam("name") String name) {
         List<StoreResource> res = storeService.getStoresByName(name)
                                             .stream()
@@ -55,7 +55,7 @@ public class StoreController {
         return ResourcesUtil.getResources(StoreResource.class, res, link);
     }
 
-    @GetMapping(value = "/", params = {"category","location"})
+    @GetMapping(value = "", params = {"category","location"})
     public Resources<StoreResource> getStoresByCategoryAndLocation(@RequestParam("category") String category, @RequestParam("location") String location) {
         List<StoreResource> res = storeService.getStoresByLocationAndCategory(location, category)
                                                 .stream()
@@ -115,6 +115,14 @@ public class StoreController {
         storeResource.add(self);
         resp.setStatus(HttpStatus.CREATED.value());
         return new Resource<>(storeResource);
+    }
+
+    @DeleteMapping(value = "/{nif}/client/{email}")
+    public Resource<StoreResource> deleteClientOfStore(@PathVariable String nif, @PathVariable String email) {
+        StoreResource s = storeService.deleteClient(email, nif).toResource(storeService.getScore(nif));
+        Link self = linkTo(methodOn(StoreController.class).deleteClientOfStore(nif, email)).withSelfRel();
+        s.add(self);
+        return new Resource<>(s);
     }
 
 

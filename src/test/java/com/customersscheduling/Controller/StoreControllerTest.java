@@ -37,6 +37,8 @@ public class StoreControllerTest {
     private final String [] authHeader = {"Authorization", "Bearer unittest"};
 
     private final String POST_STORE_URI = "/store/owner/%s";
+    private final String GET_STORE_URI = "/store/%s";
+    private final String GET_STORE_BY_NAME_URI = "/store";
     private final String DELETE_STORE_URI = "/store/%s";
     private final String POST_CLIENT_STORE_URI = "/store/%s/client/%s";
     private final String GET_CLIENTS_URI = "/store/%s/clients";
@@ -58,13 +60,13 @@ public class StoreControllerTest {
 
     @Before
     public void init(){
-        ownerTests = new OwnerControllerTest(mvc);
-        clientTests = new ClientControllerTest(mvc);
+        ownerTests = OwnerControllerTest.getInstance(mvc);
+        clientTests = ClientControllerTest.getInstance(mvc);
     }
 
 
     @Test
-    public void getClientsOfStore() throws Exception {
+    public void getClientsOfStoreTest() throws Exception {
         clientTests.insertClientTest();
         StoreInputModel s = getStoreInputModel();
         String URI = String.format(GET_CLIENTS_URI, s.nif);
@@ -78,15 +80,48 @@ public class StoreControllerTest {
     }
 
     @Test
-    public void getStoresByName() {
+    public void getStoresByNameTest() throws Exception {
+        insertStore();
+        StoreInputModel c = getStoreInputModel();
+        mvc.perform(get(GET_STORE_BY_NAME_URI)
+                    .header(authHeader[0], authHeader[1])
+                    .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE))
+                    .param("name", c.name))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
+                .andExpect(jsonPath("$._embedded.storeResourceList").isArray());
+
     }
 
     @Test
-    public void getStoresByCategoryAndLocation() {
+    public void getStoresByCategoryAndLocationTest() throws Exception {
+        insertStore();
+        StoreInputModel c = getStoreInputModel();
+        mvc.perform(get(GET_STORE_BY_NAME_URI)
+                    .header(authHeader[0], authHeader[1])
+                    .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE))
+                    .param("location", c.city)
+                    .param("category",c.category))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
+                .andExpect(jsonPath("$._embedded.storeResourceList").isArray());
     }
 
     @Test
-    public void getStore() {
+    public void getStoreTest() throws Exception {
+        insertStore();
+        StoreInputModel c = getStoreInputModel();
+        String URI = String.format(GET_STORE_URI, c.nif);
+        mvc.perform(get(URI)
+                    .header(authHeader[0], authHeader[1])
+                    .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
+                .andExpect(jsonPath("$.store.storeName").value(c.name));
+
     }
 
     @Test
@@ -149,7 +184,7 @@ public class StoreControllerTest {
         store.lot="9";
         store.street="Wall Street";
         store.city="New York";
-        store.name="Test Store";
+        store.name="TestStore";
         store.contact="contact";
         store.category="Test Category";
         store.country="USA";

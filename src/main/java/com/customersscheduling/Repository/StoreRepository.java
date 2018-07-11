@@ -24,4 +24,6 @@ public interface StoreRepository extends JpaRepository<Store, String> {
     List<Store> findByName(@Param("name") String name);
 
     List<Store> findByAddress_CityAndCategory_Name(String city, String name);
+
+    void deleteByOwner_Client_Email(String email);
 }

@@ -40,8 +40,13 @@ public class ClientControllerTest {
     private final String RESPONSE_CONTENT_TYPE="application/hal+json;charset=UTF-8";
     private final String RESPONSE_PROBLEM_CONTENT_TYPE="application/problem+json";
 
-    public ClientControllerTest(MockMvc mvc) {
-        this.mvc = mvc;
+    public ClientControllerTest() {
+    }
+
+    public static ClientControllerTest getInstance(MockMvc mvc){
+        ClientControllerTest c = new ClientControllerTest();
+        c.setMvc(mvc);
+        return c;
     }
 
     @Test
@@ -124,6 +129,7 @@ public class ClientControllerTest {
 
     @Test
     public void deleteClientWithErrorTest() throws Exception {
+        deleteClientTest();
         PersonInputModel c = getClientInputModel();
         String URI = String.format(DELETE_CLIENT_URI, c.email);
         mvc.perform(delete(URI)
@@ -141,5 +147,9 @@ public class ClientControllerTest {
         person.gender=1;
         person.name="tstclientname";
         return person;
+    }
+
+    public void setMvc(MockMvc mvc) {
+        this.mvc = mvc;
     }
 }

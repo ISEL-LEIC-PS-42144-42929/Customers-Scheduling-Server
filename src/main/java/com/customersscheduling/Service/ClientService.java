@@ -71,15 +71,15 @@ public class ClientService implements IClientService {
     @Cacheable(value = "client")
     @Transactional( propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED ,readOnly = true )
     public Client getClient(String email) {
-        Client client = (Client)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Client "+email+"doesn't exists."));
-        if(client == null) throw new ResourceNotFoundException("Could not find user with the email '"+email+"'.");
-        return client;
+        return (Client)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Client "+email+"doesn't exists."));
     }
 
     @Override
     @Transactional
     public Client deleteClient(String email) {
         Client client = getClient(email);
+        bookingRepo.deleteByClient_Email(email);
+        clientStoresRepo.deleteByPk_Client_Email(email);
         personRepo.delete(client);
         return client;
     }

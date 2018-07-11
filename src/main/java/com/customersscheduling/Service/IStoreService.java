@@ -33,4 +33,6 @@ public interface IStoreService {
     List<Client> getClientsOfStore(String nif);
 
     List<Staff> getStaff(String nif);
+
+    Store deleteClient(String email, String nif);
 }

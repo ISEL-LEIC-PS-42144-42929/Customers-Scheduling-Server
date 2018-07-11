@@ -22,6 +22,9 @@ public class OwnerService implements IOwnerService {
     @Autowired
     PersonRepository personRepo;
 
+    @Autowired
+    StoreRepository storesRepo;
+
     @Override
     public Owner insertOwner(Owner owner) {
         Client c = (Client) personRepo.findByEmail(owner.getClient().getEmail()).orElseThrow(()->new ResourceNotFoundException("Owner "+owner.getClient().getEmail()+" doesn't exists."));;
@@ -42,6 +45,7 @@ public class OwnerService implements IOwnerService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public Owner deleteOwner(String email) {
         Owner o = getOwner(email);
+        storesRepo.deleteByOwner_Client_Email(email);
         ownerRepo.delete(o);
         return o;
     }

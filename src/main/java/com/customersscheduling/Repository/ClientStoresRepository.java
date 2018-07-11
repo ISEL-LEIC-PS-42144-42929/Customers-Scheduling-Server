@@ -21,4 +21,10 @@ public interface ClientStoresRepository extends JpaRepository<ClientStores, Inte
     List<ClientStores> findByPk_Client_EmailAndAccepted(String email, boolean a);
 
     void deleteByPk_Store_Nif(String nif);
+
+    void deleteByPk_Client_Email(String email);
+
+    void deleteByPk_Client_EmailAndPk_Store_Nif(String email, String nif);
+
+    List<ClientStores> findByPk_Store_Nif(String nif);
 }

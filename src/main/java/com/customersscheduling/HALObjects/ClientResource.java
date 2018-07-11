@@ -21,6 +21,7 @@ public class ClientResource extends ResourceSupport {
         add(linkTo(methodOn(ClientController.class).getPendentRequestOfClient(person.getEmail())).withRel("pendent_requests"));
         add(linkTo(methodOn(ClientController.class).getStoresOfClient(person.getEmail())).withRel("stores"));
         add(linkTo(methodOn(StoreController.class).setClientForStore(null, person.getEmail(), null, null)).withRel("set_store"));
+        add(linkTo(methodOn(StoreController.class).deleteClientOfStore(null, person.getEmail())).withRel("decline_client"));
     }
 
     public List<Link> getLinks(Link l) {

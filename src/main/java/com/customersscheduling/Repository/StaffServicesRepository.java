@@ -22,4 +22,6 @@ public interface StaffServicesRepository extends JpaRepository<StaffServices, St
     List<StaffServices> getByPk_StoresServices(StoreServices ss);
 
     void deleteByPk_StoresServices_Pk_Store_Nif(String nif);
+
+    void deleteByPk_Staff_Email(String email);
 }

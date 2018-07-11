@@ -16,4 +16,6 @@ public interface StaffTimetableRepository extends JpaRepository<StaffTimetable, 
     List<StaffTimetable> findByPk_Staff(Staff staff);
 
     Optional<StaffTimetable> findByPk_StaffAndPk_Timetable_WeekDay(Staff staff, int wd);
+
+    void deleteByPk_Staff_Email(String email);
 }

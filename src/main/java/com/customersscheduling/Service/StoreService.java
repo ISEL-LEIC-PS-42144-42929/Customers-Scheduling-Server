@@ -69,7 +69,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    @Cacheable(value = "clients")
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Client> getPendentRequests(String nif) {
         return  clientStoresRepo.findByPk_Store_NifAndAccepted(nif, false)
                                 .stream()
@@ -163,7 +163,7 @@ public class StoreService implements IStoreService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public double getScore(String nif) {
-        List<ClientStores> cs = clientStoresRepo.findByPk_Store_NifAndAccepted(nif, true);
+        List<ClientStores> cs = clientStoresRepo.findByPk_Store_Nif(nif);
         return cs.stream()
                 .mapToInt(i -> i.getScore())
                 .filter(i -> i != -1)
@@ -172,14 +172,14 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    //@Cacheable(value = "stores")
+    //@Cacheable(value = "storesbyname")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresByName(String name) {
         return storeRepo.findByName(name);
     }
 
     @Override
-    //@Cacheable(value = "stores")
+    @Cacheable(value = "storesbylocationandcategory")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresByLocationAndCategory(String location, String category) {
         return storeRepo.findByAddress_CityAndCategory_Name(location, category);
@@ -203,6 +203,12 @@ public class StoreService implements IStoreService {
                 .stream()
                 .map(s -> (Staff)personRepo.findByEmail(s.getPk().getStaff().getEmail()).orElseThrow(()->new ResourceNotFoundException("Staff "+s.getPk().getStaff().getEmail()+" doesn't exists.")))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Store deleteClient(String email, String nif) {
+        clientStoresRepo.deleteByPk_Client_EmailAndPk_Store_Nif(email, nif);
+        return getStore(nif);
     }
 
 

@@ -44,14 +44,19 @@ public class OwnerControllerTest {
 
     private ClientControllerTest clientTests;
 
-    public OwnerControllerTest(MockMvc mvc) {
-        this.mvc = mvc;
-        init();
+    public OwnerControllerTest() {
+    }
+
+    public static OwnerControllerTest getInstance(MockMvc mvc) {
+        OwnerControllerTest o = new OwnerControllerTest();
+        o.setMvc(mvc);
+        o.init();
+        return o;
     }
 
     @Before
     public void init(){
-        clientTests = new ClientControllerTest(mvc);
+        clientTests = ClientControllerTest.getInstance(mvc);
     }
 
     @Test
@@ -105,5 +110,9 @@ public class OwnerControllerTest {
         c.email="tstclientemail";
         c.nif="123456789";
         return c;
+    }
+
+    public void setMvc(MockMvc mvc) {
+        this.mvc = mvc;
     }
 }
