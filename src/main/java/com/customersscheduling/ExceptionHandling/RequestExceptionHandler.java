@@ -1,9 +1,6 @@
 package com.customersscheduling.ExceptionHandling;
 
-import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
-import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidRequestException;
-import com.customersscheduling.ExceptionHandling.CustomExceptions.JwtTokenException;
-import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.*;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,6 +38,11 @@ public class RequestExceptionHandler {
     @ExceptionHandler(InvalidBodyException.class)
     public final ResponseEntity<ErrorModel> handle(InvalidBodyException ex, HttpServletRequest request){
         return error(ex,HttpStatus.NOT_FOUND, "Body values are incorrect", request.getRequestURI());
+    }
+
+    @ExceptionHandler(NotAuthorizedException.class)
+    public final ResponseEntity<ErrorModel> handle(NotAuthorizedException ex, HttpServletRequest request){
+        return error(ex,HttpStatus.NOT_FOUND, "Permission denied", request.getRequestURI());
     }
 
     @ExceptionHandler(InvalidRequestException.class)

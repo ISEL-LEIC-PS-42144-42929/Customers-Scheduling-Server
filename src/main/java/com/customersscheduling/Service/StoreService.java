@@ -2,6 +2,7 @@ package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidRequestException;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.NotAuthorizedException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -235,7 +236,7 @@ public class StoreService implements IStoreService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store updateClientScoreForStore(String nif, String email, int i) {
-        Client c = (Client)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Client "+email+"doesn't exists."));
+        Client c = (Client)personRepo.findByEmail(email).orElseThrow(()->new NotAuthorizedException("Client "+email+"doesn't exists."));
         Store store = getStore(nif);
         ClientStores cs = clientStoresRepo.findByPk_Client_EmailAndPk_Store_Nif(email, nif);
         if(!cs.isAccepted())

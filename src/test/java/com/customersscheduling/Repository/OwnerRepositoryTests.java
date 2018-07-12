@@ -39,7 +39,7 @@ public class OwnerRepositoryTests {
         assertEquals("Foo", owner.get().getClient().getEmail());
     }
 
-    private Owner getOwner(){
+    public Owner getOwner(){
         Owner o = new Owner();
         o.setClient(clientRepoTests.getClient());
         o.setNif("111111111");

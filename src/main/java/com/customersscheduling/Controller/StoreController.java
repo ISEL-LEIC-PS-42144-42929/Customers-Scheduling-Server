@@ -104,14 +104,14 @@ public class StoreController {
 
 
     @PostMapping(value = "/{nif}/client/{email}")
-    public Resource<StoreResource> setClientForStore(@PathVariable String nif, @PathVariable String email, @RequestBody ClientStoreInputModel csim, HttpServletResponse resp) {
+    public Resource<StoreResource> setClientForStore(@PathVariable String nif, @PathVariable String email, HttpServletResponse resp) {
         Client c = new Client();
         c.setEmail(email);
         Store s = new Store();
         s.setNif(nif);
-        ClientStores cs = new ClientStores(new ClientStoresPK(s,c),csim.accepted, csim.score);
+        ClientStores cs = new ClientStores(new ClientStoresPK(s,c),false, -1);
         StoreResource storeResource = storeService.insertClientForStore(cs).toResource(storeService.getScore(nif));
-        Link self = linkTo(methodOn(StoreController.class).setClientForStore(nif, email, csim, null)).withSelfRel();
+        Link self = linkTo(methodOn(StoreController.class).setClientForStore(nif, email, null)).withSelfRel();
         storeResource.add(self);
         resp.setStatus(HttpStatus.CREATED.value());
         return new Resource<>(storeResource);

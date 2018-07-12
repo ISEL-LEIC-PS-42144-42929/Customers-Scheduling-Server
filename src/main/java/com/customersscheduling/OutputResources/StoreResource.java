@@ -31,9 +31,10 @@ public class StoreResource extends ResourceSupport {
         add(linkTo(methodOn(StoreStaffController.class).insertStaffForService(null,nif,-1, null)).withRel("add_service_staff"));
         add(linkTo(methodOn(StaffController.class).insertStaff(null,null)).withRel("insert_staff"));
         add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif, null, null)).withRel("timetable"));
-        add(linkTo(methodOn(StoreController.class).setClientForStore(nif, null, null, null)).withRel("set_client"));
+        add(linkTo(methodOn(StoreController.class).setClientForStore(nif, null, null)).withRel("set_client"));
         add(linkTo(methodOn(StoreController.class).deleteClientOfStore(nif, null)).withRel("delete_client"));
-        add(linkTo(methodOn(StoreController.class).setClientForStore(nif, null, null, null)).withRel("set_store"));
+        add(linkTo(methodOn(StoreController.class).setClientForStore(nif, null, null)).withRel("set_store"));
+        add(linkTo(methodOn(StoreController.class).updateClientScore(nif, null, null)).withRel("score"));
     }
 
     public List<Link> getLinks(Link l) {

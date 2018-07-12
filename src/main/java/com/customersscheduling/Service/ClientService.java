@@ -45,7 +45,7 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    @Cacheable(value = "stores")
+    @Cacheable(value = "storesByEmail")
     @Transactional( propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED ,readOnly = true )
     public List<Store> getStoresByEmail(String email) {
         return clientStoresRepo.findByPk_Client_EmailAndAccepted(email, true)
@@ -57,7 +57,7 @@ public class ClientService implements IClientService {
 
 
     @Override
-    @Cacheable(value = "stores")
+    @Cacheable(value = "storesOfPR")
     @Transactional( propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED ,readOnly = true )
     public List<Store> getPendentRequests(String email) {
         List<ClientStores> l = clientStoresRepo.findByPk_Client_EmailAndAccepted(email, false);
