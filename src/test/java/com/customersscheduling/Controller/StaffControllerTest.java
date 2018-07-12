@@ -44,6 +44,13 @@ public class StaffControllerTest {
 
     private StoreControllerTest storeTests;
 
+    public static StaffControllerTest getInstance(MockMvc mvc) {
+        StaffControllerTest s = new StaffControllerTest();
+        s.setMvc(mvc);
+        s.init();
+        return s;
+    }
+
     @Before
     public void init(){
         storeTests = StoreControllerTest.getInstance(mvc);
@@ -94,11 +101,15 @@ public class StaffControllerTest {
                 .andExpect(content().contentType(RESPONSE_CONTENT_TYPE));
     }
 
-    private StaffInputModel getStaffInputModel() {
+    public StaffInputModel getStaffInputModel() {
         StaffInputModel s = new StaffInputModel();
         s.email="tststaffemail";
         s.name="tststaffname";
         s.nif="123456789";
         return s;
+    }
+
+    public void setMvc(MockMvc mvc) {
+        this.mvc = mvc;
     }
 }

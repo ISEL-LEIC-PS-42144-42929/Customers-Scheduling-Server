@@ -1,10 +1,8 @@
 package com.customersscheduling.Domain;
 
-import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.OutputResources.StoreResource;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "Store")
 @Table( name = "Store")

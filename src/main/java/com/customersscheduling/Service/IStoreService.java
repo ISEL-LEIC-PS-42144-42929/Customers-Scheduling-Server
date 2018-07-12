@@ -35,4 +35,10 @@ public interface IStoreService {
     List<Staff> getStaff(String nif);
 
     Store deleteClient(String email, String nif);
+
+    boolean isAccepted(String email, String nif);
+
+    Store updateClientForStore(String nif, String email, boolean b);
+
+    Store updateClientScoreForStore(String nif, String email, int i);
 }

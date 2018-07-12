@@ -23,4 +23,5 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
     Optional<Service> findById(int id);
 
+    Service findByTitle(String title);
 }

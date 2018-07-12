@@ -2,21 +2,16 @@ package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Controller.Util.ResourcesUtil;
-import com.customersscheduling.Domain.Booking;
-import com.customersscheduling.HALObjects.BookingResource;
-import com.customersscheduling.HALObjects.ClientResource;
-import com.customersscheduling.HALObjects.StaffResource;
-import com.customersscheduling.HALObjects.StoreResource;
-import com.customersscheduling.Repository.BookingRepository;
+import com.customersscheduling.OutputResources.BookingResource;
+import com.customersscheduling.OutputResources.ClientResource;
+import com.customersscheduling.OutputResources.StoreResource;
 import com.customersscheduling.Service.IClientService;
 import com.customersscheduling.Service.IStoreService;
-import com.google.api.gax.rpc.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;

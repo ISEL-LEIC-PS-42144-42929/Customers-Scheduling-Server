@@ -1,13 +1,10 @@
 package com.customersscheduling.Service;
 
-import com.customersscheduling.Controller.InputModels.PersonInputModel;
-import com.customersscheduling.Domain.Person;
 import com.customersscheduling.Domain.Staff;
 import com.customersscheduling.Domain.StaffTimetable;
 import com.customersscheduling.Domain.Timetable;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
-import com.customersscheduling.HALObjects.StoreResource;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;

@@ -1,6 +1,6 @@
 package com.customersscheduling.Domain;
 
-import com.customersscheduling.HALObjects.ClientResource;
+import com.customersscheduling.OutputResources.ClientResource;
 
 import javax.persistence.*;
 
@@ -25,6 +25,10 @@ public class Client extends Person {
 
     public ClientResource toResource() {
         return new ClientResource(this);
+    }
+
+    public ClientResource toResource(boolean accepted) {
+        return new ClientResource(this, accepted);
     }
 
 }

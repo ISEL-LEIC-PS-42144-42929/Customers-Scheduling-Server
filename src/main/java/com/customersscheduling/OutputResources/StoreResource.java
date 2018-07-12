@@ -1,4 +1,4 @@
-package com.customersscheduling.HALObjects;
+package com.customersscheduling.OutputResources;
 
 import com.customersscheduling.Controller.*;
 import com.customersscheduling.Domain.Store;
@@ -31,6 +31,9 @@ public class StoreResource extends ResourceSupport {
         add(linkTo(methodOn(StoreStaffController.class).insertStaffForService(null,nif,-1, null)).withRel("add_service_staff"));
         add(linkTo(methodOn(StaffController.class).insertStaff(null,null)).withRel("insert_staff"));
         add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif, null, null)).withRel("timetable"));
+        add(linkTo(methodOn(StoreController.class).setClientForStore(nif, null, null, null)).withRel("set_client"));
+        add(linkTo(methodOn(StoreController.class).deleteClientOfStore(nif, null)).withRel("delete_client"));
+        add(linkTo(methodOn(StoreController.class).setClientForStore(nif, null, null, null)).withRel("set_store"));
     }
 
     public List<Link> getLinks(Link l) {

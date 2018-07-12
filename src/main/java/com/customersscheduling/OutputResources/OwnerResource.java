@@ -1,7 +1,6 @@
-package com.customersscheduling.HALObjects;
+package com.customersscheduling.OutputResources;
 
 import com.customersscheduling.Controller.OwnerController;
-import com.customersscheduling.Controller.StoreController;
 import com.customersscheduling.Domain.Owner;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;

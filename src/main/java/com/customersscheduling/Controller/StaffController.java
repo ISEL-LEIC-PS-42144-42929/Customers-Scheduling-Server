@@ -1,14 +1,11 @@
 package com.customersscheduling.Controller;
 
-import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Controller.InputModels.StaffInputModel;
-import com.customersscheduling.HALObjects.OwnerResource;
-import com.customersscheduling.HALObjects.StaffResource;
+import com.customersscheduling.OutputResources.StaffResource;
 import com.customersscheduling.Service.IStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

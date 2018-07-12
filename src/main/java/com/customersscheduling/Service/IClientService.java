@@ -17,4 +17,5 @@ public interface IClientService {
     Client deleteClient(String email);
 
     List<Booking> getBooks(String email);
+
 }

@@ -1,4 +1,4 @@
-package com.customersscheduling.HALObjects;
+package com.customersscheduling.OutputResources;
 
 import com.customersscheduling.Controller.StaffTimetableController;
 import com.customersscheduling.Domain.Timetable;

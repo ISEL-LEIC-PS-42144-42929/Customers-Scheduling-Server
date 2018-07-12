@@ -1,6 +1,6 @@
 package com.customersscheduling.Domain;
 
-import com.customersscheduling.HALObjects.BookingResource;
+import com.customersscheduling.OutputResources.BookingResource;
 
 import javax.persistence.*;
 import java.util.Date;

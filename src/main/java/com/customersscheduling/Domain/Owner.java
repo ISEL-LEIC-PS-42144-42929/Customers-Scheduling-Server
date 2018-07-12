@@ -1,6 +1,6 @@
 package com.customersscheduling.Domain;
 
-import com.customersscheduling.HALObjects.OwnerResource;
+import com.customersscheduling.OutputResources.OwnerResource;
 
 import javax.persistence.*;
 import java.io.Serializable;

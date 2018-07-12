@@ -1,6 +1,7 @@
 package com.customersscheduling.ExceptionHandling;
 
 import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidRequestException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.JwtTokenException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -39,6 +40,11 @@ public class RequestExceptionHandler {
 
     @ExceptionHandler(InvalidBodyException.class)
     public final ResponseEntity<ErrorModel> handle(InvalidBodyException ex, HttpServletRequest request){
+        return error(ex,HttpStatus.NOT_FOUND, "Body values are incorrect", request.getRequestURI());
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public final ResponseEntity<ErrorModel> handle(InvalidRequestException ex, HttpServletRequest request){
         return error(ex,HttpStatus.NOT_FOUND, "Body values are incorrect", request.getRequestURI());
     }
 

@@ -1,6 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
+import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidRequestException;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,7 +190,7 @@ public class StoreService implements IStoreService {
     @Cacheable(value = "clients")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Client> getClientsOfStore(String nif) {
-        return clientStoresRepo.findByPk_Store_NifAndAccepted(nif, true)
+        return clientStoresRepo.findByPk_Store_Nif(nif)
                 .stream()
                 .map( c -> (Client)personRepo.findByEmail(c.getPk().getClient().getEmail()).orElseThrow(()->new ResourceNotFoundException("Client "+c.getPk().getClient().getEmail()+"doesn't exists.")))
                 .collect(Collectors.toList());
@@ -206,9 +207,44 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store deleteClient(String email, String nif) {
+        Store s = getStore(nif);
         clientStoresRepo.deleteByPk_Client_EmailAndPk_Store_Nif(email, nif);
-        return getStore(nif);
+        return s;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
+    public boolean isAccepted(String email, String nif) {
+        ClientStores cs = clientStoresRepo.findByPk_Client_EmailAndPk_Store_Nif(email, nif);
+        if(cs == null)
+            throw new ResourceNotFoundException("Store with the NIF "+nif+" doesn't have any "+email+" client.");
+        return cs.isAccepted();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public Store updateClientForStore(String nif, String email, boolean b) {
+        ClientStores cs = clientStoresRepo.findByPk_Client_EmailAndPk_Store_Nif(email, nif);
+        ClientStores cs2 = new ClientStores(cs.getPk(), b, cs.getScore());
+        clientStoresRepo.save(cs2);
+        return cs.getPk().getStore();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public Store updateClientScoreForStore(String nif, String email, int i) {
+        Client c = (Client)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Client "+email+"doesn't exists."));
+        Store store = getStore(nif);
+        ClientStores cs = clientStoresRepo.findByPk_Client_EmailAndPk_Store_Nif(email, nif);
+        if(!cs.isAccepted())
+            throw new InvalidRequestException("Client must be registered to score a store.");
+        cs.getPk().setClient(c);
+        cs.getPk().setStore(store);
+        cs.setScore(i);
+        clientStoresRepo.save(cs);
+        return cs.getPk().getStore();
     }
 
 

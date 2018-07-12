@@ -34,7 +34,13 @@ public class ClientRepositoryTests {
         assertEquals("Foo", client.get().getEmail());
     }
 
-    private Client getClient(){
+    @Test
+    public void testSave() {
+        Person client = repo.save(getClient());
+        assertEquals(client.getEmail(), getClient().getEmail());
+    }
+
+    public Client getClient(){
         Client c = new Client();
         c.setEmail("Foo");
         c.setName("FooName");

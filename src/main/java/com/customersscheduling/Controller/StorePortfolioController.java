@@ -1,6 +1,6 @@
 package com.customersscheduling.Controller;
 
-import com.customersscheduling.HALObjects.PortfolioResource;
+import com.customersscheduling.OutputResources.PortfolioResource;
 import com.customersscheduling.Service.IStoreService;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;

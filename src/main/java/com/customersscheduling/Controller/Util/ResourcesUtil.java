@@ -1,14 +1,11 @@
 package com.customersscheduling.Controller.Util;
 
-import com.customersscheduling.HALObjects.ServiceResource;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.core.EmbeddedWrapper;
 import org.springframework.hateoas.core.EmbeddedWrappers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ResourcesUtil {

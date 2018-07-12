@@ -103,7 +103,7 @@ public class BookingService implements IBookingService {
     }
 
     private List<Date> getSlotsForDay(Date d, StaffServices ss){
-        StaffTimetable tt = staffTimetableRepo.findByPk_StaffAndPk_Timetable_WeekDay(ss.getPk().getStaff(), getWeekDay(d)).get();
+        StaffTimetable tt = staffTimetableRepo.findByPk_StaffAndPk_Timetable_WeekDay(ss.getPk().getStaff(), getWeekDay(d)).orElse(null);
         if(tt!=null){
             return getBookingSlots(ss.getPk().getStoresServices().getPk().getService(), tt.getPk().getTimetable(), d);
         }else {

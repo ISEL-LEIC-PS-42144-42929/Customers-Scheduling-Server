@@ -1,8 +1,8 @@
 package com.customersscheduling.Domain;
 
 
-import com.customersscheduling.HALObjects.ServiceResource;
-import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.OutputResources.ServiceResource;
+import com.customersscheduling.OutputResources.StoreResource;
 
 import javax.persistence.*;
 

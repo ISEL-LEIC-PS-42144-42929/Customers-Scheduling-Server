@@ -2,8 +2,8 @@ package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.InputModels.OwnerInputModel;
 import com.customersscheduling.Controller.Util.ResourcesUtil;
-import com.customersscheduling.HALObjects.OwnerResource;
-import com.customersscheduling.HALObjects.StoreResource;
+import com.customersscheduling.OutputResources.OwnerResource;
+import com.customersscheduling.OutputResources.StoreResource;
 import com.customersscheduling.Service.IOwnerService;
 import com.customersscheduling.Service.IStoreService;
 import org.springframework.beans.factory.annotation.Autowired;

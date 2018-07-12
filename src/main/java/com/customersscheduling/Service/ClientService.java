@@ -88,4 +88,5 @@ public class ClientService implements IClientService {
     public List<Booking> getBooks(String email) {
         return bookingRepo.findByClient_Email(email);
     }
+
 }

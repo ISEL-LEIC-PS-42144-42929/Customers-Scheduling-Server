@@ -32,27 +32,33 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
     BookingRepository bookingRepo;
 
     @Autowired
-    PersonRepository personRepo;
+    StaffRepository personRepo;
 
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public StaffServices insertStaffForService(StaffServices s) {
-        personRepo.save(s.getPk().getStaff());
-        staffServicesRepo.save(s);
         int id = s.getPk().getStoresServices().getPk().getService().getId();
         String email = s.getPk().getStaff().getEmail();
         String nif = s.getPk().getStoresServices().getPk().getStore().getNif();
-        return new StaffServices(
-                new StaffServicesPK((Staff)personRepo.findByEmail(email).orElseThrow(()->
-                                                new ResourceNotFoundException("Staff "+email+" doesn't exists."))
-                                    , new StoreServices(new StoreServicesPK(storeRepo.findById(nif).orElseThrow(()->
-                                                                    new ResourceNotFoundException("Store "+nif+" doesn't exists.")),
-                                                                            servicesRepo.findById(id).orElseThrow(()->
-                                                                    new ResourceNotFoundException("Service "+id+" doesn't exists.")))
-                                                        )
-                )
+        Store store = storeRepo.findById(nif).orElseThrow(()->
+                new ResourceNotFoundException("Store "+nif+" doesn't exists.")
         );
+        Service service = servicesRepo.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Service "+id+" doesn't exists.")
+        );
+        Staff staff = personRepo.findById(email).orElseThrow(()->
+                new ResourceNotFoundException("Staff "+email+" doesn't exists.")
+        );
+
+        StaffServices staffServices = new StaffServices(
+                new StaffServicesPK(staff, new StoreServices(new StoreServicesPK(store, service)))
+        );
+
+        personRepo.save(staff);
+        staffServicesRepo.save(staffServices);
+
+        return staffServices;
     }
 
 

@@ -1,7 +1,6 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.ServiceResource;
 
 import java.util.List;
 

@@ -49,4 +49,5 @@ public class ClientStores {
     public void setScore(int score) {
         this.score = score;
     }
+
 }

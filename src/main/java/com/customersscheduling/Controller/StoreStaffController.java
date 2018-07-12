@@ -2,8 +2,8 @@ package com.customersscheduling.Controller;
 
 import com.customersscheduling.Controller.Util.ResourcesUtil;
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.ServiceResource;
-import com.customersscheduling.HALObjects.StaffResource;
+import com.customersscheduling.OutputResources.ServiceResource;
+import com.customersscheduling.OutputResources.StaffResource;
 import com.customersscheduling.Service.IBookingService;
 import com.customersscheduling.Service.IServicesOfStoreService;
 import com.customersscheduling.Service.IStoreService;
@@ -34,7 +34,7 @@ public class StoreStaffController {
     @Autowired
     private IBookingService bookingService;
 
-    @PostMapping(value = "/{nif}/service/{id}/staff/{email}")
+    @PostMapping(value = "/{nif}/services/{id}/staff/{email}")
     public Resource<ServiceResource> insertStaffForService(@PathVariable String email, @PathVariable String nif, @PathVariable int id, HttpServletResponse resp) {
         Store store = new Store(); store.setNif(nif);
         Staff staff = new Staff(); staff.setEmail(email);

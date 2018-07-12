@@ -3,7 +3,7 @@ package com.customersscheduling.Controller;
 import com.customersscheduling.Controller.InputModels.*;
 import com.customersscheduling.Controller.Util.ResourcesUtil;
 import com.customersscheduling.Domain.*;
-import com.customersscheduling.HALObjects.*;
+import com.customersscheduling.OutputResources.*;
 import com.customersscheduling.Service.IOwnerService;
 import com.customersscheduling.Service.IStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class StoreController {
     public Resources<ClientResource> getClientsOfStore(@PathVariable String nif) {
         List<ClientResource> res = storeService.getClientsOfStore(nif)
                                         .stream()
-                                        .map(i->i.toResource())
+                                        .map(i->i.toResource(storeService.isAccepted(i.getEmail(), nif)))
                                         .collect(Collectors.toList());
         Link link = linkTo(methodOn(StoreController.class).getStoresByName(nif)).withSelfRel();
         return ResourcesUtil.getResources(ClientResource.class, res, link);
@@ -114,6 +114,22 @@ public class StoreController {
         Link self = linkTo(methodOn(StoreController.class).setClientForStore(nif, email, csim, null)).withSelfRel();
         storeResource.add(self);
         resp.setStatus(HttpStatus.CREATED.value());
+        return new Resource<>(storeResource);
+    }
+
+    @PutMapping(value = "/{nif}/client/{email}")
+    public Resource<StoreResource> updateClientAccepted(@PathVariable String nif, @PathVariable String email, @RequestBody AcceptedInputModel accepted) {
+        StoreResource storeResource = storeService.updateClientForStore(nif, email, accepted.accepted).toResource(storeService.getScore(nif));
+        Link self = linkTo(methodOn(StoreController.class).updateClientAccepted(nif, email, accepted)).withSelfRel();
+        storeResource.add(self);
+        return new Resource<>(storeResource);
+    }
+
+    @PutMapping(value = "/{nif}/client/{email}/score")
+    public Resource<StoreResource> updateClientScore(@PathVariable String nif, @PathVariable String email, @RequestBody ScoreInputModel score) {
+        StoreResource storeResource = storeService.updateClientScoreForStore(nif, email, score.score).toResource(storeService.getScore(nif));
+        Link self = linkTo(methodOn(StoreController.class).updateClientScore(nif, email, score)).withSelfRel();
+        storeResource.add(self);
         return new Resource<>(storeResource);
     }
 
