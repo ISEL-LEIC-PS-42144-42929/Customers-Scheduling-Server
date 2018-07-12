@@ -42,6 +42,7 @@ public class StoreControllerTest {
     private final String DELETE_STORE_URI = "/store/%s";
     private final String POST_CLIENT_STORE_URI = "/store/%s/client/%s";
     private final String GET_CLIENTS_URI = "/store/%s/clients";
+    private final String GET_PENDENTREQS_URI = "/store/%s/pendentrequests";
     private final String RESPONSE_CONTENT_TYPE="application/hal+json;charset=UTF-8";
     private final String RESPONSE_PROBLEM_CONTENT_TYPE="application/problem+json";
 
@@ -161,7 +162,16 @@ public class StoreControllerTest {
 
 
     @Test
-    public void getPendentRequestsOfStore() {
+    public void getPendentRequestsOfStoreTest() throws Exception {
+        StoreInputModel s = getStoreInputModel();
+        String URI = String.format(GET_PENDENTREQS_URI, s.nif);
+        mvc.perform(get(URI)
+                    .header(authHeader[0], authHeader[1])
+                    .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
+                .andExpect(jsonPath("$._embedded.clientResourceList").isArray());
     }
 
     @Test
@@ -177,7 +187,7 @@ public class StoreControllerTest {
                 .andExpect(content().contentType(RESPONSE_CONTENT_TYPE));
     }
 
-    private StoreInputModel getStoreInputModel(){
+    public StoreInputModel getStoreInputModel(){
         StoreInputModel store = new StoreInputModel();
         store.nif="123456789";
         store.zip_code="23456";
@@ -191,7 +201,7 @@ public class StoreControllerTest {
         return store;
     }
 
-    private ClientStoreInputModel getClientStoreInputModel() {
+    public ClientStoreInputModel getClientStoreInputModel() {
         ClientStoreInputModel c = new ClientStoreInputModel();
         c.score=3;
         c.accepted=true;

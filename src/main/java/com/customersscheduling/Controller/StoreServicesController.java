@@ -96,7 +96,7 @@ public class StoreServicesController {
         return ResourcesUtil.getResources(BookingResource.class, books, link);
     }
 
-    @DeleteMapping(value = "/{nif}/service/{id}")
+    @DeleteMapping(value = "/{nif}/services/{id}")
     public Resource<ServiceResource> deleteService(@PathVariable String nif, @PathVariable int id) {
         ServiceResource service = servicesOfStoreService.deleteService(nif, id).toResource(null);
         Link link = linkTo(methodOn(StoreServicesController.class).deleteService(nif, id)).withSelfRel();
