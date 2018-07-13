@@ -5,9 +5,11 @@ import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Domain.Client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.sun.org.apache.xalan.internal.xsltc.dom.LoadDocument;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,6 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs(outputDir = "build/snippets")
 public class ClientControllerTest {
 
     @Autowired
@@ -41,6 +47,7 @@ public class ClientControllerTest {
     private final String RESPONSE_PROBLEM_CONTENT_TYPE="application/problem+json";
 
     public ClientControllerTest() {
+
     }
 
     public static ClientControllerTest getInstance(MockMvc mvc){
@@ -60,7 +67,29 @@ public class ClientControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(RESPONSE_CONTENT_TYPE))
-                .andExpect(jsonPath("$.person.name").value(c.name));
+                .andExpect(jsonPath("$.person.name").value(c.name))
+                .andDo(document("insert-client-example", responseFields(
+                        fieldWithPath("person").description("The user info."),
+                            fieldWithPath("person.email").description("User's email."),
+                            fieldWithPath("person.name").description("User's name."),
+                            fieldWithPath("person.contact").description("User's contact."),
+                            fieldWithPath("person.gender").description("User's gender."),
+                        fieldWithPath("accepted").description("Used in store context to tell either or not the client is registered to that store."),
+                        fieldWithPath("_links").description("Hypermedia navigation and some actions hyperlinks."),
+                            fieldWithPath("_links.get.href").description("Hyperlink to get client info."),
+                            fieldWithPath("_links.insert.href").description("Hyperlink to insert client info."),
+                            fieldWithPath("_links.pendent_requests.href").description("Hyperlink to get client info."),
+                            fieldWithPath("_links.stores.href").description("Hyperlink to get client info."),
+                            fieldWithPath("_links.set_store.href").description("Hyperlink to get client info."),
+                                fieldWithPath("_links.set_store.templated").description("Hyperlink to get client info."),
+                            fieldWithPath("_links.score.href").description("Hyperlink to get client info."),
+                                fieldWithPath("_links.score.templated").description("Hyperlink to get client info."),
+                            fieldWithPath("_links.accept.href").description("Hyperlink to get client info."),
+                                fieldWithPath("_links.accept.templated").description("Hyperlink to get client info."),
+                            fieldWithPath("_links.decline_client.href").description("Hyperlink to get client info."),
+                                fieldWithPath("_links.decline_client.templated").description("Hyperlink to get client info."),
+                            fieldWithPath("_links.self.href").description("Hyperlink to get client info.")
+                )));
     }
 
     @Test

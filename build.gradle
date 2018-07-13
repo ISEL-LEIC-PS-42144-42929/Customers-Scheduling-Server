@@ -4,9 +4,11 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		jcenter()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.asciidoctor:asciidoctor-gradle-plugin:1.5.3")
 	}
 }
 
@@ -14,6 +16,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+
 
 group = 'com.customersscheduling'
 version = '0.0.1-SNAPSHOT'
@@ -34,9 +37,19 @@ dependencies {
 	compile 'org.springframework.hateoas:spring-hateoas:0.24.0.RELEASE'
 	compile('org.springframework.plugin:spring-plugin-core')
 	compile group: 'org.springframework.security', name: 'spring-security-web', version: '3.0.4.RELEASE'
+	testCompile group: 'org.springframework.restdocs', name: 'spring-restdocs-mockmvc', version: '2.0.1.RELEASE'
+	compile group: 'org.asciidoctor', name: 'asciidoctor-gradle-plugin', version: '1.5.8.1'
 	implementation 'com.google.firebase:firebase-admin:6.2.0'
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.4'
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+apply plugin: 'org.asciidoctor.convert'
+
+asciidoctor {
+	sourceDir 'C:\\Users\\BitoEngineer\\Desktop\\Projeto e Seminario\\Codigo\\Customers Scheduling Server\\src\\main\\asciidoc\\asciidoc'
+	attributes \
+      'snippets': file('build/snippets')
 }
