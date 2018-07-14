@@ -1,6 +1,7 @@
 package com.customersscheduling.Service;
 
 import com.customersscheduling.Domain.Staff;
+import com.customersscheduling.Domain.StaffServices;
 import com.customersscheduling.Domain.StaffTimetable;
 import com.customersscheduling.Domain.Timetable;
 import com.customersscheduling.ExceptionHandling.CustomExceptions.InvalidBodyException;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = ResourceNotFoundException.class)
@@ -22,6 +24,9 @@ public class StaffService implements IStaffService {
 
     @Autowired
     PersonRepository personRepo;
+
+    @Autowired
+    StaffRepository staffRepo;
 
     @Autowired
     StoreRepository storeRepo;
@@ -72,7 +77,7 @@ public class StaffService implements IStaffService {
     }
 
     @Override
-    @Cacheable(value = "staffs")
+    //@Cacheable(value = "staffs")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public Staff getStaff(String email) {
         Staff s = (Staff)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Staff "+email+" doesn't exists."));
@@ -83,11 +88,11 @@ public class StaffService implements IStaffService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Staff updateStaff(String email, Staff oldStaff) {
-        if(oldStaff.getEmail()==null || !oldStaff.getEmail().equals(email)) throw new InvalidBodyException("Staff object sent on body is incompleted");
-        Staff s = (Staff)personRepo.findByEmail(email).orElseThrow(()->
-                new ResourceNotFoundException("Staff "+email+" doesn't exists.")
-        );
-        return (Staff)personRepo.save(oldStaff);
+        if(oldStaff.getEmail()==null || !oldStaff.getEmail().equals(email))
+            throw new InvalidBodyException("Staff object sent on body is incompleted. Email must be present and cannot be updated.");
+        Staff s = getStaff(email);
+        oldStaff.setStore(s.getStore());
+        return staffRepo.save(oldStaff);
     }
 
     @Override
@@ -114,6 +119,15 @@ public class StaffService implements IStaffService {
         staffTimetableRepo.deleteByPk_Staff_Email(email);
         personRepo.delete(s);
         return s;
+    }
+
+    @Override
+    public List<com.customersscheduling.Domain.Service> getServices(String email) {
+        Staff s = getStaff(email);
+        return staffServsRepo.getByPk_Staff_Email(email)
+                                    .stream()
+                                    .map( i -> i.getPk().getStoresServices().getPk().getService())
+                                    .collect(Collectors.toList());
     }
 
 }

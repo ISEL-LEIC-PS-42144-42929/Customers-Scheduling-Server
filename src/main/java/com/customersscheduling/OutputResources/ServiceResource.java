@@ -1,6 +1,8 @@
 package com.customersscheduling.OutputResources;
 
+import com.customersscheduling.Controller.StaffController;
 import com.customersscheduling.Controller.StoreServicesController;
+import com.customersscheduling.Controller.StoreStaffController;
 import com.customersscheduling.Domain.Service;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
@@ -22,9 +24,11 @@ public class ServiceResource extends ResourceSupport {
         add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withRel("get_store_services"));
         add(linkTo(methodOn(StoreServicesController.class).insertServiceForStore(null, nif, null)).withRel("insert_store_service"));
         add(linkTo(methodOn(StoreServicesController.class).updateService(null, nif, service.getId())).withRel("update"));
-        add(linkTo(methodOn(StoreServicesController.class).getStaffOfService(service.getId(), nif)).withRel("staff"));
-        add(linkTo(methodOn(StoreServicesController.class).getDispOfService(nif, service.getId())).withRel("staff"));
-
+        add(linkTo(methodOn(StoreServicesController.class).getStaffOfService(service.getId(), nif)).withRel("get_staff"));
+        add(linkTo(methodOn(StoreServicesController.class).getDispOfService(nif, service.getId())).withRel("disp"));
+        add(linkTo(methodOn(StaffController.class).getServicesOfStaff(null)).withRel("get_staff_services"));
+        add(linkTo(methodOn(StoreStaffController.class).insertStaffForService(null, nif, -1,null)).withRel("post_staff_service"));
+        add(linkTo(methodOn(StoreStaffController.class).removeStaffOfService(null, nif, -1)).withRel("delete_staff_service"));
     }
 
     public List<Link> getLinks(Link l) {

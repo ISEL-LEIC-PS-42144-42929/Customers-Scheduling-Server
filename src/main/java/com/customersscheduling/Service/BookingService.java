@@ -46,6 +46,13 @@ public class BookingService implements IBookingService {
     }
 
     @Override
+    public Booking deleteBook(int id) {
+        Booking booking = bookingRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Book with the id "+id+" doesn't exists."));
+        bookingRepo.delete(booking);
+        return booking;
+    }
+
+    @Override
     @Cacheable(value = "book")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Booking getBookingById(int id) {

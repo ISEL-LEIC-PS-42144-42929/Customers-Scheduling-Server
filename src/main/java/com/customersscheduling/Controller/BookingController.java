@@ -30,4 +30,13 @@ public class BookingController {
         resp.setStatus(HttpStatus.CREATED.value());
         return new Resource<>(booking);
     }
+
+    @DeleteMapping(value = "/{nif}/book/{id}")
+    public Resource<BookingResource> deleteBook(@PathVariable String nif, @PathVariable int id) {
+        BookingResource booking = bookingService.deleteBook(id).toResource();
+
+        Link link = linkTo(methodOn(BookingController.class).deleteBook(nif, id)).withSelfRel();
+        booking.add(link);
+        return new Resource<>(booking);
+    }
 }

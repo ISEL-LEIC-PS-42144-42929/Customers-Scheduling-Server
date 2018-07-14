@@ -12,4 +12,5 @@ public interface IBookingService {
     Booking getBookingById(int i);
     Booking insertBook(int id, String email);
 
+    Booking deleteBook(int id);
 }

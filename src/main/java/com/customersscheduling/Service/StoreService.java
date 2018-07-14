@@ -6,6 +6,7 @@ import com.customersscheduling.ExceptionHandling.CustomExceptions.NotAuthorizedE
 import com.customersscheduling.ExceptionHandling.CustomExceptions.ResourceNotFoundException;
 import com.customersscheduling.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -64,7 +65,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    @Cacheable(value = "ownerstores")
+    //@Cacheable(value = "ownerstores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Store> getStoresOfUser(String email) {
         return storeRepo.findByOwner_Client_Email(email);
@@ -115,9 +116,13 @@ public class StoreService implements IStoreService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store updateStoreTimetable(StoreTimetable storeTimetable) {
         int weekDay = storeTimetable.getPk().getTimetable().getWeekDay();
-        StoreTimetable stt = storeTimetableRepo.findByPk_StoreAndPk_Timetable_WeekDay(storeTimetable.getPk().getStore(), weekDay).orElseThrow(()->
-                new ResourceNotFoundException("Timetable with the specified Store and Weekday can't be updated because doesn't exists.")
-        );
+        StoreTimetable stt = storeTimetableRepo.findByPk_Store_Nif(storeTimetable.getPk().getStore().getNif())
+                                                .stream()
+                                                .filter( i -> i.getPk().getTimetable().getWeekDay()==weekDay)
+                                                .findFirst()
+                                                .orElseThrow( () ->
+                                                        new ResourceNotFoundException("Timetable with the specified Store and Weekday can't be updated because doesn't exists.")
+                                                );
         Timetable newTimetable = storeTimetable.getPk().getTimetable();
         newTimetable.setId(stt.getPk().getTimetable().getId());
         stt.getPk().setTimetable(newTimetable);
@@ -137,16 +142,12 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    //@CachePut(value = "ownerstores")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store updateStore(String nif, Store store) {
         Store s = getStore(nif);
-        if(store.getCategory() != null)
-            s.setCategory(store.getCategory());
-        if(store.getStoreName() != null)
-            s.setStoreName(store.getStoreName());
-        if(store.getContact() != null)
-            s.setContact(store.getContact());
-        return storeRepo.save(s);
+        store.setOwner(s.getOwner());
+        return storeRepo.save(store);
     }
 
     @Override
@@ -198,13 +199,10 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    @Cacheable(value = "staff")
+    //@Cacheable(value = "staff")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true )
     public List<Staff> getStaff(String nif) {
-        return staffServsRepo.getByPk_StoresServices_Pk_Store_Nif(nif)
-                .stream()
-                .map(s -> (Staff)personRepo.findByEmail(s.getPk().getStaff().getEmail()).orElseThrow(()->new ResourceNotFoundException("Staff "+s.getPk().getStaff().getEmail()+" doesn't exists.")))
-                .collect(Collectors.toList());
+        return staffRepo.findByStore_Nif(nif);
     }
 
     @Override
@@ -236,7 +234,7 @@ public class StoreService implements IStoreService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public Store updateClientScoreForStore(String nif, String email, int i) {
-        Client c = (Client)personRepo.findByEmail(email).orElseThrow(()->new NotAuthorizedException("Client "+email+"doesn't exists."));
+        Client c = (Client)personRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("Client "+email+"doesn't exists."));
         Store store = getStore(nif);
         ClientStores cs = clientStoresRepo.findByPk_Client_EmailAndPk_Store_Nif(email, nif);
         if(!cs.isAccepted())

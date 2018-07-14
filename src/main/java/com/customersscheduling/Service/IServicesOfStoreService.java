@@ -15,4 +15,6 @@ public interface IServicesOfStoreService {
     StoreServices updateService(StoreServices ss, int id);
 
     Service deleteService(String nif, int id);
+
+    Service removeStaffOfService(String email, int id);
 }

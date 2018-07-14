@@ -83,21 +83,10 @@ public class StoreController {
         return new Resource<>(storeResource);
     }
 
-    @PutMapping(value = "/{nif}/address/{id}")
-    public Resource<StoreResource> updateStoreAddress(@PathVariable String nif, @RequestBody AddressInputModel addr) {
-        Address address = addr.toDto();
-        Store st = new Store();
-        st.setNif(nif);
-        StoreResource storeResource = storeService.updateStoreAddress(nif, address).toResource(storeService.getScore(nif));
-        Link link = linkTo(methodOn(StoreController.class).updateStoreAddress(nif, addr)).withSelfRel();
-        storeResource.add(link);
-        return new Resource<>(storeResource);
-    }
-
-    @PutMapping(value = "/{nif}/info")
-    public Resource<StoreResource> updateInfoStore(@PathVariable String nif, @RequestBody StoreInputModel store) {
+    @PutMapping(value = "/{nif}")
+    public Resource<StoreResource> updateStore(@PathVariable String nif, @RequestBody StoreInputModel store) {
         StoreResource storeResource = storeService.updateStore(nif, store.toDto(new Owner())).toResource(storeService.getScore(nif));
-        Link link = linkTo(methodOn(StoreController.class).updateInfoStore(nif, store)).withSelfRel();
+        Link link = linkTo(methodOn(StoreController.class).updateStore(nif, store)).withSelfRel();
         storeResource.add(link);
         return new Resource<>(storeResource);
     }

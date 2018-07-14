@@ -23,14 +23,14 @@ public class StoreResource extends ResourceSupport {
         add(linkTo(methodOn(StoreController.class).insertStore(null,null, null)).withRel("insert"));
         add(linkTo(methodOn(StoreServicesController.class).getServicesOfStore(nif)).withRel("services"));
         add(linkTo(methodOn(StorePortfolioController.class).getPortfolioOfStore(nif)).withRel("portfolio"));
-        add(linkTo(methodOn(StoreController.class).updateStoreAddress(nif, null)).withRel("update_addr"));
-        add(linkTo(methodOn(StoreController.class).updateInfoStore(nif, null)).withRel("update_info"));
+        add(linkTo(methodOn(StoreController.class).updateStore(nif, null)).withRel("update"));
         add(linkTo(methodOn(StoreController.class).getClientsOfStore(nif)).withRel("clients"));
         add(linkTo(methodOn(StoreController.class).getPendentRequestsOfStore(nif)).withRel("pendent_requests"));
         add(linkTo(methodOn(StoreStaffController.class).getStaffOfStore(nif)).withRel("get_staff"));
         add(linkTo(methodOn(StoreStaffController.class).insertStaffForService(null,nif,-1, null)).withRel("add_service_staff"));
         add(linkTo(methodOn(StaffController.class).insertStaff(null,null)).withRel("insert_staff"));
         add(linkTo(methodOn(StoreTimetableController.class).insertStoreTimetable(nif, null, null)).withRel("timetable"));
+        add(linkTo(methodOn(StoreTimetableController.class).updateStoreTimetable(nif, null)).withRel("update_timetable"));
         add(linkTo(methodOn(StoreController.class).setClientForStore(nif, null, null)).withRel("set_client"));
         add(linkTo(methodOn(StoreController.class).deleteClientOfStore(nif, null)).withRel("delete_client"));
         add(linkTo(methodOn(StoreController.class).setClientForStore(nif, null, null)).withRel("set_store"));

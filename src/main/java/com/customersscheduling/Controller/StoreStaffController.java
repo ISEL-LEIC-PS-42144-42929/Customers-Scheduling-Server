@@ -60,4 +60,12 @@ public class StoreStaffController {
         Link link = linkTo(methodOn(StoreStaffController.class).getStaffOfStore(nif)).withSelfRel();
         return ResourcesUtil.getResources(StaffResource.class, staff, link);
     }
+
+    @DeleteMapping(value = "/{nif}/services/{id}/staff/{email}")
+    public Resource<ServiceResource> removeStaffOfService(@PathVariable String email, @PathVariable String nif, @PathVariable int id) {
+        Service s = servicesStoreService.removeStaffOfService(email, id);
+        Link link = linkTo(methodOn(StoreStaffController.class).removeStaffOfService(email, nif, id)).withSelfRel();
+
+        return null;
+    }
 }

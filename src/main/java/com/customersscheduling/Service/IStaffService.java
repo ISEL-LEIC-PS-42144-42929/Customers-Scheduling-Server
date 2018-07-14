@@ -2,6 +2,7 @@ package com.customersscheduling.Service;
 
 import com.customersscheduling.Controller.InputModels.PersonInputModel;
 import com.customersscheduling.Domain.Booking;
+import com.customersscheduling.Domain.Service;
 import com.customersscheduling.Domain.Staff;
 import com.customersscheduling.Domain.StaffTimetable;
 import org.springframework.hateoas.ResourceAssembler;
@@ -18,4 +19,6 @@ public interface IStaffService {
     Staff updateStaffTimetable(StaffTimetable staffTimetable);
 
     Staff deleteStaff(String email);
+
+    List<Service> getServices(String email);
 }

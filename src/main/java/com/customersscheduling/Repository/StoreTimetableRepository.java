@@ -18,5 +18,5 @@ public interface StoreTimetableRepository extends JpaRepository<StoreTimetable, 
 
     List<StoreTimetable> findByPk_Store_Nif(String nif);
 
-    Optional<StoreTimetable> findByPk_StoreAndPk_Timetable_WeekDay(Store store, int weekDay);
+    StoreTimetable findByPk_StoreAndPk_Timetable_WeekDay(Store store, int weekDay);
 }

@@ -132,4 +132,15 @@ public class ServicesOfStoreService implements IServicesOfStoreService {
         storeServicesRepo.delete(ss);
         return ss.getPk().getService();
     }
+
+    @Override
+    public Service removeStaffOfService(String email, int id) {
+        getService(id);
+        personRepo.findById(email).orElseThrow(() ->
+            new ResourceNotFoundException("Staff with the email "+email+" doesn't exists.")
+        );
+        StaffServices ss = staffServicesRepo.getByPk_StoresServices_Pk_Service_IdAndPk_Staff_Email(id, email);
+        staffServicesRepo.deleteByPk_StoresServices_Pk_Service_IdAndPk_Staff_Email(id, email);
+        return ss.getPk().getStoresServices().getPk().getService();
+    }
 }
