@@ -1,9 +1,26 @@
-= Getting Started With Spring REST Docs
+= Customer's Scheduling API Documentation
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:operation-curl-request-title: Example request
+:operation-http-response-title: Example response
 
-This is an example output for a service running at http://localhost:8080:
+[[overview]]
+== Requests
+
+[[overview-http-verbs]]
+=== Client
+
+Insert client
 
 .request
-include:: /build/snippets/insert-client-example/http-request.adoc[]
+include:: ../../../../../build/snippets/insert-client-example/http-request.adoc[]
 
 .response
-include::/build/snippets/insert-client-example/http-response.adoc[]
+include:: ../../../../../build/snippets/insert-client-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/insert-client-example/response-fields.adoc[]

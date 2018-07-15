@@ -37,6 +37,7 @@ dependencies {
 	compile 'org.springframework.hateoas:spring-hateoas:0.24.0.RELEASE'
 	compile('org.springframework.plugin:spring-plugin-core')
 	compile group: 'org.springframework.security', name: 'spring-security-web', version: '3.0.4.RELEASE'
+    compile group: 'org.springframework.restdocs', name: 'spring-restdocs-asciidoctor', version: '1.2.2.RELEASE'
 	testCompile group: 'org.springframework.restdocs', name: 'spring-restdocs-mockmvc', version: '2.0.1.RELEASE'
 	compile group: 'org.asciidoctor', name: 'asciidoctor-gradle-plugin', version: '1.5.8.1'
 	implementation 'com.google.firebase:firebase-admin:6.2.0'
@@ -49,7 +50,5 @@ dependencies {
 apply plugin: 'org.asciidoctor.convert'
 
 asciidoctor {
-	sourceDir 'C:\\Users\\BitoEngineer\\Desktop\\Projeto e Seminario\\Codigo\\Customers Scheduling Server\\src\\main\\asciidoc\\asciidoc'
-	attributes \
-      'snippets': file('build/snippets')
+    sourceDir 'src/main/asciidoc'
 }
