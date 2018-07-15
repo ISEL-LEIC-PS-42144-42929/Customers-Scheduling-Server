@@ -8,13 +8,9 @@
 :operation-curl-request-title: Example request
 :operation-http-response-title: Example response
 
-[[overview]]
-== Requests
+== Client
 
-[[overview-http-verbs]]
-=== Client
-
-* Insert client
+=== Insert client
 
 Used to create a client.
 
@@ -30,7 +26,7 @@ include:: ../../../../../build/snippets/insert-client-example/http-response.adoc
 Response fields
 include:: ../../../../../build/snippets/insert-client-example/response-fields.adoc[]
 
-* Get client
+=== Get client
 
 Used to get a client.
 
@@ -56,5 +52,44 @@ include:: ../../../../../build/snippets/get-client-pr-example/http-response.adoc
 Response fields
 include:: ../../../../../build/snippets/get-client-pr-example/response-fields.adoc[]
 
+=== Get client's books
+
+Used to get a collection of schedulled books of client.
+
+.request
+include:: ../../../../../build/snippets/get-client-books-example/http-request.adoc[]
+
+.response
+include:: ../../../../../build/snippets/get-client-books-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/get-client-books-example/response-fields.adoc[]
+
+=== Get client's stores
+
+Used to get a collection client's stores whose have accepted the client already.
+
+.request
+include:: ../../../../../build/snippets/get-client-stores-example/http-request.adoc[]
+
+.response
+include:: ../../../../../build/snippets/get-client-stores-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/get-client-stores-example/response-fields.adoc[]
+
+
+=== Delete client
+
+Used to delete a registered client.
+
+.request
+include:: ../../../../../build/snippets/delete-client-example/http-request.adoc[]
+
+.response
+include:: ../../../../../build/snippets/delete-client-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/delete-client-example/response-fields.adoc[]
 
 

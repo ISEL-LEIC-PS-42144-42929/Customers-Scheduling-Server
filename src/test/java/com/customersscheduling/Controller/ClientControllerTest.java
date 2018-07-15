@@ -114,7 +114,7 @@ public class ClientControllerTest {
                         responseFields(
                             subsectionWithPath("person").description("Person resources, described on insert client example"),
                             fieldWithPath("accepted").description("Boolean value with indicates if the person is accepted on store, when the store's clients are requested"),
-                                subsectionWithPath("_links").description("Links to other resources, described on insert client example")),
+                                subsectionWithPath("_links").description("Links to self and other resources, described on insert client example")),
                         responseHeaders(
                                 headerWithName("Content-Type").description("The Content-Type of the payload"))
                         )
@@ -135,7 +135,7 @@ public class ClientControllerTest {
                 .andDo(document("get-client-pr-example",
                         responseFields(
                                 fieldWithPath("_embedded.storeResourceList").description("Collection of stores whose haven't accepted the client yet"),
-                                subsectionWithPath("_links").description("Links to other resources")),
+                                subsectionWithPath("_links").description("Links to self and other resources")),
                         responseHeaders(
                                 headerWithName("Content-Type").description("The Content-Type of the payload"))
                         )
@@ -151,7 +151,15 @@ public class ClientControllerTest {
                     .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE));
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
+                .andDo(document("get-client-books-example",
+                        responseFields(
+                                fieldWithPath("_embedded.bookingResourceList").description("Collection of schedulled books of client"),
+                                subsectionWithPath("_links").description("Links to self and other resources")),
+                        responseHeaders(
+                                headerWithName("Content-Type").description("The Content-Type of the payload"))
+                        )
+                );
     }
 
     @Test
@@ -163,7 +171,15 @@ public class ClientControllerTest {
                     .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE));
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
+                .andDo(document("get-client-stores-example",
+                        responseFields(
+                                fieldWithPath("_embedded.storeResourceList").description("Collection of client's stores whose have accepted"),
+                                subsectionWithPath("_links").description("Links to self and other resources")),
+                        responseHeaders(
+                                headerWithName("Content-Type").description("The Content-Type of the payload"))
+                        )
+                );
     }
 
     @Test
@@ -176,7 +192,16 @@ public class ClientControllerTest {
                     .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE));
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
+                .andDo(document("delete-client-example",
+                        responseFields(
+                                subsectionWithPath("person").description("Person's object that was deleted"),
+                                subsectionWithPath("_links").description("Links to self and other resources"),
+                                fieldWithPath("accepted").ignored()),
+                        responseHeaders(
+                                headerWithName("Content-Type").description("The Content-Type of the payload"))
+                        )
+                );
     }
 
     @Test

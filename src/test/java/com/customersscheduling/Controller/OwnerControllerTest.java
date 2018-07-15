@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -18,6 +19,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static com.customersscheduling.Controller.ClientControllerTest.POST_CLIENT_URI;
 import static org.junit.Assert.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs(outputDir = "build/snippets")
 public class OwnerControllerTest {
 
     @Autowired
@@ -75,7 +81,23 @@ public class OwnerControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(RESPONSE_CONTENT_TYPE))
-                .andExpect(jsonPath("$.person.nif").value(o.nif));
+                .andExpect(jsonPath("$.person.nif").value(o.nif))
+                .andDo(document("insert-client-example", responseFields(
+                        fieldWithPath("person").description("Owner info"),
+                        fieldWithPath("person.client.email").description("Owner's email"),
+                        fieldWithPath("person.nif").description("Owner's nif"),
+                        fieldWithPath("person.client.name").description("Owner's name"),
+                        fieldWithPath("person.client.contact").description("Owner's contact"),
+                        fieldWithPath("person.client.gender").description("Owner's gender"),
+                        fieldWithPath("_links").description("Hypermedia navigation and some actions hyperlinks"),
+                        fieldWithPath("_links.get.href").description("Hyperlink to get owner info"),
+                        fieldWithPath("_links.insert.href").description("Hyperlink to create owner"),
+                        fieldWithPath("_links.stores.href").description("Hyperlink to get owner's stores"),
+                        fieldWithPath("_links.self.href").description("Hyperlink to get same resource")
+                ), requestFields(
+                        fieldWithPath("email").description("The email of the owner"),
+                        fieldWithPath("nif").description("The nif of the owner")
+                )));
     }
 
     @Test
