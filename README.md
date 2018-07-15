@@ -43,7 +43,7 @@ Almost all errors are independent of the request's URI, so the possible errors r
 
 Used to create a client
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 POST /person/owner HTTP/1.1
@@ -62,7 +62,7 @@ Request fields
 |email|String|The email of the owner|
 |nif|String|The nif of the owner|
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 201 Created
@@ -92,7 +92,7 @@ Response fields
 
 Used to get a client
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 GET /person/client/tstclient HTTP/1.1
@@ -101,7 +101,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 ```
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 200 OK
@@ -125,7 +125,7 @@ Response fields
 Used to get a collection of stores whose haven’t accepted the client
 yet.
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 GET /person/client/tstclient/pendentrequests HTTP/1.1
@@ -134,7 +134,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 ```
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 200 OK
@@ -156,7 +156,7 @@ Response fields
 
 Used to get a collection of schedulled books of client.
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 GET /person/client/tstclient/books HTTP/1.1
@@ -165,7 +165,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 ```
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 200 OK
@@ -188,7 +188,7 @@ Response fields
 Used to get a collection client’s stores whose have accepted the client
 already.
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 GET /person/client/tstclient/stores HTTP/1.1
@@ -197,7 +197,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 ```
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 200 OK
@@ -219,7 +219,7 @@ Response fields
 
 Used to delete a registered client
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 DELETE /person/client/tstclient HTTP/1.1
@@ -228,7 +228,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 ```
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 200 OK
@@ -252,7 +252,7 @@ Response fields
 
 Used to create a owner.
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 POST /person/owner HTTP/1.1
@@ -271,7 +271,7 @@ Request fields
 |email|String|The email of the owner|
 |nif|String|The nif of the owner|
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 201 Created
@@ -298,7 +298,7 @@ Response fields
 
 Used to get a owner.
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 GET /person/owner/tstclientemail HTTP/1.1
@@ -307,7 +307,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 ```
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 200 OK
@@ -329,7 +329,7 @@ Response fields
 
 Used to delete a registered owner.
 
-request
+**Request**
 
 ``` {.highlightjs .highlight .nowrap}
 DELETE /person/owner/tstclientemail HTTP/1.1
@@ -338,7 +338,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 ```
 
-response
+**Response**
 
 ``` {.highlightjs .highlight .nowrap}
 HTTP/1.1 200 OK
