@@ -17,9 +17,9 @@ Table of Contents
 [Client](#_client) {#_client}
 ------------------
 
-### [Insert client](#_insert_client) {#_insert_client}
+### [Insert client](#_insert_client)
 
-Used to create a client.
+Used to create a client
 
 request
 
@@ -35,10 +35,10 @@ Content-Length: 44
 
 Request fields
 
-  Path      Type       Description
-  --------- ---------- ------------------------
-  `email`   `String`   The email of the owner
-  `nif`     `String`   The nif of the owner
+|Path|Type|Description|
+|--- |--- |--- |
+|email|String|The email of the owner|
+|nif|String|The nif of the owner|
 
 response
 
@@ -52,23 +52,23 @@ Content-Length: 378
 
 Response fields
 
-  Path                      Type       Description
-  ------------------------- ---------- ---------------------------------------------------
-  `person`                  `Object`   Owner info
-  `person.client.email`     `String`   Owner’s email
-  `person.nif`              `String`   Owner’s nif
-  `person.client.name`      `String`   Owner’s name
-  `person.client.contact`   `Null`     Owner’s contact
-  `person.client.gender`    `Number`   Owner’s gender
-  `_links`                  `Object`   Hypermedia navigation and some actions hyperlinks
-  `_links.get.href`         `String`   Hyperlink to get owner info
-  `_links.insert.href`      `String`   Hyperlink to create owner
-  `_links.stores.href`      `String`   Hyperlink to get owner’s stores
-  `_links.self.href`        `String`   Hyperlink to get same resource
+|Path|Type|Description|
+|--- |--- |--- |
+|person|Object|Owner info|
+|person.client.email|String|Owner’s email|
+|person.nif|String|Owner’s nif|
+|person.client.name|String|Owner’s name|
+|person.client.contact|Null|Owner’s contact|
+|person.client.gender|Number|Owner’s gender|
+|_links|Object|Hypermedia navigation and some actions hyperlinks|
+|_links.get.href|String|Hyperlink to get owner info|
+|_links.insert.href|String|Hyperlink to create owner|
+|_links.stores.href|String|Hyperlink to get owner’s stores|
+|_links.self.href|String|Hyperlink to get same resource|
 
-### [Get client](#_get_client) {#_get_client}
+### [Get client](#_get_client)
 
-Used to get a client.
+Used to get a client
 
 request
 
@@ -92,11 +92,11 @@ Content-Length: 836
 
 Response fields
 
-  Path         Type       Description
-  ------------ ---------- ---------------------------------------------------------------------------------------------------------
-  `person`     `Object`   Person resources, described on insert client example
-  `accepted`   `Null`     Boolean value with indicates if the person is accepted on store, when the store’s clients are requested
-  `_links`     `Object`   Links to other resources, described on insert client example
+|Path|Type|Description|
+|--- |--- |--- |
+|person|Object|Person resources, described on insert client example|
+|accepted|Null|Boolean value with indicates if the person is accepted on store, when the store’s clients are requested|
+|_links|Object|Links to other resources, described on insert client example|
 
 -   Get client’s pendent requests
 
@@ -125,10 +125,10 @@ Content-Length: 129
 
 Response fields
 
-  Path                            Type       Description
-  ------------------------------- ---------- ------------------------------------------------------------
-  `_embedded.storeResourceList`   `Array`    Collection of stores whose haven’t accepted the client yet
-  `_links`                        `Object`   Links to other resources
+|Path|Type|Description|
+|--- |--- |--- |
+|_embedded.storeResourceList|Array|Collection of stores whose haven’t accepted the client yet|
+|_links|Object|Links to other resources|
 
 ### [Get client’s books](#_get_client_s_books) {#_get_client_s_books}
 
@@ -156,12 +156,12 @@ Content-Length: 121
 
 Response fields
 
-  Path                              Type       Description
-  --------------------------------- ---------- ------------------------------------------
-  `_embedded.bookingResourceList`   `Array`    Collection of schedulled books of client
-  `_links`                          `Object`   Links to self and other resources
+|Path|Type|Description|
+|--- |--- |--- |
+|_embedded.bookingResourceList|Array|Collection of schedulled books of client|
+|_links|Object|Links to self and other resources|
 
-### [Get client’s stores](#_get_client_s_stores) {#_get_client_s_stores}
+### [Get client’s stores](#_get_client_s_stores)
 
 Used to get a collection client’s stores whose have accepted the client
 already.
@@ -188,14 +188,14 @@ Content-Length: 120
 
 Response fields
 
-  Path                            Type       Description
-  ------------------------------- ---------- ---------------------------------------------------
-  `_embedded.storeResourceList`   `Array`    Collection of client’s stores whose have accepted
-  `_links`                        `Object`   Links to self and other resources
+|Path|Type|Description|
+|--- |--- |--- |
+|_embedded.storeResourceList|Array|Collection of client’s stores whose have accepted|
+|_links|Object|Links to self and other resources|
 
-### [Delete client](#_delete_client) {#_delete_client}
+### [Delete client](#_delete_client)
 
-Used to delete a registered client.
+Used to delete a registered client
 
 request
 
@@ -218,12 +218,12 @@ Content-Length: 843
 
 Response fields
 
-  Path       Type       Description
-  ---------- ---------- -----------------------------------
-  `person`   `Object`   Person’s object that was deleted
-  `_links`   `Object`   Links to self and other resources
+|Path|Type|Description|
+|--- |--- |--- |
+|person|Object|Person’s object that was deleted|
+|_links|Object|Links to self and other resources|
 
-[Owner](#_owner) {#_owner}
+[Owner](#_owner)
 ----------------
 
 ### [Insert owner](#_insert_owner) {#_insert_owner}
@@ -244,10 +244,10 @@ Content-Length: 44
 
 Request fields
 
-  Path      Type       Description
-  --------- ---------- ------------------------
-  `email`   `String`   The email of the owner
-  `nif`     `String`   The nif of the owner
+|Path|Type|Description|
+|--- |--- |--- |
+|email|String|The email of the owner|
+|nif|String|The nif of the owner|
 
 response
 
@@ -261,18 +261,18 @@ Content-Length: 378
 
 Response fields
 
-  Path                   Type       Description
-  ---------------------- ---------- ---------------------------------------------------
-  `person.nif`           `String`   Owner’s nif
-  `person`               `Object`   Owner info
-  `person.client`        `Object`   Correspondent client
-  `_links`               `Object`   Hypermedia navigation and some actions hyperlinks
-  `_links.get.href`      `String`   Hyperlink to get owner info
-  `_links.insert.href`   `String`   Hyperlink to create owner
-  `_links.stores.href`   `String`   Hyperlink to get owner’s stores
-  `_links.self.href`     `String`   Hyperlink to get same resource
+|Path|Type|Description|
+|--- |--- |--- |
+|person.nif|String|Owner’s nif|
+|person|Object|Owner info|
+|person.client|Object|Correspondent client|
+|_links|Object|Hypermedia navigation and some actions hyperlinks|
+|_links.get.href|String|Hyperlink to get owner info|
+|_links.insert.href|String|Hyperlink to create owner|
+|_links.stores.href|String|Hyperlink to get owner’s stores|
+|_links.self.href|String|Hyperlink to get same resource|
 
-### [Get owner](#_get_owner) {#_get_owner}
+### [Get owner](#_get_owner)
 
 Used to get a owner.
 
@@ -298,12 +298,12 @@ Content-Length: 393
 
 Response fields
 
-  Path       Type       Description
-  ---------- ---------- -----------------------------------------------------------------------
-  `person`   `Object`   Person resources, described on insert client example
-  `_links`   `Object`   Links to self and other resources, described on insert client example
+|Path|Type|Description|
+|--- |--- |--- |
+|person|Object|Person resources, described on insert client example|
+|_links|Object|Links to self and other resources, described on insert client example|
 
-### [Delete owner](#_delete_owner) {#_delete_owner}
+### [Delete owner](#_delete_owner)
 
 Used to delete a registered owner.
 
@@ -328,9 +328,9 @@ Content-Length: 843
 
 Response fields
 
-  Path       Type       Description
-  ---------- ---------- -----------------------------------
-  `person`   `Object`   Person’s object that was deleted
-  `_links`   `Object`   Links to self and other resources
+|Path|Type|Description|
+|--- |--- |--- |
+|person|Object|Person’s object that was deleted|
+|_links|Object|Links to self and other resources|
 
 Last updated 2018-07-15 20:02:37 +01:00
