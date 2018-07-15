@@ -14,13 +14,47 @@
 [[overview-http-verbs]]
 === Client
 
-Insert client
+* Insert client
+
+Used to create a client.
 
 .request
 include:: ../../../../../build/snippets/insert-client-example/http-request.adoc[]
+
+Request fields
+include:: ../../../../../build/snippets/insert-client-example/request-fields.adoc[]
 
 .response
 include:: ../../../../../build/snippets/insert-client-example/http-response.adoc[]
 
 Response fields
 include:: ../../../../../build/snippets/insert-client-example/response-fields.adoc[]
+
+* Get client
+
+Used to get a client.
+
+.request
+include:: ../../../../../build/snippets/get-client-example/http-request.adoc[]
+
+.response
+include:: ../../../../../build/snippets/get-client-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/get-client-example/response-fields.adoc[]
+
+* Get client's pendent requests
+
+Used to get a collection of stores whose haven't accepted the client yet.
+
+.request
+include:: ../../../../../build/snippets/get-client-pr-example/http-request.adoc[]
+
+.response
+include:: ../../../../../build/snippets/get-client-pr-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/get-client-pr-example/response-fields.adoc[]
+
+
+
