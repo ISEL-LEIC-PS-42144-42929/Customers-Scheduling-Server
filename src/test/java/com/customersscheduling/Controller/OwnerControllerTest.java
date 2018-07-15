@@ -19,10 +19,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static com.customersscheduling.Controller.ClientControllerTest.POST_CLIENT_URI;
 import static org.junit.Assert.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -82,13 +82,11 @@ public class OwnerControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(RESPONSE_CONTENT_TYPE))
                 .andExpect(jsonPath("$.person.nif").value(o.nif))
-                .andDo(document("insert-client-example", responseFields(
-                        fieldWithPath("person").description("Owner info"),
-                        fieldWithPath("person.client.email").description("Owner's email"),
+                .andDo(document("insert-owner-example", responseFields(
                         fieldWithPath("person.nif").description("Owner's nif"),
-                        fieldWithPath("person.client.name").description("Owner's name"),
-                        fieldWithPath("person.client.contact").description("Owner's contact"),
-                        fieldWithPath("person.client.gender").description("Owner's gender"),
+                        fieldWithPath("person").description("Owner info"),
+                        fieldWithPath("person.client").description("Correspondent client"),
+                        subsectionWithPath("person.client").ignored(),
                         fieldWithPath("_links").description("Hypermedia navigation and some actions hyperlinks"),
                         fieldWithPath("_links.get.href").description("Hyperlink to get owner info"),
                         fieldWithPath("_links.insert.href").description("Hyperlink to create owner"),
@@ -111,7 +109,15 @@ public class OwnerControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
-                .andExpect(jsonPath("$.person.nif").value(c.nif));
+                .andExpect(jsonPath("$.person.nif").value(c.nif))
+                .andDo(document("get-owner-example",
+                        responseFields(
+                                subsectionWithPath("person").description("Person resources, described on insert client example"),
+                                subsectionWithPath("_links").description("Links to self and other resources, described on insert client example")),
+                        responseHeaders(
+                                headerWithName("Content-Type").description("The Content-Type of the payload"))
+                        )
+                );
     }
 
     @Test
@@ -124,7 +130,15 @@ public class OwnerControllerTest {
                 .accept(MediaType.parseMediaType(RESPONSE_CONTENT_TYPE)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE));
+                .andExpect(content().contentType(RESPONSE_CONTENT_TYPE))
+                .andDo(document("delete-owner-example",
+                        responseFields(
+                                subsectionWithPath("person").description("Owner's object that was deleted"),
+                                subsectionWithPath("_links").description("Links to self and other resources")),
+                        responseHeaders(
+                                headerWithName("Content-Type").description("The Content-Type of the payload"))
+                        )
+                );
     }
 
     public OwnerInputModel getOwnerInputModel(){

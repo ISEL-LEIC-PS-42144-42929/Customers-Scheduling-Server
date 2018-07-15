@@ -92,4 +92,46 @@ include:: ../../../../../build/snippets/delete-client-example/http-response.adoc
 Response fields
 include:: ../../../../../build/snippets/delete-client-example/response-fields.adoc[]
 
+== Owner
 
+=== Insert owner
+
+Used to create a owner.
+
+.request
+include:: ../../../../../build/snippets/insert-owner-example/http-request.adoc[]
+
+Request fields
+include:: ../../../../../build/snippets/insert-owner-example/request-fields.adoc[]
+
+.response
+include:: ../../../../../build/snippets/insert-owner-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/insert-owner-example/response-fields.adoc[]
+
+=== Get owner
+
+Used to get a owner.
+
+.request
+include:: ../../../../../build/snippets/get-owner-example/http-request.adoc[]
+
+.response
+include:: ../../../../../build/snippets/get-owner-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/get-owner-example/response-fields.adoc[]
+
+=== Delete owner
+
+Used to delete a registered owner.
+
+.request
+include:: ../../../../../build/snippets/delete-owner-example/http-request.adoc[]
+
+.response
+include:: ../../../../../build/snippets/delete-client-example/http-response.adoc[]
+
+Response fields
+include:: ../../../../../build/snippets/delete-client-example/response-fields.adoc[]

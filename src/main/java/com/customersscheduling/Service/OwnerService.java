@@ -45,7 +45,8 @@ public class OwnerService implements IOwnerService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED )
     public Owner deleteOwner(String email) {
         Owner o = getOwner(email);
-        storesRepo.deleteByOwner_Client_Email(email);
+        if(storesRepo.findByOwner_Client_Email(email).size()==0)
+            storesRepo.deleteByOwner_Client_Email(email);
         ownerRepo.delete(o);
         return o;
     }
