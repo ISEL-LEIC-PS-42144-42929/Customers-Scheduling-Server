@@ -34,6 +34,15 @@ Authorization: Bearer <token>
 ------------------
 Almost all errors are independent of the request's URI, so the possible errors returned on any request are the same. This topic  apresent every possible returned error so as the correspondent cases. 
 
+Any error response have the format:
+``` {.highlightjs .highlight .nowrap}
+{
+    title: <title of error>,
+    description: <what have caused the error>,
+    instance: <URI of the request that lead to the error>
+}
+```
+
 # Requests
 
 [Client](#_client)
