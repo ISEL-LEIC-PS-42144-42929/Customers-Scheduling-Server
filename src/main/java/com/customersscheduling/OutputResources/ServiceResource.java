@@ -1,5 +1,6 @@
 package com.customersscheduling.OutputResources;
 
+import com.customersscheduling.Controller.BookingController;
 import com.customersscheduling.Controller.StaffController;
 import com.customersscheduling.Controller.StoreServicesController;
 import com.customersscheduling.Controller.StoreStaffController;
@@ -27,6 +28,7 @@ public class ServiceResource extends ResourceSupport {
         add(linkTo(methodOn(StoreServicesController.class).getStaffOfService(service.getId(), nif)).withRel("get_staff"));
         add(linkTo(methodOn(StoreServicesController.class).getDispOfService(nif, service.getId())).withRel("disp"));
         add(linkTo(methodOn(StaffController.class).getServicesOfStaff(null)).withRel("get_staff_services"));
+        add(linkTo(methodOn(BookingController.class).insertBook(nif, -1,null,null)).withRel("set_book"));
         add(linkTo(methodOn(StoreStaffController.class).insertStaffForService(null, nif, -1,null)).withRel("post_staff_service"));
         add(linkTo(methodOn(StoreStaffController.class).removeStaffOfService(null, nif, -1)).withRel("delete_staff_service"));
     }

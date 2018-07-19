@@ -33,7 +33,7 @@ public class OwnerService implements IOwnerService {
     }
 
     @Override
-    @Cacheable(value = "owner")
+    //@Cacheable(value = "owner")
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Owner getOwner(String email) {
         return ownerRepo.findByClient_Email(email).orElseThrow(()->
